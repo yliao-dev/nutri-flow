@@ -11,7 +11,7 @@ func main() {
 	// Create a new app
 	myApp := app.New()
 	myWindow := myApp.NewWindow("Today's Progress")
-	
+
 	progressVM := viewmodel.NewProgressViewModel()
 	progressUI := view.CreateProgressUI(progressVM)
 

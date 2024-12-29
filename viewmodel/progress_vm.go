@@ -11,22 +11,22 @@ import (
 // ViewModel for Today's Progress tab
 
 type ProgessViewModel struct {
-	Progress *model.Progress
-	CaloriesPercent binding.String
-	ProteinPercent binding.String
+	Progress             *model.Progress
+	CaloriesPercent      binding.String
+	ProteinPercent       binding.String
 	CarbonhydratePercent binding.String
 }
 
 func NewProgressViewModel() *ProgessViewModel {
 	progress := &model.Progress{
-		GoalCalories: 2000,
-		GoalProtein: 200,
+		GoalCalories:     2000,
+		GoalProtein:      200,
 		GoalCarbohydrate: 350,
 	}
 	return &ProgessViewModel{
-		Progress: progress,
-		CaloriesPercent: binding.NewString(),
-		ProteinPercent: binding.NewString(),
+		Progress:             progress,
+		CaloriesPercent:      binding.NewString(),
+		ProteinPercent:       binding.NewString(),
 		CarbonhydratePercent: binding.NewString(),
 	}
 }
