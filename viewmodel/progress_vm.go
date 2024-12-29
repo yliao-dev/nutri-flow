@@ -10,20 +10,20 @@ import (
 
 // ViewModel for Today's Progress tab
 
-type ProgessViewModel struct {
+type ProgressViewModel struct {
 	Progress             *model.Progress
 	CaloriesPercent      binding.String
 	ProteinPercent       binding.String
 	CarbonhydratePercent binding.String
 }
 
-func NewProgressViewModel() *ProgessViewModel {
+func NewProgressViewModel() *ProgressViewModel {
 	progress := &model.Progress{
 		GoalCalories:     2000,
 		GoalProtein:      200,
 		GoalCarbohydrate: 350,
 	}
-	return &ProgessViewModel{
+	return &ProgressViewModel{
 		Progress:             progress,
 		CaloriesPercent:      binding.NewString(),
 		ProteinPercent:       binding.NewString(),
@@ -31,7 +31,7 @@ func NewProgressViewModel() *ProgessViewModel {
 	}
 }
 
-func (vm *ProgessViewModel) AddProgress(progress model.Progress) {
+func (vm *ProgressViewModel) AddProgress(progress model.Progress) {
 	vm.Progress.Add(progress)
 	vm.CaloriesPercent.Set(pkg.CalculatePercentage(vm.Progress.Calories, vm.Progress.GoalCalories))
 	vm.ProteinPercent.Set(pkg.CalculatePercentage(vm.Progress.Protein, vm.Progress.GoalProtein))

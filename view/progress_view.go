@@ -11,7 +11,7 @@ import (
 
 // UI for Today's Progress
 
-func CreateProgressUI(vm *viewmodel.ProgessViewModel) fyne.CanvasObject {
+func CreateProgressUI(vm *viewmodel.ProgressViewModel) fyne.CanvasObject {
 	caloriesLabel := widget.NewLabelWithData(vm.CaloriesPercent)
 	proteinLabel := widget.NewLabelWithData(vm.ProteinPercent)
 	carbsLabel := widget.NewLabelWithData(vm.CarbonhydratePercent)
