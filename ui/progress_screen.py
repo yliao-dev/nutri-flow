@@ -1,4 +1,4 @@
-# ui/progress_screen.py
+
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton
 from PyQt5.QtCore import Qt
 
