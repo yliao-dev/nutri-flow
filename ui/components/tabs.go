@@ -1,24 +1,29 @@
 package components
 
 import (
+	"nutri-flow/ui/datascreen"       // Import the DataScreen package
+	"nutri-flow/ui/ingredientscreen" // Import the IngredientScreen package
+	"nutri-flow/ui/progressscreen"   // Import the ProgressScreen package
+	"nutri-flow/viewmodel"           // Import the ViewModel package
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/widget"
 )
 
-func NewTabs() fyne.CanvasObject {
-	// Create individual tab items
-	tab1 := widget.NewLabel("Today's progress details here...")
-	tab2 := widget.NewLabel("List of ingredients here...")
-	tab3 := widget.NewLabel("History data here...")
+// NewTabs creates and returns the tab UI
+func NewTabs(progressViewModel *viewmodel.ProgressViewModel) fyne.CanvasObject {
+	// Create individual screens
+	progressScreen := progressscreen.NewProgressScreenUI(progressViewModel)
+	ingredientScreen := ingredientscreen.NewIngredientScreen()
+	dataScreen := datascreen.NewDataScreen()
 
-	// Create the tabs container using container.Tabs
+	// Create tabs for navigation
 	tabs := container.NewAppTabs(
-		container.NewTabItem("Today's Progress", tab1),
-		container.NewTabItem("Ingredients", tab2),
-		container.NewTabItem("History", tab3),
+		container.NewTabItem("Progress", progressScreen),
+		container.NewTabItem("Ingredients", ingredientScreen),
+		container.NewTabItem("Data", dataScreen),
 	)
 
-	// Return the tabs as a container
+	// Return the tabs container
 	return tabs
 }

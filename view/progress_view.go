@@ -1,37 +1,15 @@
 package view
 
 import (
-	"nutri-flow/model"
-	"nutri-flow/viewmodel"
+	"nutri-flow/ui/progressscreen" // UI component for progress screen
+	"nutri-flow/viewmodel"         // Import the ViewModel package
 
-	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2" // Import Fyne
 	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/widget"
 )
 
-// UI for Today's Progress
-
-func CreateProgressUI(vm *viewmodel.ProgressViewModel) fyne.CanvasObject {
-	caloriesLabel := widget.NewLabelWithData(vm.CaloriesPercent)
-	proteinLabel := widget.NewLabelWithData(vm.ProteinPercent)
-	carbsLabel := widget.NewLabelWithData(vm.CarbonhydratePercent)
-	progressData := model.Progress{
-		Calories:     100,
-		Protein:      40,
-		Carbohydrate: 80,
-	}
-	addButton := widget.NewButton("Add Ingredient", func() {
-		vm.AddProgress(progressData) // Example values to add
-	})
-
-	return container.NewVBox(
-		widget.NewLabel("Today's Progress"),
-		widget.NewLabel("Calories:"),
-		caloriesLabel,
-		widget.NewLabel("Protein:"),
-		proteinLabel,
-		widget.NewLabel("Carbs:"),
-		carbsLabel,
-		addButton,
-	)
+// NewProgressView coordinates between the ViewModel and the UI components
+func NewProgressView(vm *viewmodel.ProgressViewModel) fyne.CanvasObject {
+	progressUI := progressscreen.NewProgressScreenUI(vm)
+	return container.NewVBox(progressUI)
 }

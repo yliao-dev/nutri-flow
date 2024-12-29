@@ -12,9 +12,9 @@ import (
 
 type ProgressViewModel struct {
 	Progress             *model.Progress
-	CaloriesPercent      binding.String
-	ProteinPercent       binding.String
-	CarbonhydratePercent binding.String
+	CaloriesPercent      binding.Float
+	ProteinPercent       binding.Float
+	CarbonhydratePercent binding.Float
 }
 
 func NewProgressViewModel() *ProgressViewModel {
@@ -25,9 +25,9 @@ func NewProgressViewModel() *ProgressViewModel {
 	}
 	return &ProgressViewModel{
 		Progress:             progress,
-		CaloriesPercent:      binding.NewString(),
-		ProteinPercent:       binding.NewString(),
-		CarbonhydratePercent: binding.NewString(),
+		CaloriesPercent:      binding.NewFloat(),
+		ProteinPercent:       binding.NewFloat(),
+		CarbonhydratePercent: binding.NewFloat(),
 	}
 }
 

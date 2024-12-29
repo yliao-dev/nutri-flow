@@ -1,11 +1,12 @@
 package main
 
 import (
-	"nutri-flow/ui/datascreen"       // Import the DataScreen package
-	"nutri-flow/ui/ingredientscreen" // Import the IngredientScreen package
-	"nutri-flow/ui/progressscreen"   // Import the ProgressScreen package
-	"nutri-flow/viewmodel"           // Import the ViewModel package
+	"fmt"
+	"nutri-flow/ui/components" // Import the DataScreen package
 
+	"nutri-flow/viewmodel"
+
+	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
@@ -13,34 +14,26 @@ import (
 
 func main() {
 	// Create a new Fyne application
-	myApp := app.New()
-	myWindow := myApp.NewWindow("NutriFlow")
+	a := app.New()
+	w := a.NewWindow("NutriFlow")
 
 	// Initialize ViewModels
 	progressViewModel := viewmodel.NewProgressViewModel()
+	fmt.Println(progressViewModel.CaloriesPercent)
 	// ingredientViewModel := viewmodel.NewIngredientViewModel()
 	// dataViewModel := viewmodel.NewDataViewModel()
 
-	// Create individual screens
-	progressScreen := progressscreen.NewProgressScreen(progressViewModel)
-	ingredientScreen := ingredientscreen.NewIngredientScreen()
-	dataScreen := datascreen.NewDataScreen()
-
-	// Create tabs for navigation
-	tabs := container.NewAppTabs(
-		container.NewTabItem("Progress", progressScreen),
-		container.NewTabItem("Ingredients", ingredientScreen),
-		container.NewTabItem("Data", dataScreen),
-	)
+	tabs := components.NewTabs(progressViewModel)
+	w.Resize(fyne.NewSize(800, 600))
 
 	// Set the content of the main window to the tabs
-	myWindow.SetContent(container.NewVBox(
+	w.SetContent(container.NewVBox(
 		tabs,
 		widget.NewButton("Quit", func() {
-			myApp.Quit()
+			a.Quit()
 		}),
 	))
 
 	// Show the main window
-	myWindow.ShowAndRun()
+	w.ShowAndRun()
 }
