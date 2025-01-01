@@ -1,7 +1,8 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton
-from PyQt5.QtCore import Qt
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton
+from PyQt6.QtCore import Qt
 from viewmodal.progress_viewmodal import ProgressViewModal
 from modal.progress_modal import NutritionData
+from ui.circular_bar import CircularProgressBar
 
 class ProgressScreen(QWidget):
     def __init__(self, view_modal: ProgressViewModal):
@@ -13,10 +14,10 @@ class ProgressScreen(QWidget):
         layout = QVBoxLayout()
 
         self.progress_label = QLabel("Today's Progress")
-        self.progress_label.setAlignment(Qt.AlignCenter)
+        self.progress_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.progress_label)
 
-
+        # User profile data
         self.weight_label = QLabel(f"Weight: {self.view_modal.modal.user_profile.weight} kg")
         self.goal_protein_label = QLabel(f"Goal Protein: {self.view_modal.modal.user_profile.goal_protein} g")
         self.goal_carbs_label = QLabel(f"Goal Carbs: {self.view_modal.modal.user_profile.goal_carbs} g")
@@ -24,17 +25,23 @@ class ProgressScreen(QWidget):
         
         for label in [self.weight_label, self.goal_protein_label, self.goal_carbs_label, self.goal_calories_label]:
             layout.addWidget(label)
-        # Labels for displaying the progress
-       
-        self.protein_label = QLabel(f"Protein: 0 g")
-        self.carbs_label = QLabel(f"Carbs: 0 g")
-        self.calories_label = QLabel(f"Calories: 0 kcal")
 
+        # Circular progress bars for Protein, Carbs, and Calories
+        self.protein_progress = CircularProgressBar(self)
+        self.carbs_progress = CircularProgressBar(self)
+        self.calories_progress = CircularProgressBar(self)
 
-        # Add all labels to layout
-        for label in [self.protein_label, self.carbs_label, self.calories_label]:
-            layout.addWidget(label)
+        # Configure progress bar settings
+        for progress_bar in [self.protein_progress, self.carbs_progress, self.calories_progress]:
+            progress_bar.setMaximum(100)  # Set max percentage
+            progress_bar.setFixedSize(150, 150)  # Set size of the progress bar
 
+        # Add progress bars to the layout
+        layout.addWidget(self.protein_progress)
+        layout.addWidget(self.carbs_progress)
+        layout.addWidget(self.calories_progress)
+
+        # Button to add progress
         self.add_button = QPushButton("Add Progress")
         self.add_button.clicked.connect(self.add_progress)
         layout.addWidget(self.add_button)
@@ -43,25 +50,22 @@ class ProgressScreen(QWidget):
 
     def add_progress(self):
         """Adds progress to nutrition data and updates the labels."""
-        # Example: Add progress with 10 calories, protein, and carbs
         nutrition_data = NutritionData(calories=10, protein=10, carbohydrates=10)
         self.view_modal.add_progress(nutrition_data)
 
-        # Update the labels with current intake and percentages
-        self.update_labels()
+        # Update the circular progress bars and labels
+        self.update_progress_bars()
 
-    def update_labels(self):
+    def update_progress_bars(self):
         nutrition_data = self.view_modal.get_progress_data()
         percentage = self.view_modal.calculate_percentage()
 
-        # Format and update each label with both percentage and current intake
-        self._update_label(self.protein_label, 
-                        f"Protein: {percentage['protein']:.2f}% ({nutrition_data.protein} g)")
-        self._update_label(self.carbs_label, 
-                        f"Carbs: {percentage['carbohydrates']:.2f}% ({nutrition_data.carbohydrates} g)")
-        self._update_label(self.calories_label, 
-                        f"Calories: {percentage['calories']:.2f}% ({nutrition_data.calories} kcal)")
+        # Update each progress bar with the corresponding percentage
+        self.protein_progress.setValue(percentage['protein'])
+        self.carbs_progress.setValue(percentage['carbohydrates'])
+        self.calories_progress.setValue(percentage['calories'])
 
-    def _update_label(self, label, text):
-        """Helper function to update the text of a label."""
-        label.setText(text)
+        # Add text to show the values in the center of the circular bars (optional)
+        self.protein_progress.setText(f"Protein: {percentage['protein']:.2f}%")
+        self.carbs_progress.setText(f"Carbs: {percentage['carbohydrates']:.2f}%")
+        self.calories_progress.setText(f"Calories: {percentage['calories']:.2f}%")

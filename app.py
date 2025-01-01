@@ -3,7 +3,7 @@ This module contains the main window for the NutriFlow application.
 It sets up the UI with a ProgressScreen to track nutrition progress.
 """
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt6.QtWidgets import QApplication, QMainWindow
 from ui.progress_screen import ProgressScreen
 from viewmodal.progress_viewmodal import ProgressViewModal
 from modal.user_profile import UserProfile
@@ -29,4 +29,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
