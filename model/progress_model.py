@@ -1,13 +1,6 @@
-class NutritionData:
-    """
-    Represents a structured nutrition data set.
-    """
-    def __init__(self, calories=0, protein=0, carbohydrates=0):
-        self.calories = calories
-        self.protein = protein
-        self.carbohydrates = carbohydrates
+from model.user_profile import NutritionData
 
-class ProgressModal:
+class ProgressModel:
     """
     Tracks nutrition data progress and calculates completion percentages.
     """
@@ -17,7 +10,7 @@ class ProgressModal:
 
     def add_progress(self, data: NutritionData):
         """
-        Adds nutrition data to the current progress.
+        Adds nutrition data to the current progress (consumed data).
         """
         self.nutrition_data.calories += data.calories
         self.nutrition_data.protein += data.protein

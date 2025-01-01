@@ -1,8 +1,9 @@
 import customtkinter as ctk
 from ui.progress_screen import ProgressScreen
 from ui.ingredient_screen import IngredientScreen
-from viewmodal.progress_viewmodal import ProgressViewModal
-from modal.user_profile import UserProfile
+from viewmodel.progress_viewmodal import ProgressViewModel
+from model.user_profile import UserProfile
+from model.progress_model import ProgressModel  # Correct import
 
 ctk.set_appearance_mode("System")  # Modes: "System", "Dark", "Light"
 ctk.set_default_color_theme("blue")  # Themes: "blue", "green", "dark-blue"
@@ -29,12 +30,18 @@ class App(ctk.CTk):
         self.tabview.add("Ingredients")
         # self.tabview.add("Data")
 
-        # Bind the tabview to switch screens on tab change using a lambda function
-        self.tabview.configure(command=lambda: self.switch_screen(self.tabview.get()))
+        # Create the UserProfile instance
+        user_profile = UserProfile(weight=70, goal_protein=150, goal_carbs=200, goal_calories=2500)
+        
+        # Create the ProgressModel instance with the user profile
+        progress_model = ProgressModel(user_profile)
+        
+        # Create the ProgressViewModel with both user_profile and progress_model
+        progress_view_model = ProgressViewModel(user_profile, progress_model)
 
-        # Initialize screens
+        # Initialize screens with ProgressViewModel passed as argument
         self.screens = {
-            "Home": ProgressScreen(self, ProgressViewModal(UserProfile(70, 150, 200, 2500))),
+            "Home": ProgressScreen(self, progress_view_model),
             "Ingredients": IngredientScreen(self),
         }
 
@@ -46,6 +53,9 @@ class App(ctk.CTk):
         # Display the Home screen by default
         self.current_screen = "Home"
         self.screens[self.current_screen].grid()
+
+        # Bind the tabview to switch screens on tab change using a function
+        self.tabview.configure(command=self.switch_screen)
 
     def switch_screen(self, selected_tab):
         """Switch between screens based on selected tab."""
