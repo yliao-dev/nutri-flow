@@ -31,7 +31,7 @@ class App(ctk.CTk):
         # self.tabview.add("Data")
 
         # Create the UserProfile instance
-        user_profile = UserProfile(weight=70, goal_protein=150, goal_carbs=200, goal_calories=2500)
+        user_profile = UserProfile(weight=75, goal_protein=150, goal_carbs=375, goal_calories=2500)
         
         # Create the ProgressModel instance with the user profile
         progress_model = ProgressModel(user_profile)
@@ -55,8 +55,7 @@ class App(ctk.CTk):
         self.screens[self.current_screen].grid()
 
         # Bind the tabview to switch screens on tab change using a function
-        self.tabview.configure(command=self.switch_screen)
-
+        self.tabview.configure(command=lambda: self.switch_screen(self.tabview.get()))
     def switch_screen(self, selected_tab):
         """Switch between screens based on selected tab."""
         # Hide the current screen
