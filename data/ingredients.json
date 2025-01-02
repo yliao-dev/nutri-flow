@@ -1,0 +1,58 @@
+{
+  "salmon": {
+    "id": 1,
+    "unit": 100,
+    "carbohydrates": 0,
+    "protein": 30,
+    "calories": 208
+  },
+  "short_grain_rice": {
+    "id": 2,
+    "unit": 100,
+    "carbohydrates": 70,
+    "protein": 10,
+    "calories": 130
+  },
+  "eggs": {
+    "id": 3,
+    "unit": 100,
+    "carbohydrates": 1.1,
+    "protein": 13,
+    "calories": 143
+  },
+  "milk": {
+    "id": 4,
+    "unit": 100,
+    "carbohydrates": 5,
+    "protein": 3.4,
+    "calories": 42
+  },
+  "oatmeal": {
+    "id": 5,
+    "unit": 100,
+    "carbohydrates": 66.3,
+    "protein": 16.9,
+    "calories": 389
+  },
+  "beef": {
+    "id": 6,
+    "unit": 100,
+    "carbohydrates": 0,
+    "protein": 26,
+    "calories": 250
+  },
+  "chicken_breast": {
+    "id": 7,
+    "unit": 100,
+    "carbohydrates": 0,
+    "protein": 31,
+    "calories": 165
+  },
+  "chicken_legs": {
+    "id": 8,
+    "unit": 100,
+    "carbohydrates": 0,
+    "protein": 24,
+    "calories": 215
+  }
+}

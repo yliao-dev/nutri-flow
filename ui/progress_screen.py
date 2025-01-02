@@ -1,12 +1,12 @@
 import customtkinter as ctk
-from ui.ingredient_card import IngredientCard  # Import the IngredientCard class
+from ui.ingredient_card import IngredientCard, load_ingredient_data  # Import the IngredientCard class
 
 class ProgressScreen(ctk.CTkFrame):
     def __init__(self, master, progress_view_model):
         super().__init__(master)
 
         self.progress_view_model = progress_view_model
-
+        self.ingredients_data = load_ingredient_data()  # Ensure this is called early
         self.user_goals = {
             "protein": self.progress_view_model.user_profile.goal_protein,
             "carbs": self.progress_view_model.user_profile.goal_carbs,
@@ -49,7 +49,6 @@ class ProgressScreen(ctk.CTkFrame):
         
         self.scrollable_frame = ctk.CTkFrame(self.canvas)
         self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
-        
         self.scrollable_frame.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
 
         self.populate_ingredient_cards()
@@ -59,10 +58,12 @@ class ProgressScreen(ctk.CTkFrame):
 
 
     def populate_ingredient_cards(self):
-        for i in range(15):
-            ingredient_card = IngredientCard(self.scrollable_frame, i)
-            ingredient_card.grid(row=0, column=i, padx=5, pady=5, sticky="nsew")
-        
+        # Loop through the ingredient data and create cards using the 'id' as a reference
+        for ingredient in self.ingredients_data:
+            ingredient_card = IngredientCard(self.scrollable_frame, ingredient['id'], ingredient)
+            ingredient_card.grid(row=0, column=ingredient['id'], padx=5, pady=5, sticky="nsew")
+
+    
     def update_goals(self):
         print("Update Goals clicked!")
 
