@@ -30,7 +30,7 @@ class ProgressScreen(ctk.CTkFrame):
         self.create_ingredients_frame()
 
         # Selected Ingredients Label
-        self.selectedGoals = ctk.CTkLabel(self, text="Selected Ingredients: None")
+        self.selectedGoals = ctk.CTkLabel(self, text="Selected Ingredients: None\nProtein: 0 g\nCarbohydrate: 0 g\nCalories: 0 g")
         self.selectedGoals.grid(row=3, column=0, padx=10, pady=10)
 
         # Update Goals Button
@@ -109,9 +109,6 @@ class ProgressScreen(ctk.CTkFrame):
         self.selectedGoals.configure(text=selected_ingredients_text)
 
     def format_ingredient_text(self, ingredients):
-        # Format selected ingredients with nutritional values and totals
-        if not ingredients:
-            return "None"
 
         ingredient_names = [ingredient["name"].capitalize() for ingredient in ingredients]
         ingredient_names_text = f"Ingredients selected: {', '.join(ingredient_names)}"
