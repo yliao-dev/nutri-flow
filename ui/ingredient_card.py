@@ -2,13 +2,14 @@ import customtkinter as ctk
 import json
 
 class IngredientCard(ctk.CTkFrame):
-    def __init__(self, parent, index, ingredient_data, width=400, height=500):
+    def __init__(self, parent, index, ingredient_data, update_selected_data_callback, width=400, height=500):
         super().__init__(parent, corner_radius=10, width=width, height=height)
 
         # Ingredient data (loaded from JSON)
         self.ingredient_data = ingredient_data
         self.index = index
-        print(self.index, self.ingredient_data)
+        self.update_selected_data_callback = update_selected_data_callback  # Store the callback function
+
         # Layout of the card (using grid for better control)
         self.grid_rowconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
@@ -32,7 +33,14 @@ class IngredientCard(ctk.CTkFrame):
 
         # Checkbox (Optional)
         self.checkbox = ctk.CTkCheckBox(self, text="")
+        self.checkbox.configure(command=self.on_checkbox_toggle)
         self.checkbox.grid(row=4, column=0, padx=5, pady=(0, 10), sticky="se")
+        
+    def on_checkbox_toggle(self):
+        if self.checkbox.get():  # If checked
+            self.update_selected_data_callback(self.ingredient_data, add=True)
+        else:  # If unchecked
+            self.update_selected_data_callback(self.ingredient_data, add=False)
 
 # Function to load the ingredients data from the JSON file
 def load_ingredient_data():
