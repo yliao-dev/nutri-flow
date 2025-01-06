@@ -9,7 +9,8 @@ class IngredientCard(ctk.CTkFrame):
         self.ingredient_data = ingredient_data
         self.index = index
         self.update_selected_data_callback = update_selected_data_callback  # Store the callback function
-
+        self.selected = False
+        
         # Layout of the card (using grid for better control)
         self.grid_rowconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
@@ -33,15 +34,21 @@ class IngredientCard(ctk.CTkFrame):
 
         # Checkbox (Optional)
         self.checkbox = ctk.CTkCheckBox(self, text="")
-        self.checkbox.configure(command=self.on_checkbox_toggle)
+        self.checkbox.configure(command=self.toggle_select)
         self.checkbox.grid(row=4, column=0, padx=5, pady=(0, 10), sticky="se")
         
-    def on_checkbox_toggle(self):
-        if self.checkbox.get():  # If checked
+    def toggle_select(self):
+        self.selected = not self.selected
+        if self.selected:
             self.update_selected_data_callback(self.ingredient_data, add=True)
-        else:  # If unchecked
+        else:
             self.update_selected_data_callback(self.ingredient_data, add=False)
 
+    def deselect(self):
+        """Deselect the ingredient card."""
+        self.selected = False
+        self.checkbox.deselect()
+        
 # Function to load the ingredients data from the JSON file
 def load_ingredient_data():
     with open('data/ingredients.json', 'r') as file:

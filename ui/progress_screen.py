@@ -67,7 +67,7 @@ class ProgressScreen(ctk.CTkFrame):
         self.populate_ingredient_cards()
 
         # Update Goals Button
-        self.update_button = ctk.CTkButton(self, text="Update Goals", command=self.update_goals)
+        self.update_button = ctk.CTkButton(self, text="Update Goals", command=self.update_goals, state=ctk.DISABLED, fg_color=None)
         self.update_button.grid(row=3, column=1, padx=10, pady=10)
 
     def populate_ingredient_cards(self):
@@ -87,6 +87,11 @@ class ProgressScreen(ctk.CTkFrame):
         # Update the selected ingredients label and nutritional info
         selected_ingredients_text = self.format_ingredient_text(self.selected_ingredients)
         self.selectedGoals.configure(text=selected_ingredients_text)
+        # Enable/Disable the "Update Goals" button
+        if self.selected_ingredients:
+            self.update_button.configure(state=ctk.NORMAL)
+        else:
+            self.update_button.configure(state=ctk.DISABLED)
 
     def format_ingredient_text(self, ingredients):
         # Format selected ingredients with nutritional values and totals
@@ -115,27 +120,14 @@ class ProgressScreen(ctk.CTkFrame):
         return f"{ingredient_names_text}{nutritional_info}"
 
     def update_goals(self):
-        print("Update Goals clicked!")
-        protein_goal = self.user_goals['protein']
-        carbs_goal = self.user_goals['carbs']
-        calories_goal = self.user_goals['calories']
-        
-        # Calculate the total nutritional values for selected ingredients
-        total_protein = sum([ingredient["protein"] for ingredient in self.selected_ingredients])
-        total_carbs = sum([ingredient["carbohydrates"] for ingredient in self.selected_ingredients])
-        total_calories = sum([ingredient["calories"] for ingredient in self.selected_ingredients])
+        self.update_progress_labels()
 
-        # Recalculate nutritional totals based on goals and update displayed totals
-        updated_protein = round(total_protein, 2)
-        updated_carbs = round(total_carbs, 2)
-        updated_calories = round(total_calories, 2)
-
-        # Update the nutritional info text
         selected_ingredients_text = self.format_ingredient_text(self.selected_ingredients)
         self.selectedGoals.configure(text=selected_ingredients_text)
 
-        # Update the goal progress labels
-        self.update_progress_labels()
+        self.reset_selection()
+        print("Update Goals clicked!")
+
 
     def update_progress_labels(self):
         # Recalculate the progress for each goal
@@ -159,3 +151,17 @@ class ProgressScreen(ctk.CTkFrame):
         self.calories_label.configure(
             text=f"Calories Goal: {self.user_goals['calories']} | Consumed: {round(total_calories, 2)} | {round(calories_percentage, 2)}%"
         )
+        
+    def reset_selection(self):
+        # Reset the selected ingredients list
+        self.selected_ingredients = []
+        # Reset ingredient card selections (unselect all cards)
+        for ingredient_card in self.scrollable_frame.winfo_children():
+            if isinstance(ingredient_card, IngredientCard):
+                ingredient_card.deselect()  # Call deselect method for each card
+        # Update the selected ingredients label
+        selected_ingredients_text = self.format_ingredient_text(self.selected_ingredients)
+        self.selectedGoals.configure(text=selected_ingredients_text)
+
+        # Disable the update button
+        self.update_button.configure(state=ctk.DISABLED)
