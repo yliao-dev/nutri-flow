@@ -54,8 +54,14 @@ class ProgressScreen(ctk.CTkFrame):
     def create_nutrition_label(self, goal_name, column):
         frame = ctk.CTkFrame(self)
         frame.grid(row=1, column=column, padx=10, pady=10, sticky="nsew")
-        label = ctk.CTkLabel(frame, text=f"{goal_name.capitalize()} Goal: {self.user_goals[goal_name]}g | Consumed: 0g | 0.0%")
+        
+        label = ctk.CTkLabel(frame, text="")  # Start with empty text
         label.pack(pady=10)
+
+        # Call update_nutrition_label to set the correct initial values
+        goal_value = self.user_goals.get(goal_name, 0)
+        self.update_nutrition_label(label, goal_name, goal_value, {goal_name: 0})  # Initial consumed value is 0
+        
         return label
 
     def create_ingredients_frame(self):
