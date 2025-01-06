@@ -1,5 +1,4 @@
 import customtkinter as ctk
-from model.user_profile import NutritionData
 from ui.ingredient_card import IngredientCard, load_ingredient_data  # Import the IngredientCard class
 
 class ProgressScreen(ctk.CTkFrame):
@@ -7,6 +6,7 @@ class ProgressScreen(ctk.CTkFrame):
         super().__init__(master)
 
         self.progress_view_model = progress_view_model
+        self.nutrition_manager = self.progress_view_model.nutrition_manager  # Use the nutrition_manager from the VM
         self.ingredients_data = load_ingredient_data()  # Ensure this is called early
         self.user_goals = {
             "protein": self.progress_view_model.user_profile.goal_protein,
@@ -87,6 +87,7 @@ class ProgressScreen(ctk.CTkFrame):
         # Update the selected ingredients label and nutritional info
         selected_ingredients_text = self.format_ingredient_text(self.selected_ingredients)
         self.selectedGoals.configure(text=selected_ingredients_text)
+
         # Enable/Disable the "Update Goals" button
         if self.selected_ingredients:
             self.update_button.configure(state=ctk.NORMAL)
@@ -128,28 +129,34 @@ class ProgressScreen(ctk.CTkFrame):
         self.reset_selection()
         print("Update Goals clicked!")
 
-
     def update_progress_labels(self):
-        # Recalculate the progress for each goal
-        total_protein = sum([ingredient["protein"] for ingredient in self.selected_ingredients])
-        total_carbs = sum([ingredient["carbohydrates"] for ingredient in self.selected_ingredients])
-        total_calories = sum([ingredient["calories"] for ingredient in self.selected_ingredients])
+            # Update the nutrition manager with selected ingredients
+        self.nutrition_manager.update_nutrition(self.selected_ingredients)
 
-        protein_percentage = (total_protein / self.user_goals['protein']) * 100 if self.user_goals['protein'] else 0
-        carbs_percentage = (total_carbs / self.user_goals['carbs']) * 100 if self.user_goals['carbs'] else 0
-        calories_percentage = (total_calories / self.user_goals['calories']) * 100 if self.user_goals['calories'] else 0
+        # Retrieve the nutrition data from the manager
+        nutrition_data = self.nutrition_manager.get_nutrition_data()
+
+        # Retrieve user goals
+        protein_goal = self.user_goals.get('protein', 0)
+        carbs_goal = self.user_goals.get('carbs', 0)
+        calories_goal = self.user_goals.get('calories', 0)
+
+        # Calculate the progress percentages
+        protein_percentage = self.nutrition_manager.calculate_percentage(protein_goal, nutrition_data['protein'])
+        carbs_percentage = self.nutrition_manager.calculate_percentage(carbs_goal, nutrition_data['carbs'])
+        calories_percentage = self.nutrition_manager.calculate_percentage(calories_goal, nutrition_data['calories'])
 
         # Update the labels with the recalculated values
         self.protein_label.configure(
-            text=f"Protein Goal: {self.user_goals['protein']}g | Consumed: {round(total_protein, 2)}g | {round(protein_percentage, 2)}%"
+            text=f"Protein Goal: {protein_goal}g | Consumed: {round(nutrition_data['protein'], 2)}g | {round(protein_percentage, 2)}%"
         )
 
         self.carbs_label.configure(
-            text=f"Carbs Goal: {self.user_goals['carbs']}g | Consumed: {round(total_carbs, 2)}g | {round(carbs_percentage, 2)}%"
+            text=f"Carbs Goal: {carbs_goal}g | Consumed: {round(nutrition_data['carbs'], 2)}g | {round(carbs_percentage, 2)}%"
         )
 
         self.calories_label.configure(
-            text=f"Calories Goal: {self.user_goals['calories']} | Consumed: {round(total_calories, 2)} | {round(calories_percentage, 2)}%"
+            text=f"Calories Goal: {calories_goal} | Consumed: {round(nutrition_data['calories'], 2)} | {round(calories_percentage, 2)}%"
         )
         
     def reset_selection(self):

@@ -1,26 +1,24 @@
-from model.user_profile import NutritionData
+from model.nutrition_manager import NutritionManager
 
 class ProgressModel:
     """
     Tracks nutrition data progress and calculates completion percentages.
     """
     def __init__(self, user_profile):
-        self.nutrition_data = NutritionData()
+        self.nutrition_manager = NutritionManager()  # Use NutritionManager to handle data
         self.user_profile = user_profile  # Store the user profile to calculate percentages
 
-    def add_progress(self, data: NutritionData):
+    def add_progress(self, data):
         """
         Adds nutrition data to the current progress (consumed data).
         """
-        self.nutrition_data.calories += data.calories
-        self.nutrition_data.protein += data.protein
-        self.nutrition_data.carbohydrates += data.carbohydrates
+        self.nutrition_manager.add_nutrition(data)
 
     def get_progress(self):
         """
-        Returns the current nutrition data.
+        Returns the current nutrition data stored in the NutritionManager.
         """
-        return self.nutrition_data
+        return self.nutrition_manager.get_nutrition_data()
 
     def calculate_percentage(self):
         """
@@ -28,9 +26,9 @@ class ProgressModel:
         Returns a dictionary with the percentage of calories, protein, and carbohydrates.
         """
         percentage = {
-            "calories": self._calculate_single_percentage(self.nutrition_data.calories, self.user_profile.goal_calories),
-            "protein": self._calculate_single_percentage(self.nutrition_data.protein, self.user_profile.goal_protein),
-            "carbohydrates": self._calculate_single_percentage(self.nutrition_data.carbohydrates, self.user_profile.goal_carbs)
+            "calories": self._calculate_single_percentage(self.nutrition_manager.get_nutrition_data().calories, self.user_profile.goal_calories),
+            "protein": self._calculate_single_percentage(self.nutrition_manager.get_nutrition_data().protein, self.user_profile.goal_protein),
+            "carbohydrates": self._calculate_single_percentage(self.nutrition_manager.get_nutrition_data().carbohydrates, self.user_profile.goal_carbs)
         }
         return percentage
 

@@ -1,5 +1,6 @@
 import customtkinter as ctk
 import json
+from model.nutrition_manager import NutritionManager
 
 class IngredientCard(ctk.CTkFrame):
     def __init__(self, parent, index, ingredient_data, update_selected_data_callback, width=400, height=500):
@@ -40,15 +41,18 @@ class IngredientCard(ctk.CTkFrame):
     def toggle_select(self):
         self.selected = not self.selected
         if self.selected:
+            # Add ingredient to the selection using the callback
             self.update_selected_data_callback(self.ingredient_data, add=True)
         else:
+            # Remove ingredient from the selection using the callback
             self.update_selected_data_callback(self.ingredient_data, add=False)
 
     def deselect(self):
         """Deselect the ingredient card."""
         self.selected = False
         self.checkbox.deselect()
-        
+
+
 # Function to load the ingredients data from the JSON file
 def load_ingredient_data():
     with open('data/ingredients.json', 'r') as file:
