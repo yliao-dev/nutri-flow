@@ -10,7 +10,7 @@ class ProgressScreen(ctk.CTkFrame):
         self.ingredients_data = load_ingredient_data()  # Ensure this is called early
         self.user_goals = {
             "protein": self.progress_view_model.user_profile.goal_protein,
-            "carbs": self.progress_view_model.user_profile.goal_carbs,
+            "carbohydrate": self.progress_view_model.user_profile.goal_carbs,
             "calories": self.progress_view_model.user_profile.goal_calories
         }
 
@@ -31,10 +31,10 @@ class ProgressScreen(ctk.CTkFrame):
         self.protein_label = ctk.CTkLabel(self.protein_frame, text=f"Protein Goal: {self.user_goals['protein']}g | Consumed: 0g | 0.0%")
         self.protein_label.pack(pady=10)
 
-        # Carbs Frame
+        # Carbohydrate Frame
         self.carbs_frame = ctk.CTkFrame(self)
         self.carbs_frame.grid(row=1, column=1, padx=10, pady=10, sticky="nsew")
-        self.carbs_label = ctk.CTkLabel(self.carbs_frame, text=f"Carbs Goal: {self.user_goals['carbs']}g | Consumed: 0g | 0.0%")
+        self.carbs_label = ctk.CTkLabel(self.carbs_frame, text=f"Carbohydrate Goal: {self.user_goals['carbohydrate']}g | Consumed: 0g | 0.0%")
         self.carbs_label.pack(pady=10)
 
         # Calories Frame
@@ -102,20 +102,15 @@ class ProgressScreen(ctk.CTkFrame):
         ingredient_names = [ingredient["name"].capitalize() for ingredient in ingredients]
         ingredient_names_text = f"Ingredients selected: {', '.join(ingredient_names)}"
 
-        total_protein = sum([ingredient["protein"] for ingredient in ingredients])
-        total_carbs = sum([ingredient["carbohydrates"] for ingredient in ingredients])
-        total_calories = sum([ingredient["calories"] for ingredient in ingredients])
-
-        # Formatting values with 2 decimal precision
-        formatted_protein = round(total_protein, 2)
-        formatted_carbs = round(total_carbs, 2)
-        formatted_calories = round(total_calories, 2)
+        total_protein = round(sum([ingredient["protein"] for ingredient in ingredients]), 2)
+        total_carbs = round(sum([ingredient["carbohydrates"] for ingredient in ingredients]), 2)
+        total_calories = round(sum([ingredient["calories"] for ingredient in ingredients]), 2)
 
         # Building the nutritional data display
         nutritional_info = (
-            f"\nProtein: {formatted_protein} g\n"
-            f"Carbs: {formatted_carbs} g\n"
-            f"Calories: {formatted_calories} g"
+            f"\nProtein: {total_protein} g\n"
+            f"Carbohydrate: {total_carbs} g\n"
+            f"Calories: {total_calories} g"
         )
 
         return f"{ingredient_names_text}{nutritional_info}"
@@ -138,12 +133,12 @@ class ProgressScreen(ctk.CTkFrame):
 
         # Retrieve user goals
         protein_goal = self.user_goals.get('protein', 0)
-        carbs_goal = self.user_goals.get('carbs', 0)
+        carbs_goal = self.user_goals.get('carbohydrate', 0)
         calories_goal = self.user_goals.get('calories', 0)
 
         # Calculate the progress percentages
         protein_percentage = self.nutrition_manager.calculate_percentage(protein_goal, nutrition_data['protein'])
-        carbs_percentage = self.nutrition_manager.calculate_percentage(carbs_goal, nutrition_data['carbs'])
+        carbs_percentage = self.nutrition_manager.calculate_percentage(carbs_goal, nutrition_data['carbohydrate'])
         calories_percentage = self.nutrition_manager.calculate_percentage(calories_goal, nutrition_data['calories'])
 
         # Update the labels with the recalculated values
@@ -152,7 +147,7 @@ class ProgressScreen(ctk.CTkFrame):
         )
 
         self.carbs_label.configure(
-            text=f"Carbs Goal: {carbs_goal}g | Consumed: {round(nutrition_data['carbs'], 2)}g | {round(carbs_percentage, 2)}%"
+            text=f"Carbohydrate Goal: {carbs_goal}g | Consumed: {round(nutrition_data['carbohydrate'], 2)}g | {round(carbs_percentage, 2)}%"
         )
 
         self.calories_label.configure(
