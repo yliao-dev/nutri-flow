@@ -1,0 +1,45 @@
+# Virtual environment
+myenv/
+myenv/*
+
+# Bytecode files
+__pycache__/
+*.py[cod]
+
+# IDE/editor specific files
+.vscode/
+.idea/
+*.swp
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+
+# Python distribution packages
+*.egg
+*.egg-info/
+dist/
+build/
+*.tar.gz
+
+# Configuration files
+*.cfg
+*.ini
+*.json
+*.yml
+*.yaml
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Other
+*.pyo
+
+# Ignore specific files in app.py (if there's a config or secrets)
+config.json
+secrets.json
