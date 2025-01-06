@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from ui.progress_screen import ProgressScreen
 from ui.ingredient_screen import IngredientScreen
-from viewmodel.progress_viewmodal import ProgressViewModel
+from viewmodel.progress_viewmodel import ProgressViewModel
 from model.user_profile import UserProfile
 from model.progress_model import ProgressModel  # Correct import
 

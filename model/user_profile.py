@@ -7,16 +7,3 @@ class UserProfile:
         self.goal_protein = goal_protein
         self.goal_carbs = goal_carbs
         self.goal_calories = goal_calories
-
-
-class NutritionData:
-    """
-    Represents a structured nutrition data set.
-    """
-    def __init__(self, calories=0, protein=0, carbohydrates=0):
-        self.calories = calories
-        self.protein = protein
-        self.carbohydrates = carbohydrates
-        
-    def __str__(self):
-        return f"Calories: {self.calories}, Carbs: {self.carbohydrates}g, Protein: {self.protein}g"
