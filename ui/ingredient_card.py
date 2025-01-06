@@ -2,7 +2,7 @@ import customtkinter as ctk
 import json
 
 class IngredientCard(ctk.CTkFrame):
-    def __init__(self, parent, index, ingredient_data, width=200, height=250):
+    def __init__(self, parent, index, ingredient_data, width=400, height=500):
         super().__init__(parent, corner_radius=10, width=width, height=height)
 
         # Ingredient data (loaded from JSON)

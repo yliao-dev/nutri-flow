@@ -17,3 +17,6 @@ class NutritionData:
         self.calories = calories
         self.protein = protein
         self.carbohydrates = carbohydrates
+        
+    def __str__(self):
+        return f"Calories: {self.calories}, Carbs: {self.carbohydrates}g, Protein: {self.protein}g"

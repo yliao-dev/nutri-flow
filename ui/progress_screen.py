@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from model.user_profile import NutritionData
 from ui.ingredient_card import IngredientCard, load_ingredient_data  # Import the IngredientCard class
 
 class ProgressScreen(ctk.CTkFrame):
@@ -16,26 +17,32 @@ class ProgressScreen(ctk.CTkFrame):
         self.label = ctk.CTkLabel(self, text="Nutrition Progress", font=("Arial", 20, "bold"))
         self.label.grid(row=0, column=0, columnspan=3, pady=10)
 
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_columnconfigure(1, weight=1)
-        self.grid_columnconfigure(2, weight=1)
+        # Configure grid weights for columns
+        self.grid_columnconfigure(0, weight=4)  # 80% of the row width for the selectedGoals label
+        self.grid_columnconfigure(1, weight=1)  # 20% of the row width for the button
+
+        # Configure row
         self.grid_rowconfigure(1, weight=1)
 
+        # Protein Frame
         self.protein_frame = ctk.CTkFrame(self)
         self.protein_frame.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
         self.protein_label = ctk.CTkLabel(self.protein_frame, text=f"Protein Goal: {self.user_goals['protein']}g | Consumed: 0g | 0.0%")
         self.protein_label.pack(pady=10)
 
+        # Carbs Frame
         self.carbs_frame = ctk.CTkFrame(self)
         self.carbs_frame.grid(row=1, column=1, padx=10, pady=10, sticky="nsew")
         self.carbs_label = ctk.CTkLabel(self.carbs_frame, text=f"Carbs Goal: {self.user_goals['carbs']}g | Consumed: 0g | 0.0%")
         self.carbs_label.pack(pady=10)
 
+        # Calories Frame
         self.calories_frame = ctk.CTkFrame(self)
         self.calories_frame.grid(row=1, column=2, padx=10, pady=10, sticky="nsew")
         self.calories_label = ctk.CTkLabel(self.calories_frame, text=f"Calories Goal: {self.user_goals['calories']} | Consumed: 0 | 0.0%")
         self.calories_label.pack(pady=10)
 
+        # Ingredients Frame with Scrollable Content
         self.ingredients_frame = ctk.CTkFrame(self)
         self.ingredients_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
         
@@ -53,9 +60,14 @@ class ProgressScreen(ctk.CTkFrame):
 
         self.populate_ingredient_cards()
 
-        self.update_button = ctk.CTkButton(self, text="Update Goals", command=self.update_goals)
-        self.update_button.grid(row=3, column=0, columnspan=3, pady=20)
+        # Selected Goals Label (Takes 80% of the row)
+        selectData = NutritionData(calories=100, carbohydrates=20, protein=10)
+        self.selectedGoals = ctk.CTkLabel(self, text=str(selectData))
+        self.selectedGoals.grid(row=3, column=0, padx=10, pady=10)
 
+        # Update Button (Aligned to the right corner of the row)
+        self.update_button = ctk.CTkButton(self, text="Update Goals", command=self.update_goals)
+        self.update_button.grid(row=3, column=1, padx=10, pady=10)
 
     def populate_ingredient_cards(self):
         # Loop through the ingredient data and create cards using the 'id' as a reference
@@ -63,16 +75,13 @@ class ProgressScreen(ctk.CTkFrame):
             ingredient_card = IngredientCard(self.scrollable_frame, ingredient['id'], ingredient)
             ingredient_card.grid(row=0, column=ingredient['id'], padx=5, pady=5, sticky="nsew")
 
-    
     def update_goals(self):
         print("Update Goals clicked!")
-
         protein = 20  # Example value
         carbs = 30
         calories = 150
         
         self.progress_view_model.increment_values(protein, carbs, calories)
-
         self.update_progress_labels()
 
     def update_progress_labels(self):
