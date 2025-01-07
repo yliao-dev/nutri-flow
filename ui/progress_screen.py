@@ -1,7 +1,6 @@
 import customtkinter as ctk
-from ui.progress_frame import ProgressFrame  # Import the ProgressFrame class
+from ui.progress_frame import ProgressFrame
 from ui.ingredient_card import IngredientCard, load_ingredient_data
-
 
 class ProgressScreen(ctk.CTkFrame):
     def __init__(self, master, progress_view_model):
@@ -19,47 +18,37 @@ class ProgressScreen(ctk.CTkFrame):
         self.initialize_ui()
 
     def initialize_ui(self):
-        # Title label
         self.label = ctk.CTkLabel(self, text="Nutrition Progress", font=("Arial", 20, "bold"))
         self.label.grid(row=0, column=0, columnspan=3, pady=10)
 
         self.configure_grid()
-
-        # Create nutrition progress frames
         self.create_progress_frames()
-
-        # Ingredients and selected items UI
         self.create_ingredients_frame()
 
-        # Labels for selected ingredients
         self.selected_ingredients_label = ctk.CTkLabel(self, text="Selected Ingredients:", font=("Arial", 12))
         self.selected_ingredients_label.grid(row=3, column=0, padx=10, pady=5, sticky="w")
 
         self.selected_nutrition_label = ctk.CTkLabel(self, text="Protein: 0g, Carbs: 0g, Calories: 0g", font=("Arial", 10))
         self.selected_nutrition_label.grid(row=4, column=0, padx=10, pady=5, sticky="w")
 
-        # Button to update goals
         self.update_button = ctk.CTkButton(self, text="Update Goals", command=self.update_goals, state=ctk.DISABLED)
         self.update_button.grid(row=3, column=1, padx=10, pady=10)
 
-        # Populate ingredient cards
         self.populate_ingredient_cards()
 
     def configure_grid(self):
-        # Equal column weights for progress bars
         for column in range(3):
             self.grid_columnconfigure(column, weight=1, uniform="nutrition")
         self.grid_rowconfigure(1, weight=3, minsize=100)
         self.grid_rowconfigure(2, weight=2)
 
     def create_progress_frames(self):
-        # Create instances of ProgressFrame for protein, carbs, and calories
         self.protein_frame = ProgressFrame(
             master=self,
             goal_name="protein",
             goal_value=self.user_goals["protein"],
             consumed_value=self.nutrition_manager.get_nutrition_data().get("protein", 0),
-            update_callback=self.update_nutrition_label
+            update_callback=ProgressFrame.update_nutrition_label
         )
         self.protein_frame.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
 
@@ -68,7 +57,7 @@ class ProgressScreen(ctk.CTkFrame):
             goal_name="carbohydrate",
             goal_value=self.user_goals["carbohydrate"],
             consumed_value=self.nutrition_manager.get_nutrition_data().get("carbohydrate", 0),
-            update_callback=self.update_nutrition_label
+            update_callback=ProgressFrame.update_nutrition_label
         )
         self.carbs_frame.grid(row=1, column=1, padx=10, pady=10, sticky="nsew")
 
@@ -77,7 +66,7 @@ class ProgressScreen(ctk.CTkFrame):
             goal_name="calories",
             goal_value=self.user_goals["calories"],
             consumed_value=self.nutrition_manager.get_nutrition_data().get("calories", 0),
-            update_callback=self.update_nutrition_label
+            update_callback=ProgressFrame.update_nutrition_label
         )
         self.calories_frame.grid(row=1, column=2, padx=10, pady=10, sticky="nsew")
 
@@ -128,33 +117,11 @@ class ProgressScreen(ctk.CTkFrame):
         return f"Protein: {total_protein}g, Carbs: {total_carbs}g, Calories: {total_calories}g"
 
     def update_goals(self):
-        self.update_progress_labels()
+        self.protein_frame.update_progress_labels(self.nutrition_manager, self.selected_ingredients)
+        self.carbs_frame.update_progress_labels(self.nutrition_manager, self.selected_ingredients)
+        self.calories_frame.update_progress_labels(self.nutrition_manager, self.selected_ingredients)
         self.update_selected_ingredients_label()
         self.reset_selection()
-
-    def update_progress_labels(self):
-        self.nutrition_manager.update_nutrition(self.selected_ingredients)
-        nutrition_data = self.nutrition_manager.get_nutrition_data()
-
-        self.protein_frame.update(nutrition_data)
-        self.carbs_frame.update(nutrition_data)
-        self.calories_frame.update(nutrition_data)
-
-    def update_nutrition_label(self, label, meter, goal_name, goal_value, nutrition_data):
-        consumed_value = round(nutrition_data.get(goal_name, 0), 2)
-        percentage = self.nutrition_manager.calculate_percentage(goal_value, consumed_value)
-
-        label.configure(
-            text=(
-                f"{goal_name.capitalize()} Goal: {goal_value}g\n"
-                f"Consumed: {consumed_value}g | {round(percentage, 2)}%"
-            )
-        )
-
-        meter.configure(
-            amountused=consumed_value,
-            subtext=f"{round(percentage, 2)}% | {consumed_value}g"
-        )
 
     def reset_selection(self):
         self.selected_ingredients = []
