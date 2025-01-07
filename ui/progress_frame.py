@@ -1,6 +1,5 @@
 import customtkinter as ctk
 from ttkbootstrap.widgets import Meter
-import time
 
 
 class ProgressFrame(ctk.CTkFrame):
