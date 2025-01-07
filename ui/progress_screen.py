@@ -41,9 +41,10 @@ class ProgressScreen(ctk.CTkFrame):
         self.populate_ingredient_cards()
 
     def configure_grid(self):
-        self.grid_columnconfigure(0, weight=4)
-        self.grid_columnconfigure(1, weight=1)
-        self.grid_rowconfigure(1, weight=1)
+            # Set equal weights for the 3 user goal columns
+        for column in range(3):
+            self.grid_columnconfigure(column, weight=1, uniform="nutrition")
+        self.grid_rowconfigure(1, weight=3, minsize=100) 
         self.grid_rowconfigure(2, weight=2)
 
     def create_nutrition_frames(self):
@@ -55,12 +56,12 @@ class ProgressScreen(ctk.CTkFrame):
         frame = ctk.CTkFrame(self)
         frame.grid(row=1, column=column, padx=10, pady=10, sticky="nsew")
         
-        label = ctk.CTkLabel(frame, text="")  # Start with empty text
+        label = ctk.CTkLabel(frame, text="")
         label.pack(pady=10)
 
         # Call update_nutrition_label to set the correct initial values
         goal_value = self.user_goals.get(goal_name, 0)
-        self.update_nutrition_label(label, goal_name, goal_value, {goal_name: 0})  # Initial consumed value is 0
+        self.update_nutrition_label(label, goal_name, goal_value, {goal_name: 0})
         
         return label
 

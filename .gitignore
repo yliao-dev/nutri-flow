@@ -3,7 +3,7 @@ myenv/
 myenv/*
 
 # Bytecode files
-__pycache__/
+**/__pycache__/
 *.py[cod]
 
 # IDE/editor specific files
