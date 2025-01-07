@@ -5,7 +5,7 @@ import time
 
 class ProgressFrame(ctk.CTkFrame):
     def __init__(self, master, goal_name, goal_value, consumed_value, update_callback):
-        super().__init__(master, fg_color="transparent")  # Ensure transparent background for the frame
+        super().__init__(master)  # Ensure transparent background for the frame
 
         self.goal_name = goal_name
         self.goal_value = goal_value
@@ -15,14 +15,10 @@ class ProgressFrame(ctk.CTkFrame):
         self.initialize_ui()
 
     def initialize_ui(self):
-        # Label for nutrition goal (make sure the label background is transparent)
-        self.label = ctk.CTkLabel(self, text="", fg_color="transparent")  # Set transparent background
+        self.label = ctk.CTkLabel(self, text="") 
         self.label.pack(pady=5)
 
-        # Create the circular progress bar
         self.progress_bar = self.create_circular_progress_bar()
-
-        # Update the label and progress bar
         self.update_nutrition_label(self.label, self.progress_bar, self.goal_name, self.goal_value, {self.goal_name: self.consumed_value})
 
     def create_circular_progress_bar(self):
