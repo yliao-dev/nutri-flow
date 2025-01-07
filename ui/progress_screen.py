@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from ttkbootstrap.widgets import Meter
 from ui.ingredient_card import IngredientCard, load_ingredient_data
 
 class ProgressScreen(ctk.CTkFrame):
@@ -57,13 +58,25 @@ class ProgressScreen(ctk.CTkFrame):
         frame.grid(row=1, column=column, padx=10, pady=10, sticky="nsew")
         
         label = ctk.CTkLabel(frame, text="")
-        label.pack(pady=10)
+        label.pack(pady=5)
 
-        # Call update_nutrition_label to set the correct initial values
+        # Circular progress bar
         goal_value = self.user_goals.get(goal_name, 0)
-        self.update_nutrition_label(label, goal_name, goal_value, {goal_name: 0})
-        
-        return label
+        meter = Meter(
+            master=frame,
+            amountused=0,  # Start at 0
+            amounttotal=goal_value,  # Set total based on user goal
+            metersize=150,  # Fixed size
+            bootstyle="info",
+            subtext=f"0% | 0g",  # Initial text
+            interactive=False,  # Static progress bar
+        )
+        meter.pack(pady=10)
+
+        # Set initial values for the label and meter
+        self.update_nutrition_label(label, meter, goal_name, goal_value, {goal_name: 0})
+
+        return {"label": label, "meter": meter}
 
     def create_ingredients_frame(self):
         self.ingredients_frame = ctk.CTkFrame(self)
@@ -125,11 +138,12 @@ class ProgressScreen(ctk.CTkFrame):
         carbs_goal = self.user_goals.get('carbohydrate', 0)
         calories_goal = self.user_goals.get('calories', 0)
 
-        self.update_nutrition_label(self.protein_label, 'protein', protein_goal, nutrition_data)
-        self.update_nutrition_label(self.carbs_label, 'carbohydrate', carbs_goal, nutrition_data)
-        self.update_nutrition_label(self.calories_label, 'calories', calories_goal, nutrition_data)
+        # Update both label and meter
+        self.update_nutrition_label(self.protein_label['label'], self.protein_label['meter'], 'protein', protein_goal, nutrition_data)
+        self.update_nutrition_label(self.carbs_label['label'], self.carbs_label['meter'], 'carbohydrate', carbs_goal, nutrition_data)
+        self.update_nutrition_label(self.calories_label['label'], self.calories_label['meter'], 'calories', calories_goal, nutrition_data)
 
-    def update_nutrition_label(self, label, goal_name, goal_value, nutrition_data):
+    def update_nutrition_label(self, label, meter, goal_name, goal_value, nutrition_data):
         consumed_value = round(nutrition_data[goal_name], 2)
         percentage = self.nutrition_manager.calculate_percentage(goal_value, consumed_value)
         label.configure(
@@ -137,6 +151,11 @@ class ProgressScreen(ctk.CTkFrame):
                 f"{goal_name.capitalize()} Goal: {goal_value}g\n"
                 f"Consumed: {consumed_value}g | {round(percentage, 2)}%"
             )
+        )
+         # Update progress bar
+        meter.configure(
+            amountused=consumed_value,
+            subtext=f"{round(percentage, 2)}% | {consumed_value}g"
         )
 
     def reset_selection(self):
