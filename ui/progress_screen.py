@@ -53,30 +53,49 @@ class ProgressScreen(ctk.CTkFrame):
         self.carbs_label = self.create_nutrition_label("carbohydrate", 1)
         self.calories_label = self.create_nutrition_label("calories", 2)
 
+
     def create_nutrition_label(self, goal_name, column):
-        frame = ctk.CTkFrame(self)
+        frame = ctk.CTkFrame(self, fg_color="transparent")
         frame.grid(row=1, column=column, padx=10, pady=10, sticky="nsew")
         
+        # Create label for nutrition goal
         label = ctk.CTkLabel(frame, text="")
         label.pack(pady=5)
 
-        # Circular progress bar
+        # Fetch goal and consumed values
         goal_value = self.user_goals.get(goal_name, 0)
-        meter = Meter(
+        consumed_value = self.nutrition_manager.get_nutrition_data().get(goal_name, 0)
+
+        # Create the circular progress bar
+        progress_bar = self.create_circular_progress_bar(frame, goal_name, goal_value, consumed_value)
+
+        # Update the label and progress bar
+        self.update_nutrition_label(label, progress_bar, goal_name, goal_value, self.nutrition_manager.get_nutrition_data())
+
+        # Return both the label and the progress bar
+        return {"label": label, "meter": progress_bar}
+
+
+    def create_circular_progress_bar(self, frame, goal_name, goal_value, consumed_value):
+        # Calculate percentage
+        percentage = self.nutrition_manager.calculate_percentage(goal_value, consumed_value)
+
+        # Create and style the circular progress bar
+        progress_bar = Meter(
             master=frame,
-            amountused=0,  # Start at 0
-            amounttotal=goal_value,  # Set total based on user goal
-            metersize=150,  # Fixed size
-            bootstyle="info",
-            subtext=f"0% | 0g",  # Initial text
-            interactive=False,  # Static progress bar
+            amountused=consumed_value,  # Current progress
+            amounttotal=goal_value,    # Goal value
+            metersize=120,            # Diameter of the circle
+            bootstyle="success" if goal_name == "protein" else 
+                    "warning" if goal_name == "carbohydrate" else "danger",  # Colors for different nutrients
+            interactive=False,        # Non-interactive
+            subtext=f"{round(percentage, 1)}%",  # Display only percentage
+            textfont=("Arial", 12, "bold"),  # Font for subtext
+            textright=False,          # Disable extra text like "x/y"
+            padding=10,               # Add padding for cleaner look
         )
-        meter.pack(pady=10)
-
-        # Set initial values for the label and meter
-        self.update_nutrition_label(label, meter, goal_name, goal_value, {goal_name: 0})
-
-        return {"label": label, "meter": meter}
+        progress_bar.pack(expand=True, padx=5, pady=5)
+        return progress_bar
 
     def create_ingredients_frame(self):
         self.ingredients_frame = ctk.CTkFrame(self)
