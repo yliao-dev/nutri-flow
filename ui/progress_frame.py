@@ -1,5 +1,7 @@
 import customtkinter as ctk
 from ttkbootstrap.widgets import Meter
+import time
+
 
 class ProgressFrame(ctk.CTkFrame):
     def __init__(self, master, goal_name, goal_value, consumed_value, update_callback):
@@ -46,9 +48,10 @@ class ProgressFrame(ctk.CTkFrame):
             bootstyle=bootstyle,    # Use predefined styles
             interactive=False,      
             subtext="COMPLETED",  # Display percentage in the center
-            textfont=("Arial", 12, "bold"),  # Font for subtext
+            textfont=("Arial", 15, "bold"),  # Font for subtext
             textright="%",           # Remove extra text like "x/y"
-            padding=10, 
+            stripethickness=5,
+            
         )
 
         progress_bar.pack(expand=True, padx=5, pady=5)
@@ -81,3 +84,4 @@ class ProgressFrame(ctk.CTkFrame):
         nutrition_data = nutrition_manager.get_nutrition_data()
 
         self.update(nutrition_data)
+        
