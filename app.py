@@ -16,7 +16,7 @@ class App(ctk.CTk):
         super().__init__()
 
         self.title("NutriFlow")
-        self.geometry(f"{1100}x{580}")
+        self.geometry(f"{1100}x{700}")
 
         # Configure grid layout (2 columns: TabView + Screen)
         self.grid_columnconfigure(0, weight=0)  # Fixed width for TabView
