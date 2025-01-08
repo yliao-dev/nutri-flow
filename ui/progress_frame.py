@@ -73,10 +73,5 @@ class ProgressFrame(ctk.CTkFrame):
         progress_bar.configure(
             amountused=round(percentage, 2),  # Set the amount used as percentage
         )
-        
-    def update_progress_labels(self, nutrition_manager, selected_ingredients):
-        nutrition_manager.update_nutrition(selected_ingredients)
-        nutrition_data = nutrition_manager.get_nutrition_data()
-
-        self.update(nutrition_data)
+    
         

@@ -26,6 +26,7 @@ class NutritionManager:
         Returns the current nutrition data.
         :return: A dictionary containing 'protein', 'carbohydrate', and 'calories'.
         """
+        # print(self.nutrition_data)
         return self.nutrition_data
 
     def calculate_percentage(self, goal, current_value):

@@ -117,9 +117,13 @@ class ProgressScreen(ctk.CTkFrame):
         return f"Protein: {total_protein}g, Carbs: {total_carbs}g, Calories: {total_calories}g"
 
     def update_goals(self):
-        self.protein_frame.update_progress_labels(self.nutrition_manager, self.selected_ingredients)
-        self.carbs_frame.update_progress_labels(self.nutrition_manager, self.selected_ingredients)
-        self.calories_frame.update_progress_labels(self.nutrition_manager, self.selected_ingredients)
+        self.nutrition_manager.update_nutrition(self.selected_ingredients)
+        nutrition_data = self.nutrition_manager.get_nutrition_data()
+        # Update all progress frames with the same nutrition data
+        self.protein_frame.update(nutrition_data)
+        self.carbs_frame.update(nutrition_data)
+        self.calories_frame.update(nutrition_data)
+        
         self.update_selected_ingredients_label()
         self.reset_selection()
 
