@@ -15,6 +15,7 @@ class ProgressScreen(ctk.CTkFrame):
             "calories": self.progress_view_model.user_profile.goal_calories
         }
 
+        self.progress_frames = {}  # Dictionary to store the progress frames
         self.initialize_ui()
 
     def initialize_ui(self):
@@ -39,33 +40,29 @@ class ProgressScreen(ctk.CTkFrame):
     def configure_grid(self):
         for column in range(3):
             self.grid_columnconfigure(column, weight=1, uniform="nutrition")
-        self.grid_rowconfigure(1, weight=3, minsize=100)
+        self.grid_rowconfigure(1, weight=3, minsize=150)  # Adjusted minsize for better display
         self.grid_rowconfigure(2, weight=2)
 
     def create_progress_frames(self):
-    # List of goal names and their corresponding columns
         goal_names = ["protein", "carbohydrate", "calories"]
-        # Create a dictionary with all nutrient values for consumed and goal
         consumed_values = self.nutrition_manager.get_nutrition_data()
-        goal_values = self.user_goals  # Assumed to be a dictionary with goal values for all nutrients
+        goal_values = self.user_goals
         
         for index, goal_name in enumerate(goal_names):
-            self.create_single_progress_frame(goal_name, index, consumed_values, goal_values)
+            self.progress_frames[goal_name] = self.create_single_progress_frame(goal_name, index, consumed_values, goal_values)
 
     def create_single_progress_frame(self, goal_name, column_index, consumed_values, goal_values):
         """Helper method to create a single progress frame."""
-        # Create the progress frame for this nutrient
         progress_frame = ProgressFrame(
             master=self,
             goal_name=goal_name,
-            goal_values=goal_values,  # Pass entire goal_values dictionary
-            consumed_value=consumed_values,  # Pass entire consumed_values dictionary
+            goal_values=goal_values,
+            consumed_value=consumed_values,
             update_callback=ProgressFrame.update_nutrition_label
         )
-        # Grid layout for the progress frame
         progress_frame.grid(row=1, column=column_index, padx=10, pady=10, sticky="nsew")
-    
-    
+        return progress_frame  # Return the progress frame to store it
+
     def create_ingredients_frame(self):
         self.ingredients_frame = ctk.CTkFrame(self)
         self.ingredients_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
@@ -115,11 +112,11 @@ class ProgressScreen(ctk.CTkFrame):
     def update_goals(self):
         self.nutrition_manager.update_nutrition(self.selected_ingredients)
         nutrition_data = self.nutrition_manager.get_nutrition_data()
-        # Update all progress frames with the same nutrition data
-        self.protein_frame.update(nutrition_data)
-        self.carbs_frame.update(nutrition_data)
-        self.calories_frame.update(nutrition_data)
-        
+
+        # Update each progress frame with the new data
+        for goal_name, progress_frame in self.progress_frames.items():
+            progress_frame.update(nutrition_data)
+
         self.update_selected_ingredients_label()
         self.reset_selection()
 
