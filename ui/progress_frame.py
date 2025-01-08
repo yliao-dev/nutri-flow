@@ -23,51 +23,48 @@ class ProgressFrame(ctk.CTkFrame):
         self.label = ctk.CTkLabel(self, text="")
         self.label.pack(pady=5)
         
-        # Create circular progress bars for each nutrient
-        self.progress_bars = self.create_circular_progress_bars()
+        # Create a single circular progress bar for the goal nutrient
+        self.progress_bar = self.create_circular_progress_bar(self.goal_name)  # Pass the goal_name here
         
         # Update nutrition labels
-        self.update_nutrition_label(self.label, self.progress_bars)
+        self.update_nutrition_label(self.label, self.progress_bar)
 
-    def create_circular_progress_bars(self):
-        """Create and return 3 circular progress bars for protein, carbs, and calories."""
-        progress_bars = {}
-        nutrients = ["protein", "carbohydrate", "calories"]
-        colors = [self.PROTEIN_COLOR, self.CARBOHYDRATE_COLOR, self.CALORIES_COLOR]
-        print(self.consumed_value)
-        for nutrient, color in zip(nutrients, colors):
-            # Calculate the progress percentage for each nutrient
-            progress = (self.consumed_value[nutrient] / self.goal_values[nutrient]) * 100
-            progress_bars[nutrient] = CircularProgressBar(
-                master=self,
-                size=150,
-                progress=progress,
-                thickness=3,
-                color=color,
-                bg_color="transparent",
-                text_color="white"
-            )
-            progress_bars[nutrient].pack(side="left", padx=10)
-
-        return progress_bars
+    def create_circular_progress_bar(self, nutrient):
+        """Create and return a single circular progress bar for the specified nutrient."""
+        colors = {
+            "protein": self.PROTEIN_COLOR,
+            "carbohydrate": self.CARBOHYDRATE_COLOR,
+            "calories": self.CALORIES_COLOR
+        }
+        
+        # Calculate the progress percentage for the specified nutrient
+        progress = (self.consumed_value.get(nutrient, 0) / self.goal_values.get(nutrient, 1)) * 100
+        
+        return CircularProgressBar(
+            master=self,
+            size=150,
+            progress=progress,
+            thickness=3,
+            color=colors.get(nutrient, "#000000"),  # Default to black if nutrient not found
+            bg_color="transparent",
+            text_color="white"
+        )
 
     def update(self, nutrition_data):
-        """Update the progress bars and labels based on new data."""
+        """Update the progress bar and labels based on new data."""
         self.consumed_value.update(nutrition_data)
-        self.update_nutrition_label(self.label, self.progress_bars)
+        self.update_nutrition_label(self.label, self.progress_bar)
 
-    def update_nutrition_label(self, label, progress_bars):
-        """Update the nutrition label and progress bars."""
-        label_text = ""
-        for nutrient in self.consumed_value:
-            consumed_value = round(self.consumed_value[nutrient], 2)
-            goal_value = self.goal_values.get(nutrient, 0)
-            percentage = min(100, (consumed_value / goal_value) * 100 if goal_value > 0 else 0)
-            
-            label_text += f"{nutrient.capitalize()} Goal: {goal_value}g\n"
-            label_text += f"Consumed: {consumed_value}g | {round(percentage, 2)}%\n\n"
-            
-            # Update each progress bar
-            progress_bars[nutrient].update_progress(round(percentage, 2))
-
+    def update_nutrition_label(self, label, progress_bar):
+        """Update the nutrition label and progress bar."""
+        consumed_value = round(self.consumed_value.get(self.goal_name, 0), 2)
+        goal_value = self.goal_values.get(self.goal_name, 0)
+        percentage = min(100, (consumed_value / goal_value) * 100 if goal_value > 0 else 0)
+        
+        label_text = f"{self.goal_name.capitalize()} Goal: {goal_value}g\n"
+        label_text += f"Consumed: {consumed_value}g | {round(percentage, 2)}%\n"
+        
+        # Update the progress bar
+        progress_bar.update_progress(round(percentage, 2))
+        
         label.configure(text=label_text)

@@ -54,21 +54,18 @@ class ProgressScreen(ctk.CTkFrame):
 
     def create_single_progress_frame(self, goal_name, column_index, consumed_values, goal_values):
         """Helper method to create a single progress frame."""
-        # Get the goal value for this nutrient
-        goal_value = goal_values.get(goal_name, 0)  # Default to 0 if not found
-        # Get the consumed value for this nutrient
-        consumed_value = consumed_values.get(goal_name, 0)  # Default to 0 if not found
-
         # Create the progress frame for this nutrient
         progress_frame = ProgressFrame(
             master=self,
             goal_name=goal_name,
-            goal_values=goal_value,  # Pass entire goal_values dictionary
-            consumed_value=consumed_value,  # Pass entire consumed_values dictionary
+            goal_values=goal_values,  # Pass entire goal_values dictionary
+            consumed_value=consumed_values,  # Pass entire consumed_values dictionary
             update_callback=ProgressFrame.update_nutrition_label
         )
         # Grid layout for the progress frame
         progress_frame.grid(row=1, column=column_index, padx=10, pady=10, sticky="nsew")
+    
+    
     def create_ingredients_frame(self):
         self.ingredients_frame = ctk.CTkFrame(self)
         self.ingredients_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
