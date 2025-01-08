@@ -43,33 +43,32 @@ class ProgressScreen(ctk.CTkFrame):
         self.grid_rowconfigure(2, weight=2)
 
     def create_progress_frames(self):
-        self.protein_frame = ProgressFrame(
+    # List of goal names and their corresponding columns
+        goal_names = ["protein", "carbohydrate", "calories"]
+        # Create a dictionary with all nutrient values for consumed and goal
+        consumed_values = self.nutrition_manager.get_nutrition_data()
+        goal_values = self.user_goals  # Assumed to be a dictionary with goal values for all nutrients
+        
+        for index, goal_name in enumerate(goal_names):
+            self.create_single_progress_frame(goal_name, index, consumed_values, goal_values)
+
+    def create_single_progress_frame(self, goal_name, column_index, consumed_values, goal_values):
+        """Helper method to create a single progress frame."""
+        # Get the goal value for this nutrient
+        goal_value = goal_values.get(goal_name, 0)  # Default to 0 if not found
+        # Get the consumed value for this nutrient
+        consumed_value = consumed_values.get(goal_name, 0)  # Default to 0 if not found
+
+        # Create the progress frame for this nutrient
+        progress_frame = ProgressFrame(
             master=self,
-            goal_name="protein",
-            goal_value=self.user_goals["protein"],
-            consumed_value=self.nutrition_manager.get_nutrition_data().get("protein", 0),
+            goal_name=goal_name,
+            goal_values=goal_value,  # Pass entire goal_values dictionary
+            consumed_value=consumed_value,  # Pass entire consumed_values dictionary
             update_callback=ProgressFrame.update_nutrition_label
         )
-        self.protein_frame.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
-
-        self.carbs_frame = ProgressFrame(
-            master=self,
-            goal_name="carbohydrate",
-            goal_value=self.user_goals["carbohydrate"],
-            consumed_value=self.nutrition_manager.get_nutrition_data().get("carbohydrate", 0),
-            update_callback=ProgressFrame.update_nutrition_label
-        )
-        self.carbs_frame.grid(row=1, column=1, padx=10, pady=10, sticky="nsew")
-
-        self.calories_frame = ProgressFrame(
-            master=self,
-            goal_name="calories",
-            goal_value=self.user_goals["calories"],
-            consumed_value=self.nutrition_manager.get_nutrition_data().get("calories", 0),
-            update_callback=ProgressFrame.update_nutrition_label
-        )
-        self.calories_frame.grid(row=1, column=2, padx=10, pady=10, sticky="nsew")
-
+        # Grid layout for the progress frame
+        progress_frame.grid(row=1, column=column_index, padx=10, pady=10, sticky="nsew")
     def create_ingredients_frame(self):
         self.ingredients_frame = ctk.CTkFrame(self)
         self.ingredients_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
