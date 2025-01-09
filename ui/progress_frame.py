@@ -43,7 +43,7 @@ class ProgressFrame(ctk.CTkFrame):
         progress_bar = CircularProgressBar(
             master=self,
             size=150,
-            progress=progress,
+            progress=round(progress, 2),
             thickness=3,
             color=colors.get(nutrient, "#000000"),
             bg_color="transparent",
@@ -58,7 +58,7 @@ class ProgressFrame(ctk.CTkFrame):
             self.consumed_value.update(nutrition_data)
         
         # Get the target percentage for the goal nutrient
-        percentage = self.calculate_percentage(self.goal_name)
+        percentage = round(self.calculate_percentage(self.goal_name), 2)
         
         # Animate the progress bar to the new percentage
         self.progress_bar.animate_progress(percentage)

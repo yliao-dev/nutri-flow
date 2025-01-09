@@ -42,18 +42,21 @@ class CircularProgressBar(ctk.CTkFrame):
             outline="#443",  # Background circle color
             width=self.thickness
         )
-
+    
     def update_progress(self, progress):
         """Update the progress arc and the text."""
-        self.progress = progress
+        # Store the actual progress
+        self.progress = round(progress, 2)
 
         # Calculate the angle for the progress arc
-        angle = 360 * (progress / 100)
+        visible_progress = min(progress, 100)  # Cap visible progress at 100%
+        angle = 360 * (visible_progress / 100)
+        print("progress: {} | visible_progress: {}".format(progress, visible_progress))
 
-        # Update the progress arc if it already exists, otherwise create it
+        # Update or create the progress arc
         if self.arc:
             self.canvas.itemconfig(self.arc, extent=angle)
-        else:
+        elif visible_progress < 100:
             self.arc = self.canvas.create_arc(
                 self.thickness,
                 self.thickness,
@@ -66,46 +69,44 @@ class CircularProgressBar(ctk.CTkFrame):
                 style="arc"
             )
 
-        # Update the progress text directly
+        # Update the progress text to show actual progress (even if >100%)
+        self.canvas.delete(self.text)  # Clear previous text
         self.text = self.canvas.create_text(
-                self.size // 2,
-                self.size // 2,
-                text=f"{int(progress)}%",
-                fill=self.text_color,
-                font=("Arial", 14, "bold")
-            )
+            self.size // 2,
+            self.size // 2,
+            text=f"{int(progress)}%",  # Show actual progress
+            fill=self.text_color,
+            font=("Arial", 14, "bold")
+        )
+
 
     def animate_progress(self, target_progress):
         """Animate the progress of the circular bar."""
-        # If the target progress is 100% or more, set it to 100% and stop the animation
-        if target_progress >= 100:
-            target_progress = 100
-            self.update_progress(target_progress)
-            return  # Stop animation once it reaches or exceeds 100%
-
         current_progress = self.progress
         step = 1  # Progress increment per animation step
 
-        # Animate towards the target progress
+        # Precalculate the visible target percentage (cap at 100 for the visual bar)
+        visible_target_progress = min(target_progress, 100)
+
         def animate():
             nonlocal current_progress
-            if current_progress < target_progress:
-                # Move forward with increments, but stop when reaching the target
-                if current_progress + step > target_progress:
-                    current_progress = target_progress
-                else:
-                    current_progress += step
-                self.update_progress(current_progress)
-                if current_progress < target_progress:
-                    self.after(50, animate)
-            elif current_progress > target_progress:
-                # Move backward with increments, but stop when reaching the target
-                if current_progress - step < target_progress:
-                    current_progress = target_progress
-                else:
-                    current_progress -= step
-                self.update_progress(current_progress)
-                if current_progress > target_progress:
-                    self.after(50, animate)
 
-        animate()
+            # Increment the progress
+            current_progress += step
+
+            # If current progress reaches or exceeds the visible target
+            if current_progress >= visible_target_progress:
+                self.update_progress(visible_target_progress)  # Ensure bar is visually full
+                self.progress = target_progress  # Store the actual value (even >100%)
+                return  # Stop animation here
+
+            # Update the progress and schedule the next step
+            self.update_progress(current_progress)
+            self.after(50, animate)
+
+        # Start the animation if the current progress is below the visible target
+        if current_progress < visible_target_progress:
+            animate()
+        else:
+            # If already full, update the text to reflect the actual target progress
+            self.update_progress(target_progress)
