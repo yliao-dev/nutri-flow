@@ -24,6 +24,10 @@ class ProgressFrame(ctk.CTkFrame):
         # Create a single circular progress bar for the goal nutrient
         self.progress_bar = self.create_circular_progress_bar(self.goal_name)
         
+        # Add an Update button
+        self.update_button = ctk.CTkButton(self, text="Update", command=self.update)
+        self.update_button.pack(pady=5)
+
         self.update_nutrition_label(self.label, self.progress_bar)
 
     def create_circular_progress_bar(self, nutrient):
@@ -48,20 +52,33 @@ class ProgressFrame(ctk.CTkFrame):
         progress_bar.pack(pady=10)
         return progress_bar
 
-    def update(self, nutrition_data):
+    def update(self, nutrition_data=None):
         """Update the progress bar and labels based on new data."""
-        self.consumed_value.update(nutrition_data)
+        if nutrition_data:
+            self.consumed_value.update(nutrition_data)
+        
+        # Get the target percentage for the goal nutrient
+        percentage = self.calculate_percentage(self.goal_name)
+        
+        # Animate the progress bar to the new percentage
+        self.progress_bar.animate_progress(percentage)
+        
+        # Update the nutrition label with new data
         self.update_nutrition_label(self.label, self.progress_bar)
+
+    def calculate_percentage(self, nutrient):
+        """Calculate the percentage progress for the given nutrient."""
+        consumed_value = round(self.consumed_value.get(nutrient, 0), 2)
+        goal_value = self.goal_values.get(nutrient, 1)
+        return min(100, (consumed_value / goal_value) * 100 if goal_value > 0 else 0)
 
     def update_nutrition_label(self, label, progress_bar):
         """Update the nutrition label and progress bar."""
         consumed_value = round(self.consumed_value.get(self.goal_name, 0), 2)
         goal_value = self.goal_values.get(self.goal_name, 0)
-        percentage = min(100, (consumed_value / goal_value) * 100 if goal_value > 0 else 0)
+        percentage = self.calculate_percentage(self.goal_name)
         
         label_text = f"{self.goal_name.capitalize()} Goal: {goal_value}g\n"
         label_text += f"Consumed: {consumed_value}g | {round(percentage, 2)}%\n"
-        
-        progress_bar.update_progress(round(percentage, 2))
         
         label.configure(text=label_text)

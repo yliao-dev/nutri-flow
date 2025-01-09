@@ -1,6 +1,5 @@
 import customtkinter as ctk
 
-
 class CircularProgressBar(ctk.CTkFrame):
     def __init__(self, master, size, progress, thickness, color, bg_color, text_color):
         super().__init__(master, fg_color=bg_color)
@@ -76,12 +75,37 @@ class CircularProgressBar(ctk.CTkFrame):
                 font=("Arial", 14, "bold")
             )
 
-    def start_loading(self):
-        """Start the loading animation."""
-        self.animate_progress(0)
-
-    def animate_progress(self, progress):
+    def animate_progress(self, target_progress):
         """Animate the progress of the circular bar."""
-        if progress <= 100:
-            self.update_progress(progress)
-            self.after(50, self.animate_progress, progress + 1)  # Update progress every 50ms
+        # If the target progress is 100% or more, set it to 100% and stop the animation
+        if target_progress >= 100:
+            target_progress = 100
+            self.update_progress(target_progress)
+            return  # Stop animation once it reaches or exceeds 100%
+
+        current_progress = self.progress
+        step = 1  # Progress increment per animation step
+
+        # Animate towards the target progress
+        def animate():
+            nonlocal current_progress
+            if current_progress < target_progress:
+                # Move forward with increments, but stop when reaching the target
+                if current_progress + step > target_progress:
+                    current_progress = target_progress
+                else:
+                    current_progress += step
+                self.update_progress(current_progress)
+                if current_progress < target_progress:
+                    self.after(50, animate)
+            elif current_progress > target_progress:
+                # Move backward with increments, but stop when reaching the target
+                if current_progress - step < target_progress:
+                    current_progress = target_progress
+                else:
+                    current_progress -= step
+                self.update_progress(current_progress)
+                if current_progress > target_progress:
+                    self.after(50, animate)
+
+        animate()
