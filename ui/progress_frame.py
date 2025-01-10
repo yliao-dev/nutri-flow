@@ -23,11 +23,6 @@ class ProgressFrame(ctk.CTkFrame):
         
         # Create a single circular progress bar for the goal nutrient
         self.progress_bar = self.create_circular_progress_bar(self.goal_name)
-        
-        # Add an Update button
-        self.update_button = ctk.CTkButton(self, text="Update", command=self.update)
-        self.update_button.pack(pady=5)
-
         self.update_nutrition_label(self.label, self.progress_bar)
 
     def create_circular_progress_bar(self, nutrient):

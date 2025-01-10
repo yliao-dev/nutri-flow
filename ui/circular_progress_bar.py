@@ -10,19 +10,19 @@ class CircularProgressBar(ctk.CTkFrame):
         self.color = color
         self.text_color = text_color
 
-        # Create a canvas with transparent background
-        self.canvas = ctk.CTkCanvas(self, bg=self._get_color(bg_color), highlightthickness=0)
-        self.canvas.grid(row=0, column=0, sticky="nsew")  # Allow resizing with grid
+        # Create a canvas with transparent background and set size explicitly
+        self.canvas = ctk.CTkCanvas(self, bg=self._get_color(bg_color), highlightthickness=0, width=self.size, height=self.size)
+        self.canvas.grid(row=0, column=0, sticky="nsew")
 
-        self.grid_rowconfigure(0, weight=1)  # Allow row to expand with window
-        self.grid_columnconfigure(0, weight=1)  # Allow column to expand with window
+        # Center the canvas within the frame
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
 
         # Draw the background circle once
         self.create_circle()
 
-        # Create a placeholder for the progress arc (will be updated later)
+        # Create placeholders for progress arc and text
         self.arc = None
-        # Create a placeholder for the text (will be updated later)
         self.text = None
 
         # Update the progress immediately to show the initial value
@@ -51,12 +51,11 @@ class CircularProgressBar(ctk.CTkFrame):
         # Calculate the angle for the progress arc
         visible_progress = min(progress, 100)  # Cap visible progress at 100%
         angle = 360 * (visible_progress / 100)
-        print("progress: {} | visible_progress: {}".format(progress, visible_progress))
 
         # Update or create the progress arc
         if self.arc:
             self.canvas.itemconfig(self.arc, extent=angle)
-        elif visible_progress < 100:
+        else:
             self.arc = self.canvas.create_arc(
                 self.thickness,
                 self.thickness,
@@ -78,7 +77,6 @@ class CircularProgressBar(ctk.CTkFrame):
             fill=self.text_color,
             font=("Arial", 14, "bold")
         )
-
 
     def animate_progress(self, target_progress):
         """Animate the progress of the circular bar."""
