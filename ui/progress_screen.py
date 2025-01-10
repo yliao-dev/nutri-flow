@@ -29,7 +29,7 @@ class ProgressScreen(ctk.CTkFrame):
         self.selected_ingredients_label = ctk.CTkLabel(self, text="Selected Ingredients:", font=("Arial", 12))
         self.selected_ingredients_label.grid(row=3, column=0, padx=10, pady=5, sticky="w")
 
-        self.selected_nutrition_label = ctk.CTkLabel(self, text="Protein: 0g, Carbs: 0g, Calories: 0g", font=("Arial", 10))
+        self.selected_nutrition_label = ctk.CTkLabel(self, text="Protein: 0g | Carbs: 0g | Calories: 0g", font=("Arial", 12))
         self.selected_nutrition_label.grid(row=4, column=0, padx=10, pady=5, sticky="w")
 
         self.update_button = ctk.CTkButton(self, text="Update Goals", command=self.update_goals, state=ctk.DISABLED)
@@ -107,14 +107,14 @@ class ProgressScreen(ctk.CTkFrame):
         total_carbs = round(sum([ingredient["carbohydrates"] for ingredient in ingredients]), 2)
         total_calories = round(sum([ingredient["calories"] for ingredient in ingredients]), 2)
 
-        return f"Protein: {total_protein}g, Carbs: {total_carbs}g, Calories: {total_calories}g"
+        return f"Protein: {total_protein}g | Carbs: {total_carbs}g | Calories: {total_calories}g"
 
     def update_goals(self):
         self.nutrition_manager.update_nutrition(self.selected_ingredients)
         nutrition_data = self.nutrition_manager.get_nutrition_data()
 
         # Update each progress frame with the new data
-        for goal_name, progress_frame in self.progress_frames.items():
+        for _, progress_frame in self.progress_frames.items():
             progress_frame.update(nutrition_data)
 
         self.update_selected_ingredients_label()
