@@ -1,8 +1,9 @@
 import customtkinter as ctk
+import tkinter as tk
 
 class CircularProgressBar(ctk.CTkFrame):
-    def __init__(self, master, size, progress, thickness, color, bg_color, text_color):
-        super().__init__(master, fg_color=bg_color)
+    def __init__(self, master, size, progress, thickness, color, bg_color, text_color="black"):
+        super().__init__(master)
 
         self.size = size
         self.progress = progress
@@ -14,6 +15,13 @@ class CircularProgressBar(ctk.CTkFrame):
         self.canvas = ctk.CTkCanvas(self, bg=self._get_color(bg_color), highlightthickness=0, width=self.size, height=self.size)
         self.canvas.grid(row=0, column=0, sticky="nsew")
 
+        # Ensure bg_color is properly handled
+        self.bg_color = bg_color if bg_color != "transparent" else self.color
+
+        # Create the label for the percentage text outside the canvas
+        self.progress_label = tk.Label(self, text=f"{int(self.progress)}%", font=("Arial", 14, "bold"), fg=self.text_color, bg=self.bg_color)
+        self.progress_label.place(relx=0.5, rely=0.5, anchor="center")
+
         # Center the canvas within the frame
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
@@ -23,7 +31,6 @@ class CircularProgressBar(ctk.CTkFrame):
 
         # Create placeholders for progress arc and text
         self.arc = None
-        self.text = None
 
         # Update the progress immediately to show the initial value
         self.update_progress(self.progress)
@@ -35,14 +42,12 @@ class CircularProgressBar(ctk.CTkFrame):
     def create_circle(self):
         """Draw the background circle (only once)."""
         self.canvas.create_oval(
-            self.thickness,
-            self.thickness,
-            self.size - self.thickness,
-            self.size - self.thickness,
+            self.thickness, self.thickness,
+            self.size - self.thickness, self.size - self.thickness,
             outline="#443",  # Background circle color
             width=self.thickness
         )
-    
+
     def update_progress(self, progress):
         """Update the progress arc and the text."""
         # Store the actual progress
@@ -57,10 +62,8 @@ class CircularProgressBar(ctk.CTkFrame):
             self.canvas.itemconfig(self.arc, extent=angle)
         else:
             self.arc = self.canvas.create_arc(
-                self.thickness,
-                self.thickness,
-                self.size - self.thickness,
-                self.size - self.thickness,
+                self.thickness, self.thickness,
+                self.size - self.thickness, self.size - self.thickness,
                 start=90,  # Start at 12 o'clock (90-degree north)
                 extent=angle,
                 outline=self.color,
@@ -68,15 +71,8 @@ class CircularProgressBar(ctk.CTkFrame):
                 style="arc"
             )
 
-        # Update the progress text to show actual progress (even if >100%)
-        self.canvas.delete(self.text)  # Clear previous text
-        self.text = self.canvas.create_text(
-            self.size // 2,
-            self.size // 2,
-            text=f"{int(progress)}%",  # Show actual progress
-            fill=self.text_color,
-            font=("Arial", 14, "bold")
-        )
+        # Update the percentage text in the label
+        self.progress_label.config(text=f"{int(progress)}%")
 
     def animate_progress(self, target_progress):
         """Animate the progress of the circular bar."""
