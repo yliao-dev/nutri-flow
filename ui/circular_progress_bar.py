@@ -50,10 +50,8 @@ class CircularProgressBar(ctk.CTkFrame):
         visible_progress = min(progress, 100)  # Cap visible progress at 100%
         angle = 360 * (visible_progress / 100)
 
-        # Update or create the progress arc
-        if self.arc:
-            self.canvas.itemconfig(self.arc, extent=angle)
-        else:
+        # Only create the arc once, if not already created
+        if self.arc is None:
             self.arc = self.canvas.create_arc(
                 self.thickness, self.thickness,
                 self.size - self.thickness, self.size - self.thickness,
@@ -63,6 +61,12 @@ class CircularProgressBar(ctk.CTkFrame):
                 width=self.thickness,
                 style="arc"
             )
+        else:
+            # Update the arc extent if it's already created
+            if self.progress >= 100:
+                self.canvas.itemconfig(self.arc, extent=360)  # Fill the circle
+            else:
+                self.canvas.itemconfig(self.arc, extent=angle)  # Update progress
 
         # Update the percentage text in the label
         self.progress_label.config(text=f"{int(progress)}%")
