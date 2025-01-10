@@ -4,55 +4,63 @@
     "unit": 100,
     "carbohydrates": 0,
     "protein": 30,
-    "calories": 208
+    "calories": 208,
+    "image": "./data/salmon.png"
   },
   "short_grain_rice": {
     "id": 2,
     "unit": 100,
     "carbohydrates": 70,
     "protein": 10,
-    "calories": 130
+    "calories": 130,
+    "image": "./data/short_grain_rice.png"
   },
-  "eggs": {
+  "egg": {
     "id": 3,
     "unit": 100,
     "carbohydrates": 1.1,
     "protein": 13,
-    "calories": 143
+    "calories": 143,
+    "image": "./data/egg.png"
   },
   "milk": {
     "id": 4,
     "unit": 100,
     "carbohydrates": 5,
     "protein": 3.4,
-    "calories": 42
+    "calories": 42,
+    "image": "./data/milk.png"
   },
   "oatmeal": {
     "id": 5,
     "unit": 100,
     "carbohydrates": 66.3,
     "protein": 16.9,
-    "calories": 389
+    "calories": 389,
+    "image": "./data/oatmeal.png"
   },
   "beef": {
     "id": 6,
     "unit": 100,
     "carbohydrates": 0,
     "protein": 26,
-    "calories": 250
+    "calories": 250,
+    "image": "./data/beef.png"
   },
   "chicken_breast": {
     "id": 7,
     "unit": 100,
     "carbohydrates": 0,
     "protein": 31,
-    "calories": 165
+    "calories": 165,
+    "image": "./data/chicken_breast.png"
   },
-  "chicken_legs": {
+  "chicken_leg": {
     "id": 8,
     "unit": 100,
     "carbohydrates": 0,
     "protein": 24,
-    "calories": 215
+    "calories": 215,
+    "image": "./data/chicken_leg.png"
   }
 }

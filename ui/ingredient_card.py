@@ -1,6 +1,6 @@
 import customtkinter as ctk
+from PIL import Image, ImageTk
 import json
-from model.nutrition_manager import NutritionManager
 
 class IngredientCard(ctk.CTkFrame):
     def __init__(self, parent, index, ingredient_data, update_selected_data_callback, width=400, height=500):
@@ -17,6 +17,7 @@ class IngredientCard(ctk.CTkFrame):
         self.grid_rowconfigure(1, weight=1)
         self.grid_rowconfigure(2, weight=1)
         self.grid_rowconfigure(3, weight=1)
+        self.grid_rowconfigure(4, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
         # Ingredient Card Title (e.g., Ingredient Name)
@@ -33,11 +34,29 @@ class IngredientCard(ctk.CTkFrame):
         self.calories_label = ctk.CTkLabel(self, text=f"Calories: {self.ingredient_data['calories']}kcal")
         self.calories_label.grid(row=3, column=0, pady=(0, 10))
 
+        # Load and display the image (if image_path is provided)
+        if 'image' in self.ingredient_data:
+            self.display_image(self.ingredient_data['image'])
+
         # Checkbox (Optional)
         self.checkbox = ctk.CTkCheckBox(self, text="")
         self.checkbox.configure(command=self.toggle_select)
-        self.checkbox.grid(row=4, column=0, padx=5, pady=(0, 10), sticky="se")
+        self.checkbox.grid(row=5, column=0, padx=5, pady=(0, 10), sticky="se")
         
+    def display_image(self, image_path):
+        """Load and display the image using CTkImage."""
+        # Open the image using PIL
+        img = Image.open(image_path).convert("RGBA")  # Ensure transparency is preserved
+        img = img.resize((100, 100))  # Resize image to fit the card
+        
+        # Convert to CTkImage
+        img_ctk = ctk.CTkImage(img, size=(100, 100))
+
+        # Create a label to display the image with no text
+        self.image_label = ctk.CTkLabel(self, image=img_ctk, text=None)  # Set text to empty to avoid overlay
+        self.image_label.image = img_ctk  # Keep a reference to the image
+        self.image_label.grid(row=4, column=0, pady=(10, 5))
+    
     def toggle_select(self):
         self.selected = not self.selected
         if self.selected:
