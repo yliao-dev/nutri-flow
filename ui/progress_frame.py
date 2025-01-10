@@ -5,7 +5,6 @@ class ProgressFrame(ctk.CTkFrame):
     def __init__(self, master, goal_name, goal_values, consumed_value=None, update_callback=None):
         super().__init__(master)
         
-        # Set default consumed value to 0 if None provided
         self.consumed_value = consumed_value if consumed_value else {"protein": 0, "carbohydrate": 0, "calories": 0}
         self.goal_name = goal_name
         self.goal_values = goal_values
@@ -18,12 +17,17 @@ class ProgressFrame(ctk.CTkFrame):
         self.initialize_ui()
 
     def initialize_ui(self):
-        self.label = ctk.CTkLabel(self, text="")
-        self.label.pack(pady=5)
+        # Goal label
+        self.goal_label = ctk.CTkLabel(self, text="")
+        self.goal_label.pack(pady=5)
+
+        # Consumed value label
+        self.consumed_label = ctk.CTkLabel(self, text="")
+        self.consumed_label.pack(pady=5)
         
-        # Create a single circular progress bar for the goal nutrient
+        # Create a circular progress bar for the goal nutrient
         self.progress_bar = self.create_circular_progress_bar(self.goal_name)
-        self.update_nutrition_label(self.label, self.progress_bar)
+        self.update_nutrition_label()
 
     def create_circular_progress_bar(self, nutrient):
         """Create and return a single circular progress bar for the specified nutrient."""
@@ -59,7 +63,7 @@ class ProgressFrame(ctk.CTkFrame):
         self.progress_bar.animate_progress(percentage)
         
         # Update the nutrition label with new data
-        self.update_nutrition_label(self.label, self.progress_bar)
+        self.update_nutrition_label()
 
     def calculate_percentage(self, nutrient):
         """Calculate the percentage progress for the given nutrient."""
@@ -67,13 +71,15 @@ class ProgressFrame(ctk.CTkFrame):
         goal_value = self.goal_values.get(nutrient, 1)
         return min(100, (consumed_value / goal_value) * 100 if goal_value > 0 else 0)
 
-    def update_nutrition_label(self, label, progress_bar):
+    def update_nutrition_label(self):
         """Update the nutrition label and progress bar."""
         consumed_value = round(self.consumed_value.get(self.goal_name, 0), 2)
         goal_value = self.goal_values.get(self.goal_name, 0)
         percentage = self.calculate_percentage(self.goal_name)
         
-        label_text = f"{self.goal_name.capitalize()} Goal: {goal_value}g\n"
-        label_text += f"Consumed: {consumed_value}g | {round(percentage, 2)}%\n"
+        goal_label_text = f"{self.goal_name.capitalize()} Goal: {goal_value}g"
+        consumed_label_text = f"Consumed: {consumed_value}g | {round(percentage, 2)}%"
         
-        label.configure(text=label_text)
+        # Apply different font and size for each label
+        self.goal_label.configure(text=goal_label_text, font=("Arial", 16, "bold"))
+        self.consumed_label.configure(text=consumed_label_text, font=("Arial", 14))

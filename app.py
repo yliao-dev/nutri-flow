@@ -7,6 +7,8 @@ from model.progress_model import ProgressModel  # Correct import
 
 ctk.set_appearance_mode("System")  # Modes: "System", "Dark", "Light"
 ctk.set_default_color_theme("blue")  # Themes: "blue", "green", "dark-blue"
+WIDTH = 1200
+HEIGHT = 800
 
 class App(ctk.CTk):
     """
@@ -16,7 +18,9 @@ class App(ctk.CTk):
         super().__init__()
 
         self.title("NutriFlow")
-        self.geometry(f"{1100}x{700}")
+
+        # Center the window on the screen
+        self.center_window(WIDTH, HEIGHT)
 
         # Configure grid layout (2 columns: TabView + Screen)
         self.grid_columnconfigure(0, weight=0)  # Fixed width for TabView
@@ -56,6 +60,19 @@ class App(ctk.CTk):
 
         # Bind the tabview to switch screens on tab change using a function
         self.tabview.configure(command=lambda: self.switch_screen(self.tabview.get()))
+
+    def center_window(self, width, height):
+        """Center the application window on the screen."""
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+
+        # Calculate position coordinates
+        x = (screen_width - width) // 2
+        y = (screen_height - height) // 2
+
+        # Set the geometry of the window
+        self.geometry(f"{width}x{height}+{x}+{y}")
+
     def switch_screen(self, selected_tab):
         """Switch between screens based on selected tab."""
         # Hide the current screen
