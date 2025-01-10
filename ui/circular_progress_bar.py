@@ -69,7 +69,7 @@ class CircularProgressBar(ctk.CTkFrame):
                 self.canvas.itemconfig(self.arc, extent=angle)  # Update progress
 
         # Update the percentage text in the label
-        self.progress_label.config(text=f"{int(progress)}%")
+        self.progress_label.config(text=f"{int(self.progress)}%")
 
     def animate_progress(self, target_progress):
         """Animate the progress of the circular bar."""

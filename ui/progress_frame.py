@@ -42,7 +42,7 @@ class ProgressFrame(ctk.CTkFrame):
         progress_bar = CircularProgressBar(
             master=self,
             size=150,
-            progress=round(progress, 2),
+            progress=progress,
             thickness=3,
             color=colors.get(nutrient, "#000000"),
             bg_color="transparent",
