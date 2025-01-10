@@ -13,7 +13,7 @@ class ProgressFrame(ctk.CTkFrame):
         
         self.PROTEIN_COLOR = "#025d93"
         self.CARBOHYDRATE_COLOR = "#f9d77c"
-        self.CALORIES_COLOR = "#e30220"
+        self.CALORIES_COLOR = "#86f4ee"
         
         self.initialize_ui()
 

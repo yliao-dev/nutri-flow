@@ -12,11 +12,8 @@ class CircularProgressBar(ctk.CTkFrame):
         self.text_color = text_color
 
         # Create a canvas with transparent background and set size explicitly
-        self.canvas = ctk.CTkCanvas(self, bg=self._get_color(bg_color), highlightthickness=0, width=self.size, height=self.size)
+        self.canvas = ctk.CTkCanvas(self, highlightthickness=0, width=self.size, height=self.size)
         self.canvas.grid(row=0, column=0, sticky="nsew")
-
-        # Ensure bg_color is properly handled
-        self.bg_color = bg_color if bg_color != "transparent" else self.color
 
         # Create the label for the percentage text outside the canvas
         self.progress_label = tk.Label(self, text=f"{int(self.progress)}%", font=("Arial", 14, "bold"), fg=self.text_color)
@@ -34,10 +31,6 @@ class CircularProgressBar(ctk.CTkFrame):
 
         # Update the progress immediately to show the initial value
         self.update_progress(self.progress)
-
-    def _get_color(self, color):
-        """Convert CustomTkinter colors to standard Tkinter colors."""
-        return "systemTransparent" if color == "transparent" else color
 
     def create_circle(self):
         """Draw the background circle (only once)."""
