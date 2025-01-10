@@ -64,7 +64,7 @@ class CircularProgressBar(ctk.CTkFrame):
         else:
             # Update the arc extent if it's already created
             if self.progress >= 100:
-                self.canvas.itemconfig(self.arc, extent=360)  # Fill the circle
+                self.canvas.itemconfig(self.arc, extent=359.99)  # Fill the circle
             else:
                 self.canvas.itemconfig(self.arc, extent=angle)  # Update progress
 
