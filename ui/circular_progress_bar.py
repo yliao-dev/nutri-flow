@@ -19,7 +19,7 @@ class CircularProgressBar(ctk.CTkFrame):
         self.bg_color = bg_color if bg_color != "transparent" else self.color
 
         # Create the label for the percentage text outside the canvas
-        self.progress_label = tk.Label(self, text=f"{int(self.progress)}%", font=("Arial", 14, "bold"), fg=self.text_color, bg=self.bg_color)
+        self.progress_label = tk.Label(self, text=f"{int(self.progress)}%", font=("Arial", 14, "bold"), fg=self.text_color)
         self.progress_label.place(relx=0.5, rely=0.5, anchor="center")
 
         # Center the canvas within the frame
