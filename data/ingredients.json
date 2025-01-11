@@ -62,5 +62,77 @@
     "protein": 24,
     "calories": 215,
     "image": "./data/chicken_leg.png"
+  },
+  "apple": {
+    "id": 9,
+    "unit": 100,
+    "carbohydrates": 14,
+    "protein": 0.3,
+    "calories": 52,
+    "image": "./data/apple.png"
+  },
+  "bread": {
+    "id": 10,
+    "unit": 100,
+    "carbohydrates": 49,
+    "protein": 9,
+    "calories": 265,
+    "image": "./data/bread.png"
+  },
+  "broccoli": {
+    "id": 11,
+    "unit": 100,
+    "carbohydrates": 6.6,
+    "protein": 2.8,
+    "calories": 34,
+    "image": "./data/broccoli.png"
+  },
+  "corn": {
+    "id": 12,
+    "unit": 100,
+    "carbohydrates": 19,
+    "protein": 3.2,
+    "calories": 86,
+    "image": "./data/corn.png"
+  },
+  "long_grain_rice": {
+    "id": 14,
+    "unit": 100,
+    "carbohydrates": 78,
+    "protein": 7,
+    "calories": 130,
+    "image": "./data/long_grain_rice.png"
+  },
+  "orange": {
+    "id": 15,
+    "unit": 100,
+    "carbohydrates": 12,
+    "protein": 1,
+    "calories": 47,
+    "image": "./data/orange.png"
+  },
+  "rabbit": {
+    "id": 16,
+    "unit": 100,
+    "carbohydrates": 0,
+    "protein": 21,
+    "calories": 173,
+    "image": "./data/rabbit.png"
+  },
+  "sausages": {
+    "id": 17,
+    "unit": 100,
+    "carbohydrates": 0,
+    "protein": 12,
+    "calories": 300,
+    "image": "./data/sausages.png"
+  },
+  "whey_protein": {
+    "id": 18,
+    "unit": 30,
+    "carbohydrates": 2,
+    "protein": 24,
+    "calories": 120,
+    "image": "./data/whey-protein.png"
   }
 }
