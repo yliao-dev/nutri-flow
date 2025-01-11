@@ -14,25 +14,27 @@ class BottomFrame(ctk.CTkFrame):
         self.initialize_ui()
 
     def initialize_ui(self):
-        # Configure grid to make sure the button has enough space vertically
+        # Configure grid for proper spacing and row/column weights
         self.grid_rowconfigure(0, weight=1)  # Row for the labels
-        self.grid_rowconfigure(1, weight=3)  # Row for the button (with higher weight to allow expansion)
-        self.grid_columnconfigure(0, weight=1)  # Column for the button
+        self.grid_rowconfigure(1, weight=3)  # Row for the button with higher weight to allow expansion
+        self.grid_columnconfigure(0, weight=1)  # Column for the first label
+        self.grid_columnconfigure(1, weight=1)  # Column for the second label (nutrition label)
 
         # Re-add the labels
         self.selected_ingredients_label = ctk.CTkLabel(self, text="Selected Ingredients:", font=("Arial", 12))
-        self.selected_ingredients_label.grid(row=0, column=0, columnspan=2, padx=10, pady=5, sticky="w")
+        self.selected_ingredients_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
 
         self.selected_nutrition_label = ctk.CTkLabel(self, text="Protein: 0g | Carbs: 0g | Calories: 0g", font=("Arial", 12))
-        self.selected_nutrition_label.grid(row=1, column=0, columnspan=2, padx=10, pady=5, sticky="w")
+        self.selected_nutrition_label.grid(row=0, column=1, padx=10, pady=5, sticky="e")  # Align to the east
 
-        # Use the existing update_button and make it take the entire space
+        # Use the existing update_button and make it take the entire space (row 1)
         self.update_button = ctk.CTkButton(self, text="Update Intake", command=self.update_intake, state=ctk.DISABLED)
-        self.update_button.grid(row=2, column=0, padx=10, pady=10, sticky="nsew")  # Button in a separate row, full container space
+        self.update_button.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")  # Button in a separate row, spanning both columns
 
         # Ensure the button expands both vertically and horizontally by setting weight to 1
-        self.grid_rowconfigure(2, weight=3)  # Row with the button has weight=3 to allow it to expand
-        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(1, weight=3)  # Row with the button has weight=3 to allow it to expand
+        self.grid_columnconfigure(0, weight=1)  # Column with the button has weight=1
+        self.grid_columnconfigure(1, weight=1)  # Column for the button has weight=1 for the same grid
 
          
     def update_selected_data(self, ingredient_data, add=False):
