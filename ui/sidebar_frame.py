@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from PIL import Image
 
 class Sidebar(ctk.CTkFrame):
     def __init__(self, parent, tabs):
@@ -24,16 +25,22 @@ class Sidebar(ctk.CTkFrame):
         self.separator = ctk.CTkCanvas(self, width=2)
         self.separator.grid(row=0, column=1, rowspan=len(self.tabs) + 1, padx=10, pady=0, sticky="ns")  # Vertical separator
 
-        # Appearance Mode Selector (using images for light/dark mode)
-        self.light_mode_img = ctk.CTkImage(light_image=".data/light.png", size=(40, 40))
-        self.dark_mode_img = ctk.CTkImage(light_image=".data/dark.png", size=(40, 40))
+        # Appearance Mode Selector (using a single image)
+        self.mode_img = ctk.CTkImage(light_image=Image.open("data/dark-mode.png"), size=(40, 40))  # Using only the dark mode image
 
-        # Label for light/dark mode toggle
-        self.appearance_mode_label = ctk.CTkLabel(self, text="Appearance Mode:", anchor="w")
-        self.appearance_mode_label.grid(row=len(self.tabs) + 1, column=0, padx=20, pady=(10, 0), sticky="ew")
-
-        self.mode_image_label = ctk.CTkLabel(self, image=self.dark_mode_img, cursor="hand2", command=self.toggle_appearance_mode)
-        self.mode_image_label.grid(row=len(self.tabs) + 2, column=0, padx=20, pady=(10, 20), sticky="ew")
+        # Use CTkButton for the mode toggle, not CTkLabel
+        self.mode_button = ctk.CTkButton(
+                self, 
+                text="", 
+                image=self.mode_img, 
+                cursor="hand2", 
+                command=self.toggle_appearance_mode, 
+                fg_color="transparent",  # Transparent background
+                border_width=0,           # No border
+                hover_color=None,         # No hover effect
+                state="normal"
+        )
+        self.mode_button.grid(row=len(self.tabs) + 2, column=0, padx=20, pady=(10, 20), sticky="ew")
 
     def switch_screen(self, selected_tab):
         """Switch between screens based on selected tab."""
@@ -51,8 +58,6 @@ class Sidebar(ctk.CTkFrame):
         current_mode = ctk.get_appearance_mode()
 
         if current_mode == "Dark":
-            ctk.set_appearance_mode("Light")
-            self.mode_image_label.configure(image=self.light_mode_img)  # Change to light mode image
+            ctk.set_appearance_mode("Light")  # Switch to light mode
         else:
-            ctk.set_appearance_mode("Dark")
-            self.mode_image_label.configure(image=self.dark_mode_img)  # Change to dark mode image
+            ctk.set_appearance_mode("Dark")  # Switch to dark mode
