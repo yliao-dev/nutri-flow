@@ -1,5 +1,4 @@
 import customtkinter as ctk
-from PIL import Image
 
 class Sidebar(ctk.CTkFrame):
     def __init__(self, parent, tabs):
@@ -17,13 +16,21 @@ class Sidebar(ctk.CTkFrame):
         # Create vertical buttons for each tab
         self.tab_buttons = []
         for i, tab in enumerate(self.tabs):
-            tab_button = ctk.CTkButton(self, text=tab, command=lambda tab=tab: self.switch_screen(tab))
-            tab_button.grid(row=i, column=0, padx=20, pady=5, sticky="ewns")  # Stretched vertically and horizontally
+            tab_button = ctk.CTkButton(
+                self, 
+                fg_color="#303030",
+                hover_color="#333333",
+                text=tab, 
+                border_color="black",
+
+                command=lambda tab=tab: self.switch_screen(tab)
+            )
+            tab_button.grid(row=i, column=0, padx=10, pady=3, sticky="ewns")  # Stretched vertically and horizontally
             self.tab_buttons.append(tab_button)
 
         # Add separator (black line) between sidebar and main frame
         self.separator = ctk.CTkCanvas(self, width=2)
-        self.separator.grid(row=0, column=1, rowspan=len(self.tabs) + 1, padx=10, pady=0, sticky="ns") 
+        self.separator.grid(row=0, column=1, rowspan=len(self.tabs) + 1, padx=0, pady=0, sticky="ns") 
 
 
     def switch_screen(self, selected_tab):

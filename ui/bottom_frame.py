@@ -28,7 +28,7 @@ class BottomFrame(ctk.CTkFrame):
         self.selected_nutrition_label.grid(row=0, column=1, padx=10, pady=5, sticky="e")  # Align to the east
 
         # Use the existing update_button and make it take the entire space (row 1)
-        self.update_button = ctk.CTkButton(self, text="Update Intake", command=self.update_intake, state=ctk.DISABLED)
+        self.update_button = ctk.CTkButton(self, hover_color="#2c2c2c", text="Update Intake", command=self.update_intake, state=ctk.DISABLED)
         self.update_button.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")  # Button in a separate row, spanning both columns
 
         # Ensure the button expands both vertically and horizontally by setting weight to 1
