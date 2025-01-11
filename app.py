@@ -2,6 +2,7 @@ import customtkinter as ctk
 from ui.sidebar_frame import Sidebar
 from ui.home_screen import HomeScreen
 from ui.ingredient_screen import IngredientScreen
+from ui.data_screen import DataScreen
 from viewmodel.progress_viewmodel import ProgressViewModel
 from model.user_profile import UserProfile
 from model.progress_model import ProgressModel
@@ -28,7 +29,7 @@ class App(ctk.CTk):
         self.grid_rowconfigure(0, weight=1)  # Expandable row
 
         # Tabs and event handling methods
-        tabs = ["Home", "Ingredients"]
+        tabs = ["Home", "Ingredients", "Data"]
 
         # Create Sidebar and pass event handlers
         self.sidebar = Sidebar(
@@ -46,6 +47,7 @@ class App(ctk.CTk):
         self.screens = {
             "Home": HomeScreen(self, progress_view_model),
             "Ingredients": IngredientScreen(self),
+            "Data": DataScreen(self)
         }
 
         # Add screens to Column 1 and hide them initially
