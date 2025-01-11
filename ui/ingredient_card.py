@@ -21,7 +21,11 @@ class IngredientCard(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=1)
 
         # Ingredient Card Title (e.g., Ingredient Name)
-        self.card_label = ctk.CTkLabel(self, text=f"{self.ingredient_data['name'].capitalize()}", font=("Arial", 12))
+        self.card_label = ctk.CTkLabel(
+            self, 
+            text=f"{self.ingredient_data['name'].title()}", 
+            font=("Arial", 14, "bold")
+        )
         self.card_label.grid(row=0, column=0, pady=(10, 0))
 
         # Nutritional Information
