@@ -2,7 +2,7 @@ import customtkinter as ctk
 import tkinter as tk
 
 class CircularProgressBar(ctk.CTkFrame):
-    def __init__(self, master, size, progress, thickness, color, bg_color, text_color="black"):
+    def __init__(self, master, size, progress, thickness, color, text_color="black"):
         super().__init__(master)
 
         self.size = size

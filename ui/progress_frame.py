@@ -45,7 +45,6 @@ class ProgressFrame(ctk.CTkFrame):
             progress=progress,
             thickness=3,
             color=colors.get(nutrient, "#000000"),
-            bg_color="transparent",
             text_color="white"
         )
         progress_bar.pack(pady=10)
