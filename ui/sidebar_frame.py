@@ -25,22 +25,6 @@ class Sidebar(ctk.CTkFrame):
         self.separator = ctk.CTkCanvas(self, width=2)
         self.separator.grid(row=0, column=1, rowspan=len(self.tabs) + 1, padx=10, pady=0, sticky="ns") 
 
-        # Appearance Mode Selector (using a single image)
-        self.mode_img = ctk.CTkImage(light_image=Image.open("data/dark-mode.png"), size=(40, 40))
-        self.mode_label = ctk.CTkLabel(
-            self,
-            text="", 
-            image=self.mode_img, 
-            fg_color="transparent", 
-        )
-        
-        # Bind the label click event to toggle appearance mode
-        self.mode_label.bind("<Button-1>", lambda event: self.toggle_appearance_mode())
-
-        # Prevent any hover effect
-        self.mode_label.bind("<Enter>", lambda event: self.mode_label.configure(fg_color="transparent"))
-        self.mode_label.bind("<Leave>", lambda event: self.mode_label.configure(fg_color="transparent"))
-        self.mode_label.grid(row=len(self.tabs) + 2, column=0, padx=20, pady=(10, 20), sticky="ew")
 
     def switch_screen(self, selected_tab):
         """Switch between screens based on selected tab."""
@@ -48,16 +32,3 @@ class Sidebar(ctk.CTkFrame):
             self.parent.screens[self.parent.current_screen].grid_remove()
             self.parent.current_screen = selected_tab
             self.parent.screens[self.parent.current_screen].grid()
-
-    def change_appearance_mode_event(self, new_appearance_mode: str):
-        """Change the appearance mode."""
-        ctk.set_appearance_mode(new_appearance_mode)
-
-    def toggle_appearance_mode(self):
-        """Toggle between light and dark mode when clicked."""
-        current_mode = ctk.get_appearance_mode()
-
-        if current_mode == "Dark":
-            ctk.set_appearance_mode("Light")  # Switch to light mode
-        else:
-            ctk.set_appearance_mode("Dark")  # Switch to dark mode

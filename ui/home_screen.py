@@ -2,7 +2,9 @@ import customtkinter as ctk
 from ui.progress_frame import ProgressFrame
 from ui.ingredient_card import IngredientCard, load_ingredient_data
 from ui.bottom_frame import BottomFrame
+from PIL import Image
 
+DARK_MODE_IMG = "data/dark-mode.png"
 
 class HomeScreen(ctk.CTkFrame):
     def __init__(self, master, progress_view_model):
@@ -24,9 +26,27 @@ class HomeScreen(ctk.CTkFrame):
 
     def initialize_ui(self):
         self.label = ctk.CTkLabel(self, text="Nutrition Progress", font=("Arial", 20, "bold"))
-        self.label.grid(row=0, column=0, columnspan=3, pady=10)
+        self.label.grid(row=0, column=1, columnspan=1, pady=10, sticky="nsew") 
 
+        # Appearance Mode Selector (using a single image)
+        self.mode_img = ctk.CTkImage(light_image=Image.open(DARK_MODE_IMG), size=(40, 40))
+        self.mode_label = ctk.CTkLabel(
+            self,
+            text="", 
+            image=self.mode_img, 
+            fg_color="transparent", 
+        )
+        self.mode_label.bind("<Button-1>", lambda event: self.toggle_appearance_mode())
+        # Prevent any hover effect
+        self.mode_label.bind("<Enter>", lambda event: self.mode_label.configure(fg_color="transparent"))
+        self.mode_label.bind("<Leave>", lambda event: self.mode_label.configure(fg_color="transparent"))
+
+        # Configure the grid
         self.configure_grid()
+        
+        # Move the mode label to the same row as the title and align it to the right corner
+        self.mode_label.grid(row=0, column=2, padx=10, pady=10, sticky="e")  # Align it to the right (east)
+
         self.create_progress_frames()
         self.create_ingredients_frame()
         self.populate_ingredient_cards()
@@ -96,3 +116,13 @@ class HomeScreen(ctk.CTkFrame):
         # Update each progress frame with the new data
         for _, progress_frame in self.progress_frames.items():
             progress_frame.update(nutrition_data)
+            
+            
+    def toggle_appearance_mode(self):
+        """Toggle between light and dark mode when clicked."""
+        current_mode = ctk.get_appearance_mode()
+
+        if current_mode == "Dark":
+            ctk.set_appearance_mode("Light")  # Switch to light mode
+        else:
+            ctk.set_appearance_mode("Dark")  # Switch to dark mode
