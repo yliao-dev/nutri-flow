@@ -3,28 +3,38 @@ from ui.ingredient_card import IngredientCard
 
 
 class BottomFrame(ctk.CTkFrame):
-    def __init__(self, master, nutrition_manager, update_goals_callback, ingredient_cards):
+    def __init__(self, master, nutrition_manager, update_intake_callback, ingredient_cards):
         super().__init__(master)
 
         self.nutrition_manager = nutrition_manager
-        self.update_goals_callback = update_goals_callback
+        self.update_intake_callback = update_intake_callback
         self.ingredient_cards = ingredient_cards
         self.selected_ingredients = []
 
         self.initialize_ui()
 
     def initialize_ui(self):
+        # Configure grid to make sure the button has enough space vertically
+        self.grid_rowconfigure(0, weight=1)  # Row for the labels
+        self.grid_rowconfigure(1, weight=3)  # Row for the button (with higher weight to allow expansion)
+        self.grid_columnconfigure(0, weight=1)  # Column for the button
+
+        # Re-add the labels
         self.selected_ingredients_label = ctk.CTkLabel(self, text="Selected Ingredients:", font=("Arial", 12))
-        self.selected_ingredients_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
+        self.selected_ingredients_label.grid(row=0, column=0, columnspan=2, padx=10, pady=5, sticky="w")
 
-        self.selected_nutrition_label = ctk.CTkLabel(
-            self, text="Protein: 0g | Carbs: 0g | Calories: 0g", font=("Arial", 12)
-        )
-        self.selected_nutrition_label.grid(row=1, column=0, padx=10, pady=5, sticky="w")
+        self.selected_nutrition_label = ctk.CTkLabel(self, text="Protein: 0g | Carbs: 0g | Calories: 0g", font=("Arial", 12))
+        self.selected_nutrition_label.grid(row=1, column=0, columnspan=2, padx=10, pady=5, sticky="w")
 
-        self.update_button = ctk.CTkButton(self, text="Update Goals", command=self.update_goals, state=ctk.DISABLED)
-        self.update_button.grid(row=0, column=1, padx=10, pady=10)
+        # Use the existing update_button and make it take the entire space
+        self.update_button = ctk.CTkButton(self, text="Update Intake", command=self.update_intake, state=ctk.DISABLED)
+        self.update_button.grid(row=2, column=0, padx=10, pady=10, sticky="nsew")  # Button in a separate row, full container space
 
+        # Ensure the button expands both vertically and horizontally by setting weight to 1
+        self.grid_rowconfigure(2, weight=3)  # Row with the button has weight=3 to allow it to expand
+        self.grid_columnconfigure(0, weight=1)
+
+         
     def update_selected_data(self, ingredient_data, add=False):
         if add:
             if ingredient_data not in self.selected_ingredients:
@@ -50,12 +60,12 @@ class BottomFrame(ctk.CTkFrame):
 
         return f"Protein: {total_protein}g | Carbs: {total_carbs}g | Calories: {total_calories}g"
 
-    def update_goals(self):
+    def update_intake(self):
         self.nutrition_manager.update_nutrition(self.selected_ingredients)
         nutrition_data = self.nutrition_manager.get_nutrition_data()
 
         # Call the callback to update progress frames in HomeScreen
-        self.update_goals_callback(nutrition_data)
+        self.update_intake_callback(nutrition_data)
 
         # Reset selection after updating goals
         self.reset_selection()

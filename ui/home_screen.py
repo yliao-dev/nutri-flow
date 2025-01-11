@@ -87,12 +87,12 @@ class HomeScreen(ctk.CTkFrame):
         self.bottom_frame = BottomFrame(
             master=self,
             nutrition_manager=self.nutrition_manager,
-            update_goals_callback=self.update_goals,
+            update_intake_callback=self.update_intake,
             ingredient_cards=self.ingredient_cards,
         )
         self.bottom_frame.grid(row=3, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
 
-    def update_goals(self, nutrition_data):
+    def update_intake(self, nutrition_data):
         # Update each progress frame with the new data
         for _, progress_frame in self.progress_frames.items():
             progress_frame.update(nutrition_data)
