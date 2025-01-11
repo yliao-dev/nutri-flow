@@ -8,8 +8,8 @@ from model.user_profile import UserProfile
 from model.progress_model import ProgressModel
 
 
-ctk.set_appearance_mode("System")  # Modes: "System", "Dark", "Light"
-ctk.set_default_color_theme("blue")  # Themes: "blue", "green", "dark-blue"
+ctk.set_appearance_mode("System")
+ctk.set_default_color_theme("blue")
 WIDTH = 1200
 HEIGHT = 800
 
