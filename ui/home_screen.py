@@ -2,7 +2,7 @@ import customtkinter as ctk
 from ui.progress_frame import ProgressFrame
 from ui.ingredient_card import IngredientCard, load_ingredient_data
 
-class ProgressScreen(ctk.CTkFrame):
+class HomeScreen(ctk.CTkFrame):
     def __init__(self, master, progress_view_model):
         super().__init__(master)
 

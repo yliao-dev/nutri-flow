@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from ui.progress_screen import ProgressScreen
+from ui.home_screen import HomeScreen
 from ui.ingredient_screen import IngredientScreen
 from viewmodel.progress_viewmodel import ProgressViewModel
 from model.user_profile import UserProfile
@@ -33,6 +33,7 @@ class App(ctk.CTk):
         self.tabview.add("Home")
         self.tabview.add("Ingredients")
         # self.tabview.add("Data")
+    
 
         # Create the UserProfile instance
         user_profile = UserProfile(weight=75, goal_protein=150, goal_carbs=375, goal_calories=2500)
@@ -45,7 +46,7 @@ class App(ctk.CTk):
 
         # Initialize screens with ProgressViewModel passed as argument
         self.screens = {
-            "Home": ProgressScreen(self, progress_view_model),
+            "Home": HomeScreen(self, progress_view_model),
             "Ingredients": IngredientScreen(self),
         }
 
