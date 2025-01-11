@@ -23,24 +23,24 @@ class Sidebar(ctk.CTkFrame):
 
         # Add separator (black line) between sidebar and main frame
         self.separator = ctk.CTkCanvas(self, width=2)
-        self.separator.grid(row=0, column=1, rowspan=len(self.tabs) + 1, padx=10, pady=0, sticky="ns")  # Vertical separator
+        self.separator.grid(row=0, column=1, rowspan=len(self.tabs) + 1, padx=10, pady=0, sticky="ns") 
 
         # Appearance Mode Selector (using a single image)
-        self.mode_img = ctk.CTkImage(light_image=Image.open("data/dark-mode.png"), size=(40, 40))  # Using only the dark mode image
-
-        # Use CTkButton for the mode toggle, not CTkLabel
-        self.mode_button = ctk.CTkButton(
-                self, 
-                text="", 
-                image=self.mode_img, 
-                cursor="hand2", 
-                command=self.toggle_appearance_mode, 
-                fg_color="transparent",  # Transparent background
-                border_width=0,           # No border
-                hover_color=None,         # No hover effect
-                state="normal"
+        self.mode_img = ctk.CTkImage(light_image=Image.open("data/dark-mode.png"), size=(40, 40))
+        self.mode_label = ctk.CTkLabel(
+            self,
+            text="", 
+            image=self.mode_img, 
+            fg_color="transparent", 
         )
-        self.mode_button.grid(row=len(self.tabs) + 2, column=0, padx=20, pady=(10, 20), sticky="ew")
+        
+        # Bind the label click event to toggle appearance mode
+        self.mode_label.bind("<Button-1>", lambda event: self.toggle_appearance_mode())
+
+        # Prevent any hover effect
+        self.mode_label.bind("<Enter>", lambda event: self.mode_label.configure(fg_color="transparent"))
+        self.mode_label.bind("<Leave>", lambda event: self.mode_label.configure(fg_color="transparent"))
+        self.mode_label.grid(row=len(self.tabs) + 2, column=0, padx=20, pady=(10, 20), sticky="ew")
 
     def switch_screen(self, selected_tab):
         """Switch between screens based on selected tab."""
