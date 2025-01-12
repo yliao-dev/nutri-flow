@@ -22,7 +22,7 @@ class IngredientCard(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=1)
 
         # Highlight border to indicate selection
-        self.highlight_color = "blue"
+        self.highlight_color = "#2980B9"
         self.default_border_color = self.cget("fg_color")
         self.bind("<Enter>", self.on_hover)
         self.bind("<Leave>", self.on_leave)
