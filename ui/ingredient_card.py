@@ -2,7 +2,6 @@ import customtkinter as ctk
 from PIL import Image
 import json
 
-
 class IngredientCard(ctk.CTkFrame):
     # Class-level attribute to keep track of the currently selected card for detail view
     currently_selected_card = None
@@ -29,11 +28,6 @@ class IngredientCard(ctk.CTkFrame):
         self.highlight_color = "#2980B9"
         self.default_border_color = self.cget("fg_color")
         
-        # Bind events to the parent frame
-        self.bind("<Enter>", self.on_hover)
-        self.bind("<Leave>", self.on_leave)
-        self.bind("<Button-1>", self.toggle_select)  # Bind selection to the whole frame
-
         # Initialize elements as None, we'll add them later
         self.card_label = None
         self.protein_label = None
@@ -50,20 +44,36 @@ class IngredientCard(ctk.CTkFrame):
                 font=("Arial", 14, "bold"),
             )
             self.card_label.grid(row=0, column=0, pady=(10, 0))
+            # Bind hover and select events to the name label
+            self.card_label.bind("<Enter>", self.on_hover)
+            self.card_label.bind("<Leave>", self.on_leave)
+            self.card_label.bind("<Button-1>", self.toggle_select)
 
     def add_nutrition_data(self):
         """Add the nutritional information labels."""
         if not self.protein_label:
             self.protein_label = ctk.CTkLabel(self, text=f"Protein: {self.ingredient_data['protein']}g")
             self.protein_label.grid(row=1, column=0, pady=(0, 5))
+            # Bind hover and select events to the protein label
+            self.protein_label.bind("<Enter>", self.on_hover)
+            self.protein_label.bind("<Leave>", self.on_leave)
+            self.protein_label.bind("<Button-1>", self.toggle_select)
 
         if not self.carbs_label:
             self.carbs_label = ctk.CTkLabel(self, text=f"Carbs: {self.ingredient_data['carbohydrates']}g")
             self.carbs_label.grid(row=2, column=0, pady=(0, 5))
+            # Bind hover and select events to the carbs label
+            self.carbs_label.bind("<Enter>", self.on_hover)
+            self.carbs_label.bind("<Leave>", self.on_leave)
+            self.carbs_label.bind("<Button-1>", self.toggle_select)
 
         if not self.calories_label:
             self.calories_label = ctk.CTkLabel(self, text=f"Calories: {self.ingredient_data['calories']}kcal")
             self.calories_label.grid(row=3, column=0, pady=(0, 10))
+            # Bind hover and select events to the calories label
+            self.calories_label.bind("<Enter>", self.on_hover)
+            self.calories_label.bind("<Leave>", self.on_leave)
+            self.calories_label.bind("<Button-1>", self.toggle_select)
 
     def add_image(self, image_path=None):
         """Add the ingredient image if image_path is provided."""
@@ -74,6 +84,10 @@ class IngredientCard(ctk.CTkFrame):
             self.image_label = ctk.CTkLabel(self, image=img_ctk, text=None)
             self.image_label.image = img_ctk
             self.image_label.grid(row=4, column=0, pady=(10, 5))
+            # Bind hover and select events to the image label
+            self.image_label.bind("<Enter>", self.on_hover)
+            self.image_label.bind("<Leave>", self.on_leave)
+            self.image_label.bind("<Button-1>", self.toggle_select)
 
     def toggle_select(self, event=None):
         """Toggle selection of the ingredient card based on the selection type."""
@@ -123,7 +137,6 @@ class IngredientCard(ctk.CTkFrame):
         """Reset the appearance of the card when the hover ends."""
         if not self.selected:
             self.configure(fg_color=self.default_border_color)
-
 
 # Function to load the ingredients data from the JSON file
 def load_ingredients_data():
