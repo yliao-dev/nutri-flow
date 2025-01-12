@@ -103,7 +103,9 @@ class HomeScreen(ctk.CTkFrame):
                 update_selected_data_callback=self.update_bottom_frame,
                 selection_type="intake"
             )
-
+            ingredient_card.add_name()
+            ingredient_card.add_nutrition_data()
+            ingredient_card.add_image(ingredient["image"])
             ingredient_card.grid(row=0, column=ingredient["id"], padx=5, pady=5, sticky="nsew")
             self.ingredient_cards.append(ingredient_card)
 
