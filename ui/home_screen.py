@@ -82,7 +82,7 @@ class HomeScreen(ctk.CTkFrame):
         self.ingredients_frame = ctk.CTkFrame(self)
         self.ingredients_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
 
-        self.canvas = ctk.CTkCanvas(self.ingredients_frame, highlightthickness=3)
+        self.canvas = ctk.CTkCanvas(self.ingredients_frame, highlightthickness=0)
         self.canvas.pack(side="top", fill="both", expand=True)
 
         self.scrollbar = ctk.CTkScrollbar(self.ingredients_frame, orientation="horizontal", command=self.canvas.xview)
