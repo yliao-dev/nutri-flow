@@ -24,8 +24,11 @@ class IngredientCard(ctk.CTkFrame):
         # Highlight border to indicate selection
         self.highlight_color = "#2980B9"
         self.default_border_color = self.cget("fg_color")
+        
+        # Bind events to the parent frame
         self.bind("<Enter>", self.on_hover)
         self.bind("<Leave>", self.on_leave)
+        self.bind("<Button-1>", self.toggle_select)  # Bind selection to the whole frame
 
         # Ingredient Card Title (e.g., Ingredient Name)
         self.card_label = ctk.CTkLabel(
@@ -34,28 +37,28 @@ class IngredientCard(ctk.CTkFrame):
             font=("Arial", 14, "bold"),
         )
         self.card_label.grid(row=0, column=0, pady=(10, 0))
-        self.card_label.bind("<Button-1>", self.toggle_select)
 
         # Nutritional Information
         self.protein_label = ctk.CTkLabel(self, text=f"Protein: {self.ingredient_data['protein']}g")
         self.protein_label.grid(row=1, column=0, pady=(0, 5))
-        self.protein_label.bind("<Button-1>", self.toggle_select)
 
         self.carbs_label = ctk.CTkLabel(self, text=f"Carbs: {self.ingredient_data['carbohydrates']}g")
         self.carbs_label.grid(row=2, column=0, pady=(0, 5))
-        self.carbs_label.bind("<Button-1>", self.toggle_select)
 
         self.calories_label = ctk.CTkLabel(self, text=f"Calories: {self.ingredient_data['calories']}kcal")
         self.calories_label.grid(row=3, column=0, pady=(0, 10))
-        self.calories_label.bind("<Button-1>", self.toggle_select)
 
         # Load and display the image (if image_path is provided)
         if "image" in self.ingredient_data:
             self.display_image(self.ingredient_data["image"])
 
-        # Enable dragging
-        self.bind("<Button-1>", self.start_drag)
-        self.bind("<B1-Motion>", self.perform_drag)
+        # Bind the selection toggle to child widgets as well
+        self.card_label.bind("<Button-1>", self.toggle_select)
+        self.protein_label.bind("<Button-1>", self.toggle_select)
+        self.carbs_label.bind("<Button-1>", self.toggle_select)
+        self.calories_label.bind("<Button-1>", self.toggle_select)
+        if hasattr(self, 'image_label'):  # Check if the image label exists
+            self.image_label.bind("<Button-1>", self.toggle_select)
 
     def display_image(self, image_path):
         """Load and display the image using CTkImage."""
@@ -65,10 +68,13 @@ class IngredientCard(ctk.CTkFrame):
         self.image_label = ctk.CTkLabel(self, image=img_ctk, text=None)
         self.image_label.image = img_ctk
         self.image_label.grid(row=4, column=0, pady=(10, 5))
-        self.image_label.bind("<Button-1>", self.toggle_select)
 
     def toggle_select(self, event=None):
         """Toggle selection of the ingredient card."""
+        # This ensures the event is passed from any child widget to the parent frame
+        if event is not None:
+            event.widget.focus_set()  # Focus on the clicked widget to prevent other events from interfering
+
         self.selected = not self.selected
         border_color = self.highlight_color if self.selected else self.default_border_color
         self.configure(fg_color=border_color)
@@ -92,16 +98,6 @@ class IngredientCard(ctk.CTkFrame):
         """Reset the appearance of the card when the hover ends."""
         if not self.selected:
             self.configure(fg_color=self.default_border_color)
-
-    # Dragging-related methods
-    def start_drag(self, event):
-        self.drag_start_x = event.x
-        self.drag_start_y = event.y
-
-    def perform_drag(self, event):
-        dx = event.x - self.drag_start_x
-        dy = event.y - self.drag_start_y
-        self.place_configure(relx=self.winfo_x() + dx, rely=self.winfo_y() + dy)
 
 
 # Function to load the ingredients data from the JSON file
