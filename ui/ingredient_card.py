@@ -4,7 +4,10 @@ import json
 
 
 class IngredientCard(ctk.CTkFrame):
-    def __init__(self, parent, index, ingredient_data, update_selected_data_callback, width=400, height=500):
+    # Class-level attribute to keep track of the currently selected card for detail view
+    currently_selected_card = None
+
+    def __init__(self, parent, index, ingredient_data, update_selected_data_callback, selection_type, width=400, height=500):
         super().__init__(parent, corner_radius=10, width=width, height=height)
 
         # Ingredient data (loaded from JSON)
@@ -12,6 +15,7 @@ class IngredientCard(ctk.CTkFrame):
         self.index = index
         self.update_selected_data_callback = update_selected_data_callback  # Store the callback function
         self.selected = False
+        self.selection_type = selection_type  # 'intake' or 'detail'
 
         # Layout of the card (using grid for better control)
         self.grid_rowconfigure(0, weight=1)
@@ -70,8 +74,14 @@ class IngredientCard(ctk.CTkFrame):
         self.image_label.grid(row=4, column=0, pady=(10, 5))
 
     def toggle_select(self, event=None):
-        """Toggle selection of the ingredient card."""
-        # This ensures the event is passed from any child widget to the parent frame
+        """Toggle selection of the ingredient card based on the selection type."""
+        if self.selection_type == 'intake':
+            self.toggle_select_intake(event)
+        elif self.selection_type == 'detail':
+            self.toggle_select_detail(event)
+
+    def toggle_select_intake(self, event=None):
+        """Toggle selection of the ingredient card for the intake screen."""
         if event is not None:
             event.widget.focus_set()  # Focus on the clicked widget to prevent other events from interfering
 
@@ -83,6 +93,19 @@ class IngredientCard(ctk.CTkFrame):
             self.update_selected_data_callback(self.ingredient_data, add=True)
         else:
             self.update_selected_data_callback(self.ingredient_data, add=False)
+
+    def toggle_select_detail(self, event=None):
+        """Allow only one card to be selected for the ingredient details screen."""
+        # If another card is already selected, deselect it
+        if IngredientCard.currently_selected_card and IngredientCard.currently_selected_card != self:
+            IngredientCard.currently_selected_card.deselect()
+        # Select the current card
+        self.selected = True
+        self.configure(fg_color=self.highlight_color)
+
+        # Update the class-level variable to keep track of the currently selected card
+        IngredientCard.currently_selected_card = self
+        self.update_selected_data_callback(self.ingredient_data)
 
     def deselect(self):
         """Deselect the ingredient card."""

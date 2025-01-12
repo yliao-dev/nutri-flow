@@ -96,7 +96,14 @@ class HomeScreen(ctk.CTkFrame):
 
     def populate_ingredient_cards(self):
         for ingredient in self.ingredients_data:
-            ingredient_card = IngredientCard(self.scrollable_frame, ingredient["id"], ingredient, self.update_bottom_frame)
+            ingredient_card = IngredientCard(
+                self.scrollable_frame,
+                index=ingredient["id"],
+                ingredient_data=ingredient,
+                update_selected_data_callback=self.update_bottom_frame,
+                selection_type="intake"
+            )
+
             ingredient_card.grid(row=0, column=ingredient["id"], padx=5, pady=5, sticky="nsew")
             self.ingredient_cards.append(ingredient_card)
 
