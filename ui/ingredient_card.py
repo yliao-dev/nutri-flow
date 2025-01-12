@@ -77,7 +77,7 @@ class IngredientCard(ctk.CTkFrame):
 
 
 # Function to load the ingredients data from the JSON file
-def load_ingredient_data():
+def load_ingredients_data():
     with open('data/ingredients.json', 'r') as file:
         data = json.load(file)
     

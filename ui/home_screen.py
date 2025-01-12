@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from ui.progress_frame import ProgressFrame
-from ui.ingredient_card import IngredientCard, load_ingredient_data
+from ui.ingredient_card import IngredientCard, load_ingredients_data
 from ui.bottom_frame import BottomFrame
 from PIL import Image
 
@@ -12,7 +12,7 @@ class HomeScreen(ctk.CTkFrame):
 
         self.progress_view_model = progress_view_model
         self.nutrition_manager = self.progress_view_model.nutrition_manager
-        self.ingredients_data = load_ingredient_data()
+        self.ingredients_data = load_ingredients_data()
         self.user_goals = {
             "protein": self.progress_view_model.user_profile.goal_protein,
             "carbohydrate": self.progress_view_model.user_profile.goal_carbs,
@@ -100,8 +100,8 @@ class HomeScreen(ctk.CTkFrame):
             ingredient_card.grid(row=0, column=ingredient["id"], padx=5, pady=5, sticky="nsew")
             self.ingredient_cards.append(ingredient_card)
 
-    def update_bottom_frame(self, ingredient_data, add):
-        self.bottom_frame.update_selected_data(ingredient_data, add)
+    def update_bottom_frame(self, ingredients_data, add):
+        self.bottom_frame.update_selected_data(ingredients_data, add)
 
     def create_bottom_frame(self):
         self.bottom_frame = BottomFrame(
