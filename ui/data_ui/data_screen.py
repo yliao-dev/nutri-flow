@@ -2,6 +2,7 @@ import os
 from tkinter import filedialog
 import pandas as pd
 import customtkinter as ctk
+from datetime import datetime
 from config import ROOT_PATH
 
 class DataScreen(ctk.CTkFrame):
@@ -61,6 +62,13 @@ class DataScreen(ctk.CTkFrame):
         except Exception as e:
             print(f"Failed to read file: {e}")
 
+
+    def export_data(self):
+        """Export data (to be implemented based on specific needs)."""
+        print("Export Data button clicked")
+        
+        
+        
     def create_new_data(self):
         """Create a new daily log CSV file with pandas."""
         # Define default columns and data
@@ -73,10 +81,16 @@ class DataScreen(ctk.CTkFrame):
         df = pd.DataFrame(data)  # Create an empty DataFrame with the defined columns
         
         # Define a unique file name based on the current time
-        from datetime import datetime
         timestamp = datetime.now().strftime("%Y-%m-%d")
         file_name = f"daily_log_{timestamp}.csv"
         file_path = os.path.join(self.daily_logs_path, file_name)
+        
+        # Check if the file already exists and generate a unique filename if necessary
+        counter = 1
+        while os.path.exists(file_path):
+            file_name = f"daily_log_{timestamp}({counter}).csv"
+            file_path = os.path.join(self.daily_logs_path, file_name)
+            counter += 1
         
         try:
             # Save the DataFrame to a CSV file
@@ -84,7 +98,3 @@ class DataScreen(ctk.CTkFrame):
             print(f"New daily log created: {file_path}")
         except Exception as e:
             print(f"Failed to create new log: {e}")
-
-    def export_data(self):
-        """Export data (to be implemented based on specific needs)."""
-        print("Export Data button clicked")
