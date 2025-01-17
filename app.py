@@ -3,9 +3,9 @@ from ui.sidebar_frame import Sidebar
 from ui.home_ui.home_screen import HomeScreen
 from ui.ingredients_ui.ingredient_screen import IngredientScreen
 from ui.data_ui.data_screen import DataScreen
-from viewmodel.progress_viewmodel import ProgressViewModel
+from viewmodel.nutrition_viewmodel import NutritionViewModel
 from model.user_profile import UserProfile
-from model.progress_model import ProgressModel
+from model.nutrition_model import NutritionModel
 from config import *
 
 class App(ctk.CTk):
@@ -35,12 +35,12 @@ class App(ctk.CTk):
 
         # Create the UserProfile and other components...
         user_profile = UserProfile(weight=75, goal_protein=150, goal_carbs=375, goal_calories=2500)
-        progress_model = ProgressModel(user_profile)
-        progress_view_model = ProgressViewModel(user_profile, progress_model)
+        nutrition_model = NutritionModel(user_profile)
+        nutrition_view_model = NutritionViewModel(user_profile, nutrition_model)
 
         # Initialize screens
         self.screens = {
-            "Home": HomeScreen(self, progress_view_model),
+            "Home": HomeScreen(self, nutrition_view_model),
             "Ingredients": IngredientScreen(self),
             "Data": DataScreen(self)
         }

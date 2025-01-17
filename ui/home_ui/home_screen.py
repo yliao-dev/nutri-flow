@@ -7,16 +7,15 @@ from PIL import Image
 DARK_MODE_IMG = "data/dark-mode.png"
 
 class HomeScreen(ctk.CTkFrame):
-    def __init__(self, master, progress_view_model):
+    def __init__(self, master, nutrition_view_model):
         super().__init__(master)
 
-        self.progress_view_model = progress_view_model
-        self.nutrition_manager = self.progress_view_model.nutrition_manager
+        self.nutrition_view_model = nutrition_view_model
         self.ingredients_data = load_ingredients_data()
         self.user_goals = {
-            "protein": self.progress_view_model.user_profile.goal_protein,
-            "carbohydrate": self.progress_view_model.user_profile.goal_carbs,
-            "calories": self.progress_view_model.user_profile.goal_calories,
+            "protein": self.nutrition_view_model.user_profile.goal_protein,
+            "carbohydrate": self.nutrition_view_model.user_profile.goal_carbs,
+            "calories": self.nutrition_view_model.user_profile.goal_calories,
         }
 
         self.progress_frames = {}  # Dictionary to store the progress frames
