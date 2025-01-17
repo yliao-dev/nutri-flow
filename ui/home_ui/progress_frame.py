@@ -76,8 +76,8 @@ class ProgressFrame(ctk.CTkFrame):
         goal_value = self.goal_values.get(self.goal_name, 0)
         percentage = self.calculate_percentage(self.goal_name)
         
-        goal_label_text = f"{self.goal_name.capitalize()} Goal: {goal_value}g"
-        consumed_label_text = f"Consumed: {consumed_value}g | {round(percentage, 2)}%"
+        goal_label_text = f"{self.goal_name.capitalize()} Goal: {goal_value}"
+        consumed_label_text = f"Consumed: {consumed_value} | {round(percentage, 2)}%"
         
         # Apply different font and size for each label
         self.goal_label.configure(text=goal_label_text, font=("Arial", 16, "bold"))
