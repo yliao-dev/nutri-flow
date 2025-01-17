@@ -6,12 +6,7 @@ from ui.data_ui.data_screen import DataScreen
 from viewmodel.progress_viewmodel import ProgressViewModel
 from model.user_profile import UserProfile
 from model.progress_model import ProgressModel
-
-
-ctk.set_appearance_mode("System")
-ctk.set_default_color_theme("green")
-WIDTH = 1200
-HEIGHT = 800
+from config import *
 
 class App(ctk.CTk):
     """
