@@ -6,6 +6,8 @@ myenv/*
 **/__pycache__/
 *.py[cod]
 
+*.csv
+
 # IDE/editor specific files
 .vscode/
 .idea/
