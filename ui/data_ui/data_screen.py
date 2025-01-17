@@ -4,11 +4,13 @@ import pandas as pd
 import customtkinter as ctk
 from datetime import datetime
 from config import ROOT_PATH
+from viewmodel.nutrition_viewmodel import NutritionViewModel
 
 class DataScreen(ctk.CTkFrame):
-    def __init__(self, parent):
+    def __init__(self, parent, nutrition_view_model):
         super().__init__(parent)
         self.initialize_ui()
+        self.nutrition_view_model = nutrition_view_model
         self.daily_logs_path = os.path.join(ROOT_PATH, "daily_logs")  # Path to root/daily_logs
         os.makedirs(self.daily_logs_path, exist_ok=True)
         
@@ -64,20 +66,29 @@ class DataScreen(ctk.CTkFrame):
 
 
     def export_data(self):
-        """Export data (to be implemented based on specific needs)."""
-        print("Export Data button clicked")
+        """Export data."""
+        timestamp = datetime.now().strftime("%Y-%m-%d")
+        data = {
+            "Date": [timestamp],
+            "Protein Goal (g)": [self.nutrition_view_model.user_profile.goal_protein],
+            "Carbohydrates Goal (g)": [self.nutrition_view_model.user_profile.goal_carbs],
+            "Calories Goal (kcal)": [self.nutrition_view_model.user_profile.goal_calories],
+            "Protein Consumed (g)": [self.nutrition_view_model.get_nutrition_data()['protein']],
+            "Carbohydrates Consumed (g)": [self.nutrition_view_model.get_nutrition_data()['carbohydrate']],
+            "Calories Consumed (kcal)": [self.nutrition_view_model.get_nutrition_data()['calories']],
+            "Protein Percentage (%)": [self.nutrition_view_model.get_nutrition_percentages()['protein']],
+            "Carbohydrates Percentage (%)": [self.nutrition_view_model.get_nutrition_percentages()['carbohydrate']],
+            "Calories Percentage (%)": [self.nutrition_view_model.get_nutrition_percentages()['calories']]
+        }
+        self.create_new_data(data)
         
         
         
-    def create_new_data(self):
+        
+    def create_new_data(self, data):
         """Create a new daily log CSV file with pandas."""
         # Define default columns and data
-        data = {
-            "Date": [],
-            "Protein (g)": [],
-            "Carbohydrates (g)": [],
-            "Calories (kcal)": []
-        }
+        
         df = pd.DataFrame(data)  # Create an empty DataFrame with the defined columns
         
         # Define a unique file name based on the current time

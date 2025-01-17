@@ -42,7 +42,7 @@ class App(ctk.CTk):
         self.screens = {
             "Home": HomeScreen(self, nutrition_view_model),
             "Ingredients": IngredientScreen(self),
-            "Data": DataScreen(self)
+            "Data": DataScreen(self, nutrition_view_model)
         }
 
         # Add screens to Column 1 and hide them initially
