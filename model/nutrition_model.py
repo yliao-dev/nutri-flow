@@ -7,8 +7,10 @@ class NutritionModel:
         self.nutrition_data = {
             'protein': 0.0,  # In grams
             'carbohydrate': 0.0,    # In grams
-            'calories': 0.0  # In calories
+            'calories': 0.0,  # In calories
+            'fat': 0.0,
         }
+        self.consumed_ingredients = {}
 
     def update_nutrition(self, selected_ingredients):
         """
@@ -16,9 +18,20 @@ class NutritionModel:
         :param selected_ingredients: A list of dictionaries, each containing 'protein', 'carbohydrate', and 'calories' for an ingredient.
         """
         for ingredient in selected_ingredients:
-            self.nutrition_data['protein'] += ingredient.get('protein', 0)
-            self.nutrition_data['carbohydrate'] += ingredient.get('carbohydrates', 0)
-            self.nutrition_data['calories'] += ingredient.get('calories', 0)
+            self.nutrition_data['protein'] += ingredient['nutrition'].get('protein', 0)
+            self.nutrition_data['carbohydrate'] += ingredient['nutrition'].get('carbohydrates', 0)
+            self.nutrition_data['calories'] += ingredient['nutrition'].get('calories', 0)
+            self.nutrition_data['fat'] += ingredient['nutrition'].get('fat', 0)
+                
+            name = ingredient.get('name')
+            amount = ingredient.get('amount', 0)  # The amount consumed in grams
+
+            # Update the total amount consumed in the consumed_ingredients dictionary
+            if name in self.consumed_ingredients:
+                self.consumed_ingredients[name].append(amount)
+            else:
+                self.consumed_ingredients[name] = [amount]
+
 
     def get_nutrition_data(self):
         """
@@ -26,6 +39,13 @@ class NutritionModel:
         :return: A dictionary containing 'protein', 'carbohydrate', and 'calories'.
         """
         return self.nutrition_data
+    
+    def get_consumed_ingredients(self):
+        """
+        Returns the consumed ingredients with the amount consumed in grams.
+        :return: A dictionary containing the name of each consumed ingredient and the amount consumed in grams.
+        """
+        return self.consumed_ingredients
 
     def get_nutrition_percentages(self):
         """

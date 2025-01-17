@@ -56,16 +56,15 @@ class BottomFrame(ctk.CTkFrame):
         self.selected_nutrition_label.configure(text=selected_ingredients_text)
 
     def format_ingredient_text(self, ingredients):
-        total_protein = round(sum([ingredient["protein"] for ingredient in ingredients]), 2)
-        total_carbs = round(sum([ingredient["carbohydrates"] for ingredient in ingredients]), 2)
-        total_calories = round(sum([ingredient["calories"] for ingredient in ingredients]), 2)
+        total_protein = round(sum([ingredient['nutrition']["protein"] for ingredient in ingredients]), 2)
+        total_carbs = round(sum([ingredient['nutrition']["carbohydrates"] for ingredient in ingredients]), 2)
+        total_calories = round(sum([ingredient['nutrition']["calories"] for ingredient in ingredients]), 2)
 
         return f"Protein: {total_protein}g | Carbs: {total_carbs}g | Calories: {total_calories}g"
 
     def update_intake(self):
         self.nutrition_view_model.update_nutrition(self.selected_ingredients)
         nutrition_data = self.nutrition_view_model.get_nutrition_data()
-
         # Call the callback to update progress frames in HomeScreen
         self.update_intake_callback(nutrition_data)
 

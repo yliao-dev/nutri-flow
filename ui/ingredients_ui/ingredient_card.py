@@ -52,7 +52,7 @@ class IngredientCard(ctk.CTkFrame):
     def add_nutrition_data(self):
         """Add the nutritional information labels."""
         if not self.protein_label:
-            self.protein_label = ctk.CTkLabel(self, text=f"Protein: {self.ingredient_data['protein']}g")
+            self.protein_label = ctk.CTkLabel(self, text=f"Protein: {self.ingredient_data['nutrition']['protein']}g")
             self.protein_label.grid(row=1, column=0, pady=(0, 5))
             # Bind hover and select events to the protein label
             self.protein_label.bind("<Enter>", self.on_hover)
@@ -60,7 +60,7 @@ class IngredientCard(ctk.CTkFrame):
             self.protein_label.bind("<Button-1>", self.toggle_select)
 
         if not self.carbs_label:
-            self.carbs_label = ctk.CTkLabel(self, text=f"Carbs: {self.ingredient_data['carbohydrates']}g")
+            self.carbs_label = ctk.CTkLabel(self, text=f"Carbs: {self.ingredient_data['nutrition']['carbohydrates']}g")
             self.carbs_label.grid(row=2, column=0, pady=(0, 5))
             # Bind hover and select events to the carbs label
             self.carbs_label.bind("<Enter>", self.on_hover)
@@ -68,7 +68,7 @@ class IngredientCard(ctk.CTkFrame):
             self.carbs_label.bind("<Button-1>", self.toggle_select)
 
         if not self.calories_label:
-            self.calories_label = ctk.CTkLabel(self, text=f"Calories: {self.ingredient_data['calories']}kcal")
+            self.calories_label = ctk.CTkLabel(self, text=f"Calories: {self.ingredient_data['nutrition']['calories']}kcal")
             self.calories_label.grid(row=3, column=0, pady=(0, 10))
             # Bind hover and select events to the calories label
             self.calories_label.bind("<Enter>", self.on_hover)
