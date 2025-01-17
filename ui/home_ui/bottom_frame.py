@@ -3,10 +3,10 @@ from ui.ingredients_ui.ingredient_card import IngredientCard
 
 
 class BottomFrame(ctk.CTkFrame):
-    def __init__(self, master, nutrition_manager, update_intake_callback, ingredient_cards):
+    def __init__(self, master, nutrition_view_model, update_intake_callback, ingredient_cards):
         super().__init__(master)
 
-        self.nutrition_manager = nutrition_manager
+        self.nutrition_view_model = nutrition_view_model
         self.update_intake_callback = update_intake_callback
         self.ingredient_cards = ingredient_cards
         self.selected_ingredients = []
@@ -63,8 +63,8 @@ class BottomFrame(ctk.CTkFrame):
         return f"Protein: {total_protein}g | Carbs: {total_carbs}g | Calories: {total_calories}g"
 
     def update_intake(self):
-        self.nutrition_manager.update_nutrition(self.selected_ingredients)
-        nutrition_data = self.nutrition_manager.get_nutrition_data()
+        self.nutrition_view_model.update_nutrition(self.selected_ingredients)
+        nutrition_data = self.nutrition_view_model.get_nutrition_data()
 
         # Call the callback to update progress frames in HomeScreen
         self.update_intake_callback(nutrition_data)

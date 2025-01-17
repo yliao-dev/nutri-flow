@@ -60,7 +60,7 @@ class HomeScreen(ctk.CTkFrame):
 
     def create_progress_frames(self):
         goal_names = ["protein", "carbohydrate", "calories"]
-        consumed_values = self.nutrition_manager.get_nutrition_data()
+        consumed_values = self.nutrition_view_model.get_nutrition_data()
         goal_values = self.user_goals
 
         for index, goal_name in enumerate(goal_names):
@@ -114,7 +114,7 @@ class HomeScreen(ctk.CTkFrame):
     def create_bottom_frame(self):
         self.bottom_frame = BottomFrame(
             master=self,
-            nutrition_manager=self.nutrition_manager,
+            nutrition_view_model=self.nutrition_view_model,
             update_intake_callback=self.update_intake,
             ingredient_cards=self.ingredient_cards,
         )
