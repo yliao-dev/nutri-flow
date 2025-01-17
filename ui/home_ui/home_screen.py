@@ -1,7 +1,7 @@
 import customtkinter as ctk
-from ui.progress_frame import ProgressFrame
-from ui.ingredient_card import IngredientCard, load_ingredients_data
-from ui.bottom_frame import BottomFrame
+from ui.home_ui.progress_frame import ProgressFrame
+from ui.ingredients_ui.ingredient_card import IngredientCard, load_ingredients_data
+from ui.home_ui.bottom_frame import BottomFrame
 from PIL import Image
 
 DARK_MODE_IMG = "data/dark-mode.png"

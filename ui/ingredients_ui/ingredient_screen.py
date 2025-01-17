@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from ui.ingredient_card import IngredientCard, load_ingredients_data
+from ui.ingredients_ui.ingredient_card import IngredientCard, load_ingredients_data
 from PIL import Image
 
 

@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from ui.ingredient_card import IngredientCard
+from ui.ingredients_ui.ingredient_card import IngredientCard
 
 
 class BottomFrame(ctk.CTkFrame):

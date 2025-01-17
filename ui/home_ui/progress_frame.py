@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from ui.circular_progress_bar import CircularProgressBar  # Assuming this is correct
+from ui.home_ui.circular_progress_bar import CircularProgressBar  # Assuming this is correct
 
 class ProgressFrame(ctk.CTkFrame):
     def __init__(self, master, goal_name, goal_values, consumed_value=None, update_callback=None):
