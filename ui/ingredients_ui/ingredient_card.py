@@ -86,7 +86,6 @@ class IngredientCard(ctk.CTkFrame):
             return True
         return False
     
-        
     def add_nutrition_data(self):
         """Add the nutritional information labels."""
         if not self.protein_label:
