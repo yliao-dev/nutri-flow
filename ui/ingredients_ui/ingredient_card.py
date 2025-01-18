@@ -54,30 +54,35 @@ class IngredientCard(ctk.CTkFrame):
         """Add an editable entry for the custom serving size in grams."""
         if not hasattr(self, 'serving_size_entry'):  # Avoid creating multiple entries
             self.serving_size_var = ctk.StringVar(value="100")  # Initialize the serving size variable
-            
+            validate_command = self.register(self.validate_serving_size_input)
             # Create the entry widget for serving size
             self.serving_size_entry = ctk.CTkEntry(
                 self,
                 width=200,
                 font=("Arial", 12),
                 placeholder_text="Enter serving size in grams",
-                textvariable=self.serving_size_var
+                textvariable=self.serving_size_var,
+                validate="key",  # Enable validation for each key press
+                validatecommand=(validate_command, "%P")
             )
             # Place it in the grid row after the image
             self.serving_size_entry.grid(row=5, column=0, pady=(10, 0))
-            # for event in ("<FocusOut>", "<Button-1>"):
-            #     self.serving_size_entry.bind(event, self.on_serving_size_change)
             
     def on_serving_size_change(self, event=None):
         """Handle changes to the serving size when the user finishes editing."""
         new_serving_size = self.serving_size_var.get()
         try:
             new_serving_size = float(new_serving_size)
-            # You can now use this new serving size (e.g., update the ingredient data)
             print(f"Updated serving size: {new_serving_size} grams")
         except ValueError:
-            # Handle invalid input
             print("Invalid serving size entered.")
+    
+    def validate_serving_size_input(self, value):
+        """Validate the input for the serving size entry."""
+        # Allow only digits and one decimal point
+        if value == "" or value.isdigit() or (value.count('.') == 1 and value.replace('.', '').isdigit()):
+            return True
+        return False
     
         
     def add_nutrition_data(self):
