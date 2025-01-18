@@ -54,7 +54,7 @@ class NutritionModel:
         """
         percentages = {
             'protein': self._calculate_percentage(self.nutrition_data['protein'], self.user_profile.goal_protein),
-            'carbohydrate': self._calculate_percentage(self.nutrition_data['carbohydrate'], self.user_profile.goal_carbs),
+            'carbohydrate': self._calculate_percentage(self.nutrition_data['carbohydrate'], self.user_profile.goal_carbohydrates),
             'calories': self._calculate_percentage(self.nutrition_data['calories'], self.user_profile.goal_calories)
         }
         return percentages

@@ -14,7 +14,8 @@ class HomeScreen(ctk.CTkFrame):
         self.ingredients_data = load_ingredients_data()
         self.user_goals = {
             "protein": self.nutrition_view_model.user_profile.goal_protein,
-            "carbohydrate": self.nutrition_view_model.user_profile.goal_carbs,
+            "carbohydrate": self.nutrition_view_model.user_profile.goal_carbohydrates,
+            "fat": self.nutrition_view_model.user_profile.goal_fat,
             "calories": self.nutrition_view_model.user_profile.goal_calories,
         }
 
@@ -59,7 +60,7 @@ class HomeScreen(ctk.CTkFrame):
         self.grid_rowconfigure(3, weight=1)
 
     def create_progress_frames(self):
-        goal_names = ["protein", "carbohydrate", "calories"]
+        goal_names = ["protein", "carbohydrate", "fat"]
         consumed_values = self.nutrition_view_model.get_nutrition_data()
         goal_values = self.user_goals
 

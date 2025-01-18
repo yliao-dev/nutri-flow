@@ -1,3 +1,4 @@
+import json
 import customtkinter as ctk
 from ui.sidebar_frame import Sidebar
 from ui.home_ui.home_screen import HomeScreen
@@ -33,8 +34,15 @@ class App(ctk.CTk):
         )
         self.sidebar.grid(row=0, column=0, sticky="nsew")
 
-        # Create the UserProfile and other components...
-        user_profile = UserProfile(weight=75, goal_protein=150, goal_carbs=375, goal_calories=2500)
+        user_profile_data = self.read_user_profile_from_json()
+        print(user_profile_data)
+        user_profile = UserProfile(
+            weight=user_profile_data["weight"],
+            goal_protein=user_profile_data["goal_protein"],
+            goal_carbohydrates=user_profile_data["goal_carbohydrates"],
+            goal_fat=user_profile_data["goal_fat"],
+            goal_calories=user_profile_data["goal_calories"]
+        )
         nutrition_model = NutritionModel(user_profile)
         nutrition_view_model = NutritionViewModel(user_profile, nutrition_model)
 
@@ -61,6 +69,14 @@ class App(ctk.CTk):
         x = (screen_width - width) // 2
         y = (screen_height - height) // 2
         self.geometry(f"{width}x{height}+{x}+{y}")
+    
+    def read_user_profile_from_json(self):
+        try:
+            with open(USER_CONFIG_PATH, "r") as file:
+                return json.load(file)
+        except FileNotFoundError:
+            print(f"Error: {USER_CONFIG_PATH} not found.")
+            return {}
 
 if __name__ == "__main__":
     window = App()

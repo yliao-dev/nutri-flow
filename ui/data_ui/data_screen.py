@@ -3,16 +3,14 @@ from tkinter import filedialog
 import pandas as pd
 import customtkinter as ctk
 from datetime import datetime
-from config import ROOT_PATH, LOG_PATH
-from viewmodel.nutrition_viewmodel import NutritionViewModel
+from config import LOG_PATH
 
 class DataScreen(ctk.CTkFrame):
     def __init__(self, parent, nutrition_view_model):
         super().__init__(parent)
         self.initialize_ui()
         self.nutrition_view_model = nutrition_view_model
-        self.daily_logs_path = os.path.join(ROOT_PATH, LOG_PATH)  # Path to root/daily_logs
-        os.makedirs(self.daily_logs_path, exist_ok=True)
+        os.makedirs(LOG_PATH, exist_ok=True)
         
     def initialize_ui(self):
         self.grid_rowconfigure(0, weight=1)  # Dates row
@@ -46,7 +44,7 @@ class DataScreen(ctk.CTkFrame):
         """Allow the user to select and read a CSV file using pandas."""
         file_path = filedialog.askopenfilename(
             title="Select a CSV File",
-            initialdir=self.daily_logs_path,
+            initialdir=LOG_PATH,
             filetypes=(("CSV Files", "*.csv"), ("All Files", "*.*"))
         )
         
@@ -69,24 +67,26 @@ class DataScreen(ctk.CTkFrame):
         """Export data."""
         timestamp = datetime.now().strftime("%Y-%m-%d")
         csv_data = [
-            ["Date"],  # Header for the date section
-            [timestamp],  # Actual date
-            [],  # Empty row
-            ["Protein Goal (g)", "Carbohydrates Goal (g)", "Calories Goal (kcal)"],  # Goal headers
+            ["Date"],
+            [timestamp],
+            ["Weight(kg)"],
+            [self.nutrition_view_model.user_profile.weight],
+            [],
+            ["Protein Goal (g)", "Carbohydrates Goal (g)", "Calories Goal (kcal)"],
             [
                 self.nutrition_view_model.user_profile.goal_protein,
-                self.nutrition_view_model.user_profile.goal_carbs,
+                self.nutrition_view_model.user_profile.goal_carbohydrates,
                 self.nutrition_view_model.user_profile.goal_calories,
             ],
-            [],  # Empty row
-            ["Protein Consumed (g)", "Carbohydrates Consumed (g)", "Calories Consumed (kcal)"],  # Consumed headers
+            [],
+            ["Protein Consumed (g)", "Carbohydrates Consumed (g)", "Calories Consumed (kcal)"],
             [
                 self.nutrition_view_model.get_nutrition_data()['protein'],
                 self.nutrition_view_model.get_nutrition_data()['carbohydrate'],
                 self.nutrition_view_model.get_nutrition_data()['calories'],
             ],
-            [],  # Empty row
-            ["Protein Percentage (%)", "Carbohydrates Percentage (%)", "Calories Percentage (%)"],  # Percentage headers
+            [],
+            ["Protein Percentage (%)", "Carbohydrates Percentage (%)", "Calories Percentage (%)"],
             [
                 self.nutrition_view_model.get_nutrition_percentages()['protein'],
                 self.nutrition_view_model.get_nutrition_percentages()['carbohydrate'],
@@ -101,12 +101,12 @@ class DataScreen(ctk.CTkFrame):
         """Create a new daily log CSV file with pandas."""
         timestamp = datetime.now().strftime("%Y-%m-%d")
         file_name = f"nutrition_log_{timestamp}.csv"
-        file_path = os.path.join(self.daily_logs_path, file_name)
+        file_path = os.path.join(LOG_PATH, file_name)
         
         counter = 1
         while os.path.exists(file_path):
             file_name = f"nutrition_log_{timestamp}({counter}).csv"
-            file_path = os.path.join(self.daily_logs_path, file_name)
+            file_path = os.path.join(LOG_PATH, file_name)
             counter += 1
         
         try:

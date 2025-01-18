@@ -12,7 +12,7 @@ class ProgressFrame(ctk.CTkFrame):
         
         self.PROTEIN_COLOR = "#025d93"
         self.CARBOHYDRATE_COLOR = "#f9d77c"
-        self.CALORIES_COLOR = "#86f4ee"
+        self.FAT_COLOR = "#86f4ee"
         
         self.initialize_ui()
 
@@ -34,7 +34,7 @@ class ProgressFrame(ctk.CTkFrame):
         colors = {
             "protein": self.PROTEIN_COLOR,
             "carbohydrate": self.CARBOHYDRATE_COLOR,
-            "calories": self.CALORIES_COLOR
+            "fat": self.FAT_COLOR
         }
         
         progress = (self.consumed_value.get(nutrient, 0) / self.goal_values.get(nutrient, 1)) * 100
@@ -76,8 +76,8 @@ class ProgressFrame(ctk.CTkFrame):
         goal_value = self.goal_values.get(self.goal_name, 0)
         percentage = self.calculate_percentage(self.goal_name)
         
-        goal_label_text = f"{self.goal_name.capitalize()} Goal: {goal_value}"
-        consumed_label_text = f"Consumed: {consumed_value} | {round(percentage, 2)}%"
+        goal_label_text = f"{self.goal_name.capitalize()} Goal: {goal_value}g"
+        consumed_label_text = f"Consumed: {consumed_value}g | {round(percentage, 2)}%"
         
         # Apply different font and size for each label
         self.goal_label.configure(text=goal_label_text, font=("Arial", 16, "bold"))

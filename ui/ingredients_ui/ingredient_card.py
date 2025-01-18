@@ -32,7 +32,7 @@ class IngredientCard(ctk.CTkFrame):
         self.card_label = None
         self.protein_label = None
         self.carbs_label = None
-        self.calories_label = None
+        self.fat_label = None
         self.image_label = None
 
     def add_name(self):
@@ -67,13 +67,13 @@ class IngredientCard(ctk.CTkFrame):
             self.carbs_label.bind("<Leave>", self.on_leave)
             self.carbs_label.bind("<Button-1>", self.toggle_select)
 
-        if not self.calories_label:
-            self.calories_label = ctk.CTkLabel(self, text=f"Calories: {self.ingredient_data['nutrition']['calories']}kcal")
-            self.calories_label.grid(row=3, column=0, pady=(0, 10))
-            # Bind hover and select events to the calories label
-            self.calories_label.bind("<Enter>", self.on_hover)
-            self.calories_label.bind("<Leave>", self.on_leave)
-            self.calories_label.bind("<Button-1>", self.toggle_select)
+        if not self.fat_label:
+            self.fat_label = ctk.CTkLabel(self, text=f"Fat: {self.ingredient_data['nutrition']['fat']}g")
+            self.fat_label.grid(row=3, column=0, pady=(0, 10))
+            # Bind hover and select events to the fat label
+            self.fat_label.bind("<Enter>", self.on_hover)
+            self.fat_label.bind("<Leave>", self.on_leave)
+            self.fat_label.bind("<Button-1>", self.toggle_select)
 
     def add_image(self, image_path=None):
         """Add the ingredient image if image_path is provided."""
