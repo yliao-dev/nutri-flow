@@ -87,7 +87,7 @@ class IngredientScreen(ctk.CTkFrame):
     def update_selected_ingredient(self, ingredient_data):
         """Update the UI to display selected ingredient details."""
         # Update the title with the ingredient name
-        self.detail_title_label.configure(text=ingredient_data["name"].title())
+        self.detail_title_label.configure(text=ingredient_data["name"].replace('_', ' ').title())
 
         # Update the image if available
         if "image" in ingredient_data:
@@ -100,9 +100,10 @@ class IngredientScreen(ctk.CTkFrame):
 
         # Update the nutritional information
         nutrition_text = (
-            f"Protein: {ingredient_data['protein']}g\n"
-            f"Carbs: {ingredient_data['carbohydrates']}g\n"
-            f"Calories: {ingredient_data['calories']} kcal"
+            f"Protein: {ingredient_data['nutrition']['protein']}g\n"
+            f"carbohydrates: {ingredient_data['nutrition']['carbohydrates']}g\n"
+            f"Fat: {ingredient_data['nutrition']['fat']} g\n"
+            f"Calories: {ingredient_data['nutrition']['calories']} kcal"
         )
         self.detail_info_label.configure(text=nutrition_text)
 

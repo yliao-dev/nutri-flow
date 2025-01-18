@@ -40,7 +40,7 @@ class IngredientCard(ctk.CTkFrame):
         if not self.card_label:
             self.card_label = ctk.CTkLabel(
                 self,
-                text=f"{self.ingredient_data['name'].title()}",
+                text=f"{self.ingredient_data['name'].replace('_', ' ').title()}",
                 font=("Arial", 14, "bold"),
             )
             self.card_label.grid(row=0, column=0, pady=(10, 0))
