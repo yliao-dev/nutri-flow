@@ -26,7 +26,7 @@ class HomeScreen(ctk.CTkFrame):
 
     def initialize_ui(self):
         self.label = ctk.CTkLabel(self, text="Nutrition Progress", font=("Arial", 20, "bold"))
-        self.label.grid(row=0, column=1, columnspan=1, pady=10, sticky="nsew") 
+        self.label.grid(row=0, column=1, columnspan=1, pady=5, sticky="nsew") 
         self.weight_label = ctk.CTkLabel(
                     self,
                     font=("Arial", 16, "bold"),
@@ -59,7 +59,7 @@ class HomeScreen(ctk.CTkFrame):
     def configure_grid(self):
         for column in range(3):
             self.grid_columnconfigure(column, weight=1, uniform="nutrition")
-        self.grid_rowconfigure(1, weight=3, minsize=150)  # Adjusted minsize for better display
+        self.grid_rowconfigure(1, weight=2, minsize=150)  # Adjusted minsize for better display
         self.grid_rowconfigure(2, weight=2)
         self.grid_rowconfigure(3, weight=1)
 
@@ -84,7 +84,7 @@ class HomeScreen(ctk.CTkFrame):
 
     def create_ingredients_frame(self):
         self.ingredients_frame = ctk.CTkFrame(self)
-        self.ingredients_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
+        self.ingredients_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=0, sticky="nsew")
 
         self.canvas = ctk.CTkCanvas(self.ingredients_frame, highlightthickness=0)
         self.canvas.pack(side="top", fill="both", expand=True)
