@@ -68,38 +68,44 @@ class DataScreen(ctk.CTkFrame):
     def export_data(self):
         """Export data."""
         timestamp = datetime.now().strftime("%Y-%m-%d")
-        data = {
-            "Date": [timestamp],
-            "Protein Goal (g)": [self.nutrition_view_model.user_profile.goal_protein],
-            "Carbohydrates Goal (g)": [self.nutrition_view_model.user_profile.goal_carbs],
-            "Calories Goal (kcal)": [self.nutrition_view_model.user_profile.goal_calories],
-            "Protein Consumed (g)": [self.nutrition_view_model.get_nutrition_data()['protein']],
-            "Carbohydrates Consumed (g)": [self.nutrition_view_model.get_nutrition_data()['carbohydrate']],
-            "Calories Consumed (kcal)": [self.nutrition_view_model.get_nutrition_data()['calories']],
-            "Protein Percentage (%)": [self.nutrition_view_model.get_nutrition_percentages()['protein']],
-            "Carbohydrates Percentage (%)": [self.nutrition_view_model.get_nutrition_percentages()['carbohydrate']],
-            "Calories Percentage (%)": [self.nutrition_view_model.get_nutrition_percentages()['calories']]
-        }
-        self.create_new_data(data)
-        
-        
+        csv_data = [
+            ["Date"],  # Header for the date section
+            [timestamp],  # Actual date
+            [],  # Empty row
+            ["Protein Goal (g)", "Carbohydrates Goal (g)", "Calories Goal (kcal)"],  # Goal headers
+            [
+                self.nutrition_view_model.user_profile.goal_protein,
+                self.nutrition_view_model.user_profile.goal_carbs,
+                self.nutrition_view_model.user_profile.goal_calories,
+            ],
+            [],  # Empty row
+            ["Protein Consumed (g)", "Carbohydrates Consumed (g)", "Calories Consumed (kcal)"],  # Consumed headers
+            [
+                self.nutrition_view_model.get_nutrition_data()['protein'],
+                self.nutrition_view_model.get_nutrition_data()['carbohydrate'],
+                self.nutrition_view_model.get_nutrition_data()['calories'],
+            ],
+            [],  # Empty row
+            ["Protein Percentage (%)", "Carbohydrates Percentage (%)", "Calories Percentage (%)"],  # Percentage headers
+            [
+                self.nutrition_view_model.get_nutrition_percentages()['protein'],
+                self.nutrition_view_model.get_nutrition_percentages()['carbohydrate'],
+                self.nutrition_view_model.get_nutrition_percentages()['calories'],
+            ]
+        ]
+        self.create_new_data(csv_data)
         
         
     def create_new_data(self, data):
+        df = pd.DataFrame(data)
         """Create a new daily log CSV file with pandas."""
-        # Define default columns and data
-        
-        df = pd.DataFrame(data)  # Create an empty DataFrame with the defined columns
-        
-        # Define a unique file name based on the current time
         timestamp = datetime.now().strftime("%Y-%m-%d")
-        file_name = f"daily_log_{timestamp}.csv"
+        file_name = f"nutrition_log_{timestamp}.csv"
         file_path = os.path.join(self.daily_logs_path, file_name)
         
-        # Check if the file already exists and generate a unique filename if necessary
         counter = 1
         while os.path.exists(file_path):
-            file_name = f"daily_log_{timestamp}({counter}).csv"
+            file_name = f"nutrition_log_{timestamp}({counter}).csv"
             file_path = os.path.join(self.daily_logs_path, file_name)
             counter += 1
         
