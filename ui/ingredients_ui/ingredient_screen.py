@@ -86,7 +86,6 @@ class IngredientScreen(ctk.CTkFrame):
 
     def update_selected_ingredient(self, ingredient_data):
         """Update the UI to display selected ingredient details."""
-        # Update the title with the ingredient name
         self.detail_title_label.configure(text=ingredient_data["name"].replace('_', ' ').title())
 
         # Update the image if available
