@@ -29,7 +29,7 @@ class NutritionModel:
                 self.consumed_ingredients[name].append(amount)
             else:
                 self.consumed_ingredients[name] = [amount]
-        print(self.consumed_ingredients)
+        # print(self.consumed_ingredients)
 
 
     def get_nutrition_data(self):

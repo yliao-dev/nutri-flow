@@ -1,6 +1,8 @@
 import customtkinter as ctk
 from ui.ingredients_ui.ingredient_card import IngredientCard
-
+import pandas as pd
+import json
+from config import INGREDIENTS_JSON_PATH
 
 class BottomFrame(ctk.CTkFrame):
     def __init__(self, master, nutrition_view_model, update_intake_callback, ingredient_cards):
@@ -69,9 +71,35 @@ class BottomFrame(ctk.CTkFrame):
         nutrition_data = self.nutrition_view_model.get_nutrition_data()
         # Call the callback to update progress frames in HomeScreen
         self.update_intake_callback(nutrition_data)
-
+        self.update_custom_serving_sizes_in_json(self.selected_ingredients)
         # Reset selection after updating goals
         self.reset_selection()
+        
+    def update_custom_serving_sizes_in_json(self, selected_ingredients):
+        """
+        Update the 'custom_serving_size' field in ingredient.json based on selected ingredients
+        using Pandas for easier manipulation.
+        
+        Args:
+            selected_ingredients (dict): Dictionary containing ingredient names and their updated data.
+        """
+        try:
+            # Load the JSON file into a DataFrame
+            with open(INGREDIENTS_JSON_PATH, 'r') as file:
+                data = json.load(file)
+            
+            # Convert JSON to DataFrame
+            df = pd.DataFrame.from_dict(data, orient='index')
+            for ingredient in selected_ingredients:
+                ingredient_name = ingredient["name"]  # Extract the name of the ingredient
+                if ingredient_name in df.index:
+                    df.at[ingredient_name, "custom_serving_size"] = ingredient["custom_serving_size"]
+            
+            # Convert DataFrame back to JSON and write to file
+            df.to_json(INGREDIENTS_JSON_PATH, orient='index', indent=4)
+            print("ingredient.json updated successfully.")
+        except Exception as e:
+            print(f"Error updating ingredient.json: {e}")
 
     def reset_selection(self):
         self.selected_ingredients = []

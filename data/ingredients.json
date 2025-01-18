@@ -1,206 +1,206 @@
 {
-  "salmon": {
-    "id": 1,
-    "reference_serving_size": 100,
-    "custom_serving_size": 50,
-    "nutrition": {
-      "carbohydrates": 0,
-      "protein": 30,
-      "calories": 208,
-      "fat": 12
+    "salmon":{
+        "id":1,
+        "reference_serving_size":100,
+        "custom_serving_size":12,
+        "nutrition":{
+            "carbohydrates":0,
+            "protein":30,
+            "calories":208,
+            "fat":12
+        },
+        "image":".\/data\/salmon.png"
     },
-    "image": "./data/salmon.png"
-  },
-  "short_grain_rice": {
-    "id": 2,
-    "reference_serving_size": 100,
-    "custom_serving_size": 100,
-    "nutrition": {
-      "carbohydrates": 70,
-      "protein": 10,
-      "calories": 130,
-      "fat": 0
+    "short_grain_rice":{
+        "id":2,
+        "reference_serving_size":100,
+        "custom_serving_size":300,
+        "nutrition":{
+            "carbohydrates":70,
+            "protein":10,
+            "calories":130,
+            "fat":0
+        },
+        "image":".\/data\/short_grain_rice.png"
     },
-    "image": "./data/short_grain_rice.png"
-  },
-  "egg": {
-    "id": 3,
-    "reference_serving_size": 100,
-    "custom_serving_size": 100,
-    "nutrition": {
-      "carbohydrates": 1.1,
-      "protein": 13,
-      "calories": 143,
-      "fat": 10
+    "egg":{
+        "id":3,
+        "reference_serving_size":100,
+        "custom_serving_size":32,
+        "nutrition":{
+            "carbohydrates":1.1,
+            "protein":13,
+            "calories":143,
+            "fat":10
+        },
+        "image":".\/data\/egg.png"
     },
-    "image": "./data/egg.png"
-  },
-  "milk": {
-    "id": 4,
-    "reference_serving_size": 100,
-    "custom_serving_size": 100,
-    "nutrition": {
-      "carbohydrates": 5,
-      "protein": 3.4,
-      "calories": 42,
-      "fat": 1
+    "milk":{
+        "id":4,
+        "reference_serving_size":100,
+        "custom_serving_size":100,
+        "nutrition":{
+            "carbohydrates":5,
+            "protein":3.4,
+            "calories":42,
+            "fat":1
+        },
+        "image":".\/data\/milk.png"
     },
-    "image": "./data/milk.png"
-  },
-  "oatmeal": {
-    "id": 5,
-    "reference_serving_size": 100,
-    "custom_serving_size": 100,
-    "nutrition": {
-      "carbohydrates": 66.3,
-      "protein": 16.9,
-      "calories": 389,
-      "fat": 7.1
+    "oatmeal":{
+        "id":5,
+        "reference_serving_size":100,
+        "custom_serving_size":100,
+        "nutrition":{
+            "carbohydrates":66.3,
+            "protein":16.9,
+            "calories":389,
+            "fat":7.1
+        },
+        "image":".\/data\/oatmeal.png"
     },
-    "image": "./data/oatmeal.png"
-  },
-  "beef": {
-    "id": 6,
-    "reference_serving_size": 100,
-    "custom_serving_size": 100,
-    "nutrition": {
-      "carbohydrates": 0,
-      "protein": 26,
-      "calories": 250,
-      "fat": 20
+    "beef":{
+        "id":6,
+        "reference_serving_size":100,
+        "custom_serving_size":100,
+        "nutrition":{
+            "carbohydrates":0,
+            "protein":26,
+            "calories":250,
+            "fat":20
+        },
+        "image":".\/data\/beef.png"
     },
-    "image": "./data/beef.png"
-  },
-  "chicken_breast": {
-    "id": 7,
-    "reference_serving_size": 100,
-    "custom_serving_size": 100,
-    "nutrition": {
-      "carbohydrates": 0,
-      "protein": 31,
-      "calories": 165,
-      "fat": 3.6
+    "chicken_breast":{
+        "id":7,
+        "reference_serving_size":100,
+        "custom_serving_size":100,
+        "nutrition":{
+            "carbohydrates":0,
+            "protein":31,
+            "calories":165,
+            "fat":3.6
+        },
+        "image":".\/data\/chicken_breast.png"
     },
-    "image": "./data/chicken_breast.png"
-  },
-  "chicken_leg": {
-    "id": 8,
-    "reference_serving_size": 100,
-    "custom_serving_size": 100,
-    "nutrition": {
-      "carbohydrates": 0,
-      "protein": 24,
-      "calories": 215,
-      "fat": 10
+    "chicken_leg":{
+        "id":8,
+        "reference_serving_size":100,
+        "custom_serving_size":100,
+        "nutrition":{
+            "carbohydrates":0,
+            "protein":24,
+            "calories":215,
+            "fat":10
+        },
+        "image":".\/data\/chicken_leg.png"
     },
-    "image": "./data/chicken_leg.png"
-  },
-  "apple": {
-    "id": 9,
-    "reference_serving_size": 100,
-    "custom_serving_size": 100,
-    "nutrition": {
-      "carbohydrates": 14,
-      "protein": 0.3,
-      "calories": 52,
-      "fat": 0.2
+    "apple":{
+        "id":9,
+        "reference_serving_size":100,
+        "custom_serving_size":100,
+        "nutrition":{
+            "carbohydrates":14,
+            "protein":0.3,
+            "calories":52,
+            "fat":0.2
+        },
+        "image":".\/data\/apple.png"
     },
-    "image": "./data/apple.png"
-  },
-  "bread": {
-    "id": 10,
-    "reference_serving_size": 100,
-    "custom_serving_size": 100,
-    "nutrition": {
-      "carbohydrates": 49,
-      "protein": 9,
-      "calories": 265,
-      "fat": 3.2
+    "bread":{
+        "id":10,
+        "reference_serving_size":100,
+        "custom_serving_size":100,
+        "nutrition":{
+            "carbohydrates":49,
+            "protein":9,
+            "calories":265,
+            "fat":3.2
+        },
+        "image":".\/data\/bread.png"
     },
-    "image": "./data/bread.png"
-  },
-  "broccoli": {
-    "id": 11,
-    "reference_serving_size": 100,
-    "custom_serving_size": 100,
-    "nutrition": {
-      "carbohydrates": 6.6,
-      "protein": 2.8,
-      "calories": 34,
-      "fat": 0.4
+    "broccoli":{
+        "id":11,
+        "reference_serving_size":100,
+        "custom_serving_size":100,
+        "nutrition":{
+            "carbohydrates":6.6,
+            "protein":2.8,
+            "calories":34,
+            "fat":0.4
+        },
+        "image":".\/data\/broccoli.png"
     },
-    "image": "./data/broccoli.png"
-  },
-  "corn": {
-    "id": 12,
-    "reference_serving_size": 100,
-    "custom_serving_size": 100,
-    "nutrition": {
-      "carbohydrates": 19,
-      "protein": 3.2,
-      "calories": 86,
-      "fat": 1.2
+    "corn":{
+        "id":12,
+        "reference_serving_size":100,
+        "custom_serving_size":100,
+        "nutrition":{
+            "carbohydrates":19,
+            "protein":3.2,
+            "calories":86,
+            "fat":1.2
+        },
+        "image":".\/data\/corn.png"
     },
-    "image": "./data/corn.png"
-  },
-  "long_grain_rice": {
-    "id": 14,
-    "reference_serving_size": 100,
-    "custom_serving_size": 100,
-    "nutrition": {
-      "carbohydrates": 78,
-      "protein": 7,
-      "calories": 130,
-      "fat": 0.3
+    "long_grain_rice":{
+        "id":14,
+        "reference_serving_size":100,
+        "custom_serving_size":100,
+        "nutrition":{
+            "carbohydrates":78,
+            "protein":7,
+            "calories":130,
+            "fat":0.3
+        },
+        "image":".\/data\/long_grain_rice.png"
     },
-    "image": "./data/long_grain_rice.png"
-  },
-  "orange": {
-    "id": 15,
-    "reference_serving_size": 100,
-    "custom_serving_size": 100,
-    "nutrition": {
-      "carbohydrates": 12,
-      "protein": 1,
-      "calories": 47,
-      "fat": 0.1
+    "orange":{
+        "id":15,
+        "reference_serving_size":100,
+        "custom_serving_size":100,
+        "nutrition":{
+            "carbohydrates":12,
+            "protein":1,
+            "calories":47,
+            "fat":0.1
+        },
+        "image":".\/data\/orange.png"
     },
-    "image": "./data/orange.png"
-  },
-  "rabbit": {
-    "id": 16,
-    "reference_serving_size": 100,
-    "custom_serving_size": 100,
-    "nutrition": {
-      "carbohydrates": 0,
-      "protein": 21,
-      "calories": 173,
-      "fat": 9.5
+    "rabbit":{
+        "id":16,
+        "reference_serving_size":100,
+        "custom_serving_size":100,
+        "nutrition":{
+            "carbohydrates":0,
+            "protein":21,
+            "calories":173,
+            "fat":9.5
+        },
+        "image":".\/data\/rabbit.png"
     },
-    "image": "./data/rabbit.png"
-  },
-  "sausages": {
-    "id": 17,
-    "reference_serving_size": 100,
-    "custom_serving_size": 100,
-    "nutrition": {
-      "carbohydrates": 0,
-      "protein": 12,
-      "calories": 300,
-      "fat": 26
+    "sausages":{
+        "id":17,
+        "reference_serving_size":100,
+        "custom_serving_size":100,
+        "nutrition":{
+            "carbohydrates":0,
+            "protein":12,
+            "calories":300,
+            "fat":26
+        },
+        "image":".\/data\/sausages.png"
     },
-    "image": "./data/sausages.png"
-  },
-  "whey_protein": {
-    "id": 18,
-    "reference_serving_size": 30,
-    "custom_serving_size": 30,
-    "nutrition": {
-      "carbohydrates": 2,
-      "protein": 24,
-      "calories": 120,
-      "fat": 1
-    },
-    "image": "./data/whey-protein.png"
-  }
+    "whey_protein":{
+        "id":18,
+        "reference_serving_size":30,
+        "custom_serving_size":30,
+        "nutrition":{
+            "carbohydrates":2,
+            "protein":24,
+            "calories":120,
+            "fat":1
+        },
+        "image":".\/data\/whey-protein.png"
+    }
 }
