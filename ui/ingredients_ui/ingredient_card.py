@@ -68,6 +68,7 @@ class IngredientCard(ctk.CTkFrame):
             # Place it in the grid row after the image
             self.serving_size_entry.grid(row=5, column=0, pady=(10, 0))
             
+    #TODO: everytime on_serving_size_change is called, update the ingredient.json file
     def on_serving_size_change(self, event=None):
         """Handle changes to the serving size when the user finishes editing."""
         new_serving_size = self.serving_size_var.get()

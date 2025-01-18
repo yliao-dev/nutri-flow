@@ -23,4 +23,7 @@ class NutritionViewModel:
         :return: A dictionary with the current nutrition data.
         """
         return self.nutrition_model.get_nutrition_data()
+
+    def get_consumed_ingredients(self):
+        return self.nutrition_model.get_consumed_ingredients()
     
