@@ -3,7 +3,7 @@ from tkinter import filedialog
 import pandas as pd
 import customtkinter as ctk
 from datetime import datetime
-from config import ROOT_PATH
+from config import ROOT_PATH, LOG_PATH
 from viewmodel.nutrition_viewmodel import NutritionViewModel
 
 class DataScreen(ctk.CTkFrame):
@@ -11,7 +11,7 @@ class DataScreen(ctk.CTkFrame):
         super().__init__(parent)
         self.initialize_ui()
         self.nutrition_view_model = nutrition_view_model
-        self.daily_logs_path = os.path.join(ROOT_PATH, "daily_logs")  # Path to root/daily_logs
+        self.daily_logs_path = os.path.join(ROOT_PATH, LOG_PATH)  # Path to root/daily_logs
         os.makedirs(self.daily_logs_path, exist_ok=True)
         
     def initialize_ui(self):
@@ -111,7 +111,7 @@ class DataScreen(ctk.CTkFrame):
         
         try:
             # Save the DataFrame to a CSV file
-            df.to_csv(file_path, index=False)
+            df.to_csv(file_path, index=False, header=False)
             print(f"New daily log created: {file_path}")
         except Exception as e:
             print(f"Failed to create new log: {e}")
