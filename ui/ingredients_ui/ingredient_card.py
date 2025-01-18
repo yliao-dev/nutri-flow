@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from PIL import Image
 import json
-import tkinter as tk
+from config import INGREDIENTS_JSON_PATH
 
 class IngredientCard(ctk.CTkFrame):
     # Class-level attribute to keep track of the currently selected card for detail view
@@ -52,8 +52,9 @@ class IngredientCard(ctk.CTkFrame):
 
     def add_custom_serving_size(self):
         """Add an editable entry for the custom serving size in grams."""
-        if not hasattr(self, 'serving_size_entry'):  # Avoid creating multiple entries
-            self.serving_size_var = ctk.StringVar(value="100")  # Initialize the serving size variable
+        if not hasattr(self, 'serving_size_entry'):
+            custom_serving_size = self.ingredient_data.get("custom_serving_size", 100)
+            self.serving_size_var = ctk.StringVar(value=custom_serving_size) 
             validate_command = self.register(self.validate_serving_size_input)
             # Create the entry widget for serving size
             self.serving_size_entry = ctk.CTkEntry(
@@ -177,7 +178,7 @@ class IngredientCard(ctk.CTkFrame):
 
 # Function to load the ingredients data from the JSON file
 def load_ingredients_data():
-    with open("data/ingredients.json", "r") as file:
+    with open(INGREDIENTS_JSON_PATH, "r") as file:
         data = json.load(file)
 
     ingredients = []

@@ -2,7 +2,7 @@
     "salmon":{
         "id":1,
         "reference_serving_size":100,
-        "custom_serving_size":12,
+        "custom_serving_size":50,
         "nutrition":{
             "carbohydrates":0,
             "protein":30,
@@ -26,7 +26,7 @@
     "egg":{
         "id":3,
         "reference_serving_size":100,
-        "custom_serving_size":32,
+        "custom_serving_size":15,
         "nutrition":{
             "carbohydrates":1.1,
             "protein":13,
@@ -86,7 +86,7 @@
     "chicken_leg":{
         "id":8,
         "reference_serving_size":100,
-        "custom_serving_size":100,
+        "custom_serving_size":150,
         "nutrition":{
             "carbohydrates":0,
             "protein":24,
