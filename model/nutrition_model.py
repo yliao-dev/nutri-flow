@@ -22,10 +22,8 @@ class NutritionModel:
             self.nutrition_data['carbohydrate'] += ingredient['nutrition'].get('carbohydrates', 0)
             self.nutrition_data['calories'] += ingredient['nutrition'].get('calories', 0)
             self.nutrition_data['fat'] += ingredient['nutrition'].get('fat', 0)
-                
             name = ingredient.get('name')
-            amount = ingredient.get('amount', 0)  # The amount consumed in grams
-
+            amount = ingredient.get('custom_serving_size', 0)  # The amount consumed in grams
             # Update the total amount consumed in the consumed_ingredients dictionary
             if name in self.consumed_ingredients:
                 self.consumed_ingredients[name].append(amount)

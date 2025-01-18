@@ -73,7 +73,8 @@ class IngredientCard(ctk.CTkFrame):
         new_serving_size = self.serving_size_var.get()
         try:
             new_serving_size = float(new_serving_size)
-            print(f"Updated serving size: {new_serving_size} grams")
+            self.ingredient_data["custom_serving_size"] = new_serving_size
+            # print(f"Updated serving size: {new_serving_size} grams")
         except ValueError:
             print("Invalid serving size entered.")
     
