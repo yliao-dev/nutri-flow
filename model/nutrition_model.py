@@ -68,4 +68,4 @@ class NutritionModel:
         """
         if goal_value == 0:
             return 0.0
-        return (current_value / goal_value) * 100
+        return round(((current_value / goal_value) * 100), 2)
