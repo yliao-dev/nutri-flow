@@ -63,6 +63,8 @@ class BottomFrame(ctk.CTkFrame):
         return f"Protein: {total_protein}g | Carbs: {total_carbs}g | Calories: {total_calories}g"
 
     def update_intake(self):
+        for ingredient_card in self.ingredient_cards:
+            ingredient_card.on_serving_size_change()
         self.nutrition_view_model.update_nutrition(self.selected_ingredients)
         nutrition_data = self.nutrition_view_model.get_nutrition_data()
         # Call the callback to update progress frames in HomeScreen

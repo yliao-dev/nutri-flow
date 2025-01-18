@@ -35,7 +35,6 @@ class App(ctk.CTk):
         self.sidebar.grid(row=0, column=0, sticky="nsew")
 
         user_profile_data = self.read_user_profile_from_json()
-        print(user_profile_data)
         user_profile = UserProfile(
             weight=user_profile_data["weight"],
             goal_protein=user_profile_data["goal_protein"],

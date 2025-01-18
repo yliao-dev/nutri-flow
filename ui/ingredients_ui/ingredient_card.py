@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from PIL import Image
 import json
+import tkinter as tk
 
 class IngredientCard(ctk.CTkFrame):
     # Class-level attribute to keep track of the currently selected card for detail view
@@ -49,6 +50,36 @@ class IngredientCard(ctk.CTkFrame):
             self.card_label.bind("<Leave>", self.on_leave)
             self.card_label.bind("<Button-1>", self.toggle_select)
 
+    def add_custom_serving_size(self):
+        """Add an editable entry for the custom serving size in grams."""
+        if not hasattr(self, 'serving_size_entry'):  # Avoid creating multiple entries
+            self.serving_size_var = ctk.StringVar(value="100")  # Initialize the serving size variable
+            
+            # Create the entry widget for serving size
+            self.serving_size_entry = ctk.CTkEntry(
+                self,
+                width=200,
+                font=("Arial", 12),
+                placeholder_text="Enter serving size in grams",
+                textvariable=self.serving_size_var
+            )
+            # Place it in the grid row after the image
+            self.serving_size_entry.grid(row=5, column=0, pady=(10, 0))
+            # for event in ("<FocusOut>", "<Button-1>"):
+            #     self.serving_size_entry.bind(event, self.on_serving_size_change)
+            
+    def on_serving_size_change(self, event=None):
+        """Handle changes to the serving size when the user finishes editing."""
+        new_serving_size = self.serving_size_var.get()
+        try:
+            new_serving_size = float(new_serving_size)
+            # You can now use this new serving size (e.g., update the ingredient data)
+            print(f"Updated serving size: {new_serving_size} grams")
+        except ValueError:
+            # Handle invalid input
+            print("Invalid serving size entered.")
+    
+        
     def add_nutrition_data(self):
         """Add the nutritional information labels."""
         if not self.protein_label:

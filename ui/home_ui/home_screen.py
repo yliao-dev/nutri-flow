@@ -27,7 +27,13 @@ class HomeScreen(ctk.CTkFrame):
     def initialize_ui(self):
         self.label = ctk.CTkLabel(self, text="Nutrition Progress", font=("Arial", 20, "bold"))
         self.label.grid(row=0, column=1, columnspan=1, pady=10, sticky="nsew") 
-
+        self.weight_label = ctk.CTkLabel(
+                    self,
+                    font=("Arial", 16, "bold"),
+                    text=f"Weight: {self.nutrition_view_model.user_profile.weight}kg",
+                    fg_color="transparent", 
+                )
+        self.weight_label.grid(row=0, column=2, padx=10, pady=10, sticky="nsew")
         # Appearance Mode Selector (using a single image)
         self.mode_img = ctk.CTkImage(light_image=Image.open(DARK_MODE_IMG), size=(40, 40))
         self.mode_label = ctk.CTkLabel(
@@ -40,13 +46,11 @@ class HomeScreen(ctk.CTkFrame):
         # Prevent any hover effect
         self.mode_label.bind("<Enter>", lambda event: self.mode_label.configure(fg_color="transparent"))
         self.mode_label.bind("<Leave>", lambda event: self.mode_label.configure(fg_color="transparent"))
-
+        self.mode_label.grid(row=0, column=2, padx=10, pady=10, sticky="e")
+    
         # Configure the grid
         self.configure_grid()
-        
-        # Move the mode label to the same row as the title and align it to the right corner
-        self.mode_label.grid(row=0, column=2, padx=10, pady=10, sticky="e")  # Align it to the right (east)
-
+       
         self.create_progress_frames()
         self.create_ingredients_frame()
         self.populate_ingredient_cards()
@@ -106,6 +110,7 @@ class HomeScreen(ctk.CTkFrame):
             ingredient_card.add_name()
             ingredient_card.add_nutrition_data()
             ingredient_card.add_image(ingredient["image"])
+            ingredient_card.add_custom_serving_size()
             ingredient_card.grid(row=0, column=ingredient["id"], padx=5, pady=5, sticky="nsew")
             self.ingredient_cards.append(ingredient_card)
 
