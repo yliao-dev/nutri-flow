@@ -5,7 +5,7 @@ class ProgressFrame(ctk.CTkFrame):
     def __init__(self, master, goal_name, goal_values, consumed_value=None, update_callback=None):
         super().__init__(master)
         
-        self.consumed_value = consumed_value if consumed_value else {"protein": 0, "carbohydrate": 0, "fat": 0}
+        self.consumed_value = consumed_value if consumed_value else {"consumed_protein": 0, "consumed_carbohydrate": 0, "consumed_fat": 0}
         self.goal_name = goal_name
         self.goal_values = goal_values
         self.update_callback = update_callback
@@ -27,7 +27,6 @@ class ProgressFrame(ctk.CTkFrame):
         
         # Create a circular progress bar for the goal nutrient
         self.progress_bar = self.create_circular_progress_bar(self.goal_name)
-        self.update_nutrition_label()
         self.update()
 
     def create_circular_progress_bar(self, nutrient):
@@ -53,31 +52,32 @@ class ProgressFrame(ctk.CTkFrame):
 
     def update(self, nutrition_data=None):
         """Update the progress bar and labels based on new data."""
-        print(nutrition_data)
         if nutrition_data:
             self.consumed_value.update(nutrition_data)
-        
         # Get the target percentage for the goal nutrient
         percentage = round(self.calculate_percentage(self.goal_name), 2)
-        print("==>", percentage)
         # Animate the progress bar to the new percentage
         self.progress_bar.animate_progress(percentage)
-        
         # Update the nutrition label with new data
         self.update_nutrition_label()
 
-    def calculate_percentage(self, nutrient):
-        """Calculate the percentage progress for the given nutrient."""
-        consumed_value = round(self.consumed_value.get(nutrient, 0), 2)
-        goal_value = self.goal_values.get(nutrient, 1)
+    def calculate_percentage(self, goal_name):
+        """Calculate the percentage progress for the given goal_name."""
+        consumed_value = round(self.consumed_value.get(f"consumed_{goal_name}", 0), 2)
+        goal_value = self.goal_values.get(goal_name, 1)
         return min(100, (consumed_value / goal_value) * 100 if goal_value > 0 else 0)
 
     def update_nutrition_label(self):
         """Update the nutrition label and progress bar."""
-        consumed_value = round(self.consumed_value.get(self.goal_name, 0), 2)
+        # Get the consumed value for the specific goal
+        consumed_value = round(self.consumed_value.get(f"consumed_{self.goal_name}", 0), 2)  # Ensure we use the correct key for consumed values
+        # Get the goal value for the specific goal
         goal_value = self.goal_values.get(self.goal_name, 0)
+        
+        # Calculate the progress percentage using the updated method
         percentage = self.calculate_percentage(self.goal_name)
         
+        # Format the labels
         goal_label_text = f"{self.goal_name.capitalize()} Goal: {goal_value}g"
         consumed_label_text = f"Consumed: {consumed_value}g | {round(percentage, 2)}%"
         

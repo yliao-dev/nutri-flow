@@ -98,7 +98,7 @@ class IngredientCard(ctk.CTkFrame):
             self.protein_label.bind("<Button-1>", self.toggle_select)
 
         if not self.carbs_label:
-            self.carbs_label = ctk.CTkLabel(self, text=f"Carbs: {self.ingredient_data['nutrition']['carbohydrates']}g")
+            self.carbs_label = ctk.CTkLabel(self, text=f"Carbohydrate: {self.ingredient_data['nutrition']['carbohydrate']}g")
             self.carbs_label.grid(row=2, column=0, pady=(0, 5))
             # Bind hover and select events to the carbs label
             self.carbs_label.bind("<Enter>", self.on_hover)

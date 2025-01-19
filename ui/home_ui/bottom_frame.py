@@ -57,7 +57,7 @@ class BottomFrame(ctk.CTkFrame):
 
     def format_ingredient_text(self, ingredients):
         total_protein = round(sum([ingredient['nutrition']["protein"] for ingredient in ingredients]), 2)
-        total_carbs = round(sum([ingredient['nutrition']["carbohydrates"] for ingredient in ingredients]), 2)
+        total_carbs = round(sum([ingredient['nutrition']["carbohydrate"] for ingredient in ingredients]), 2)
         total_calories = round(sum([ingredient['nutrition']["calories"] for ingredient in ingredients]), 2)
 
         return f"Protein: {total_protein}g | Carbs: {total_carbs}g | Calories: {total_calories}g"

@@ -3,13 +3,13 @@ class UserNutritionModel:
     """
     Represents the user profile, manages nutrition data, and tracks progress.
     """
-    def __init__(self, date, weight, goal_protein, goal_carbohydrates, goal_fat, goal_calories, log_path,
+    def __init__(self, date, weight, goal_protein, goal_carbohydrate, goal_fat, goal_calories, log_path,
                  nutrition_data=None, consumed_ingredients=None):
         # User profile attributes
         self.date = date
         self.weight = weight
         self.goal_protein = goal_protein
-        self.goal_carbohydrates = goal_carbohydrates
+        self.goal_carbohydrate = goal_carbohydrate
         self.goal_fat = goal_fat
         self.goal_calories = goal_calories
         self.log_path = log_path or ""
@@ -71,7 +71,7 @@ class UserNutritionModel:
         """
         return {
             "protein": self._calculate_percentage(self.nutrition_data[CONSUMED_PROTEIN], self.goal_protein),
-            "carbohydrate": self._calculate_percentage(self.nutrition_data[CONSUMED_CARBOHYDRATE], self.goal_carbohydrates),
+            "carbohydrate": self._calculate_percentage(self.nutrition_data[CONSUMED_CARBOHYDRATE], self.goal_carbohydrate),
             "fat": self._calculate_percentage(self.nutrition_data[CONSUMED_FAT], self.goal_fat),
             "calories": self._calculate_percentage(self.nutrition_data[CONSUMED_CALORIES], self.goal_calories)
         }
@@ -89,7 +89,7 @@ class UserNutritionModel:
 
     def __repr__(self):
         return (f"UserNutritionModel(date={self.date}, weight={self.weight}, goal_protein={self.goal_protein}, "
-                f"goal_carbohydrates={self.goal_carbohydrates}, goal_fat={self.goal_fat}, "
+                f"goal_carbohydrate={self.goal_carbohydrate}, goal_fat={self.goal_fat}, "
                 f"goal_calories={self.goal_calories}, log_path={self.log_path}, "
                 f"nutrition_data={self.get_nutrition_data()}, "
                 f"consumed_ingredients={self.consumed_ingredients})")

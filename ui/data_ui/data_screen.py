@@ -67,15 +67,15 @@ class DataScreen(ctk.CTkFrame):
             ["Date", "Weight (kg)"],
             [timestamp, self.nutrition_view_model.user_nutrition_model.weight],
             [],
-            ["Protein Goal (g)", "Carbohydrates Goal (g)", "Fat Goal (g)", "Calories Goal (kcal)"],
+            ["Protein Goal (g)", "Carbohydrate Goal (g)", "Fat Goal (g)", "Calories Goal (kcal)"],
             [
                 self.nutrition_view_model.user_profile.goal_protein,
-                self.nutrition_view_model.user_profile.goal_carbohydrates,
+                self.nutrition_view_model.user_profile.goal_carbohydrate,
                 self.nutrition_view_model.user_profile.goal_fat,
                 self.nutrition_view_model.user_profile.goal_calories,
             ],
             [],
-            ["Protein Consumed (g)", "Carbohydrates Consumed (g)", "Fat Consumed (g)", "Calories Consumed (kcal)"],
+            ["Protein Consumed (g)", "Carbohydrate Consumed (g)", "Fat Consumed (g)", "Calories Consumed (kcal)"],
             [
                 self.nutrition_view_model.get_nutrition_data()['protein'],
                 self.nutrition_view_model.get_nutrition_data()['carbohydrate'],
@@ -83,7 +83,7 @@ class DataScreen(ctk.CTkFrame):
                 self.nutrition_view_model.get_nutrition_data()['calories'],
             ],
             [],
-            ["Protein Percentage (%)", "Carbohydrates Percentage (%)", "Fat Percentage (%)", "Calories Percentage (%)"],
+            ["Protein Percentage (%)", "Carbohydrate Percentage (%)", "Fat Percentage (%)", "Calories Percentage (%)"],
             [
                 self.nutrition_view_model.get_nutrition_percentages()['protein'],
                 self.nutrition_view_model.get_nutrition_percentages()['carbohydrate'],

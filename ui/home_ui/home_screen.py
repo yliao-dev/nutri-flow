@@ -13,7 +13,7 @@ class HomeScreen(ctk.CTkFrame):
         self.ingredients_data = load_ingredients_data()
         self.user_goals = {
             "protein": self.nutrition_view_model.user_nutrition_model.goal_protein,
-            "carbohydrate": self.nutrition_view_model.user_nutrition_model.goal_carbohydrates,
+            "carbohydrate": self.nutrition_view_model.user_nutrition_model.goal_carbohydrate,
             "fat": self.nutrition_view_model.user_nutrition_model.goal_fat,
             "calories": self.nutrition_view_model.user_nutrition_model.goal_calories,
         }

@@ -38,7 +38,7 @@ class App(ctk.CTk):
             date=user_config_data["date"],
             weight=user_config_data["weight"],
             goal_protein=user_config_data["goal_protein"],
-            goal_carbohydrates=user_config_data["goal_carbohydrates"],
+            goal_carbohydrate=user_config_data["goal_carbohydrate"],
             goal_fat=user_config_data["goal_fat"],
             goal_calories=user_config_data["goal_calories"],
             log_path=user_config_data.get("log_path", ""),

@@ -72,7 +72,7 @@ def load_nutrition_data_from_csv(csv_path, nutrition_view_model):
 
         # Extracting goals data
         user_nutrition_model.goal_protein = df.iloc[4, 0]
-        user_nutrition_model.goal_carbohydrates = df.iloc[4, 1]
+        user_nutrition_model.goal_carbohydrate = df.iloc[4, 1]
         user_nutrition_model.goal_fat = df.iloc[4, 2]
         user_nutrition_model.goal_calories = df.iloc[4, 3]
 

@@ -4,7 +4,7 @@
         "reference_serving_size":100,
         "custom_serving_size":50,
         "nutrition":{
-            "carbohydrates":0,
+            "carbohydrate":0,
             "protein":30,
             "calories":208,
             "fat":12
@@ -16,7 +16,7 @@
         "reference_serving_size":100,
         "custom_serving_size":290,
         "nutrition":{
-            "carbohydrates":70,
+            "carbohydrate":70,
             "protein":10,
             "calories":130,
             "fat":0
@@ -28,7 +28,7 @@
         "reference_serving_size":100,
         "custom_serving_size":10,
         "nutrition":{
-            "carbohydrates":1.1,
+            "carbohydrate":1.1,
             "protein":13,
             "calories":143,
             "fat":10
@@ -40,7 +40,7 @@
         "reference_serving_size":100,
         "custom_serving_size":43,
         "nutrition":{
-            "carbohydrates":5,
+            "carbohydrate":5,
             "protein":3.4,
             "calories":42,
             "fat":1
@@ -52,7 +52,7 @@
         "reference_serving_size":100,
         "custom_serving_size":100,
         "nutrition":{
-            "carbohydrates":66.3,
+            "carbohydrate":66.3,
             "protein":16.9,
             "calories":389,
             "fat":7.1
@@ -64,7 +64,7 @@
         "reference_serving_size":100,
         "custom_serving_size":100,
         "nutrition":{
-            "carbohydrates":0,
+            "carbohydrate":0,
             "protein":26,
             "calories":250,
             "fat":20
@@ -76,7 +76,7 @@
         "reference_serving_size":100,
         "custom_serving_size":100,
         "nutrition":{
-            "carbohydrates":0,
+            "carbohydrate":0,
             "protein":31,
             "calories":165,
             "fat":3.6
@@ -88,7 +88,7 @@
         "reference_serving_size":100,
         "custom_serving_size":150,
         "nutrition":{
-            "carbohydrates":0,
+            "carbohydrate":0,
             "protein":24,
             "calories":215,
             "fat":10
@@ -100,7 +100,7 @@
         "reference_serving_size":100,
         "custom_serving_size":100,
         "nutrition":{
-            "carbohydrates":14,
+            "carbohydrate":14,
             "protein":0.3,
             "calories":52,
             "fat":0.2
@@ -112,7 +112,7 @@
         "reference_serving_size":100,
         "custom_serving_size":100,
         "nutrition":{
-            "carbohydrates":49,
+            "carbohydrate":49,
             "protein":9,
             "calories":265,
             "fat":3.2
@@ -124,7 +124,7 @@
         "reference_serving_size":100,
         "custom_serving_size":100,
         "nutrition":{
-            "carbohydrates":6.6,
+            "carbohydrate":6.6,
             "protein":2.8,
             "calories":34,
             "fat":0.4
@@ -136,7 +136,7 @@
         "reference_serving_size":100,
         "custom_serving_size":100,
         "nutrition":{
-            "carbohydrates":19,
+            "carbohydrate":19,
             "protein":3.2,
             "calories":86,
             "fat":1.2
@@ -148,7 +148,7 @@
         "reference_serving_size":100,
         "custom_serving_size":100,
         "nutrition":{
-            "carbohydrates":78,
+            "carbohydrate":78,
             "protein":7,
             "calories":130,
             "fat":0.3
@@ -160,7 +160,7 @@
         "reference_serving_size":100,
         "custom_serving_size":100,
         "nutrition":{
-            "carbohydrates":12,
+            "carbohydrate":12,
             "protein":1,
             "calories":47,
             "fat":0.1
@@ -172,7 +172,7 @@
         "reference_serving_size":100,
         "custom_serving_size":100,
         "nutrition":{
-            "carbohydrates":0,
+            "carbohydrate":0,
             "protein":21,
             "calories":173,
             "fat":9.5
@@ -184,7 +184,7 @@
         "reference_serving_size":100,
         "custom_serving_size":100,
         "nutrition":{
-            "carbohydrates":0,
+            "carbohydrate":0,
             "protein":12,
             "calories":300,
             "fat":26
@@ -196,7 +196,7 @@
         "reference_serving_size":30,
         "custom_serving_size":30,
         "nutrition":{
-            "carbohydrates":2,
+            "carbohydrate":2,
             "protein":24,
             "calories":120,
             "fat":1

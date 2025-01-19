@@ -100,7 +100,7 @@ class IngredientScreen(ctk.CTkFrame):
         # Update the nutritional information
         nutrition_text = (
             f"Protein: {ingredient_data['nutrition']['protein']}g\n"
-            f"carbohydrates: {ingredient_data['nutrition']['carbohydrates']}g\n"
+            f"carbohydrate: {ingredient_data['nutrition']['carbohydrate']}g\n"
             f"Fat: {ingredient_data['nutrition']['fat']} g\n"
             f"Calories: {ingredient_data['nutrition']['calories']} kcal"
         )
