@@ -1,10 +1,11 @@
 import os
+import sys
 from tkinter import filedialog
 import pandas as pd
 import customtkinter as ctk
 from datetime import datetime
 from config import LOG_PATH
-from model.data_manager import load_nutrition_data_from_csv
+from model.data_manager import load_nutrition_data_from_csv, update_user_config
 
 class DataScreen(ctk.CTkFrame):
     def __init__(self, parent, nutrition_view_model):
@@ -29,7 +30,7 @@ class DataScreen(ctk.CTkFrame):
         self.data_load_frame.grid_columnconfigure(1, weight=1)
         self.data_load_frame.grid_columnconfigure(2, weight=1)
         # Create Import Data button
-        self.import_button = ctk.CTkButton(self.data_load_frame, text="Import Data", command=self.import_data)
+        self.import_button = ctk.CTkButton(self.data_load_frame, text="Import Data\n(Restart Application)", command=self.import_data)
         self.import_button.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
         
         # Create Export Data button
@@ -53,14 +54,18 @@ class DataScreen(ctk.CTkFrame):
             print("No file selected.")
             return        
         load_nutrition_data_from_csv(file_path, self.nutrition_view_model)
+        update_user_config(self.nutrition_view_model)
+        # self.restart_app()
+
+    def restart_app(self):
+        print("Restarting the application...")
+        os.execv(sys.executable, [sys.executable, "app.py"])
     
-
-
     def export_data(self):
         timestamp = datetime.now().strftime("%Y-%m-%d")
         csv_data = [
             ["Date", "Weight (kg)"],
-            [timestamp, self.nutrition_view_model.user_profile.weight],
+            [timestamp, self.nutrition_view_model.user_nutrition_model.weight],
             [],
             ["Protein Goal (g)", "Carbohydrates Goal (g)", "Fat Goal (g)", "Calories Goal (kcal)"],
             [
@@ -91,7 +96,6 @@ class DataScreen(ctk.CTkFrame):
 
         # Add consumed ingredients data
         consumed_ingredients = self.nutrition_view_model.get_consumed_ingredients()
-        print(consumed_ingredients)
         for ingredient, amounts in consumed_ingredients.items():
             formatted_ingredient = ingredient.replace("_", " ").title()
             amounts_str = ",".join(map(str, amounts))            

@@ -3,8 +3,7 @@ from ui.home_ui.progress_frame import ProgressFrame
 from ui.ingredients_ui.ingredient_card import IngredientCard, load_ingredients_data
 from ui.home_ui.bottom_frame import BottomFrame
 from PIL import Image
-
-DARK_MODE_IMG = "data/dark-mode.png"
+from config import DARK_MODE_IMG
 
 class HomeScreen(ctk.CTkFrame):
     def __init__(self, master, nutrition_view_model):
@@ -13,15 +12,14 @@ class HomeScreen(ctk.CTkFrame):
         self.nutrition_view_model = nutrition_view_model
         self.ingredients_data = load_ingredients_data()
         self.user_goals = {
-            "protein": self.nutrition_view_model.user_profile.goal_protein,
-            "carbohydrate": self.nutrition_view_model.user_profile.goal_carbohydrates,
-            "fat": self.nutrition_view_model.user_profile.goal_fat,
-            "calories": self.nutrition_view_model.user_profile.goal_calories,
+            "protein": self.nutrition_view_model.user_nutrition_model.goal_protein,
+            "carbohydrate": self.nutrition_view_model.user_nutrition_model.goal_carbohydrates,
+            "fat": self.nutrition_view_model.user_nutrition_model.goal_fat,
+            "calories": self.nutrition_view_model.user_nutrition_model.goal_calories,
         }
 
         self.progress_frames = {}  # Dictionary to store the progress frames
         self.ingredient_cards = []  # List to store IngredientCard instances
-
         self.initialize_ui()
 
     def initialize_ui(self):
@@ -30,7 +28,7 @@ class HomeScreen(ctk.CTkFrame):
         self.weight_label = ctk.CTkLabel(
                     self,
                     font=("Arial", 16, "bold"),
-                    text=f"Weight: {self.nutrition_view_model.user_profile.weight}kg",
+                    text=f"Weight: {self.nutrition_view_model.user_nutrition_model.weight}kg",
                     fg_color="transparent", 
                 )
         self.weight_label.grid(row=0, column=2, padx=10, pady=10, sticky="nsew")
@@ -38,7 +36,7 @@ class HomeScreen(ctk.CTkFrame):
         self.date_label = ctk.CTkLabel(
                     self,
                     font=("Arial", 16, "bold"),
-                    text=f"Date: {self.nutrition_view_model.user_profile.date}",
+                    text=f"Date: {self.nutrition_view_model.user_nutrition_model.date}",
                     fg_color="transparent", 
                 )
         self.date_label.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")

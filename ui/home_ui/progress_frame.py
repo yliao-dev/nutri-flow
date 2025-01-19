@@ -5,7 +5,7 @@ class ProgressFrame(ctk.CTkFrame):
     def __init__(self, master, goal_name, goal_values, consumed_value=None, update_callback=None):
         super().__init__(master)
         
-        self.consumed_value = consumed_value if consumed_value else {"protein": 0, "carbohydrate": 0, "calories": 0}
+        self.consumed_value = consumed_value if consumed_value else {"protein": 0, "carbohydrate": 0, "fat": 0}
         self.goal_name = goal_name
         self.goal_values = goal_values
         self.update_callback = update_callback
@@ -53,12 +53,13 @@ class ProgressFrame(ctk.CTkFrame):
 
     def update(self, nutrition_data=None):
         """Update the progress bar and labels based on new data."""
+        print(nutrition_data)
         if nutrition_data:
             self.consumed_value.update(nutrition_data)
         
         # Get the target percentage for the goal nutrient
         percentage = round(self.calculate_percentage(self.goal_name), 2)
-        
+        print("==>", percentage)
         # Animate the progress bar to the new percentage
         self.progress_bar.animate_progress(percentage)
         

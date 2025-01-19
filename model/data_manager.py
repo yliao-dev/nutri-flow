@@ -1,7 +1,6 @@
 import pandas as pd
 import json
-from config import INGREDIENTS_JSON_PATH, USER_CONFIG_PATH
-
+from config import *
 
 def update_custom_serving_sizes_in_json(selected_ingredients):
     """
@@ -27,6 +26,7 @@ def update_custom_serving_sizes_in_json(selected_ingredients):
     except Exception as e:
         print(f"Error updating ingredient.json: {e}")
 
+
 def update_user_config(nutrition_view_model):
     """
     Update the user_config.json with consumed ingredients and nutrition data.
@@ -36,17 +36,17 @@ def update_user_config(nutrition_view_model):
         with open(USER_CONFIG_PATH, 'r') as file:
             data = json.load(file)
 
-        # Get consumed ingredients and update
         consumed_ingredients = nutrition_view_model.get_consumed_ingredients()
-        data["consumed_ingredients"] = consumed_ingredients
 
-        # Get nutrition data and update
+        data["consumed_ingredients"] = consumed_ingredients
         nutrition_data = nutrition_view_model.get_nutrition_data()
+        
+        # Use the global constants for updating nutrition data
         data["nutrition_data"].update({
-            "consumed_protein": nutrition_data["protein"],
-            "consumed_carbohydrate": nutrition_data["carbohydrate"],
-            "consumed_calories": nutrition_data["calories"],
-            "consumed_fat": nutrition_data["fat"],
+            CONSUMED_PROTEIN: float(nutrition_data.get(CONSUMED_PROTEIN, 0.0)),
+            CONSUMED_CARBOHYDRATE: float(nutrition_data.get(CONSUMED_CARBOHYDRATE, 0.0)),
+            CONSUMED_CALORIES: float(nutrition_data.get(CONSUMED_CALORIES, 0.0)),
+            CONSUMED_FAT: float(nutrition_data.get(CONSUMED_FAT, 0.0)),
         })
 
         # Write updated data back to the user config file
@@ -56,16 +56,37 @@ def update_user_config(nutrition_view_model):
         print("user_config.json updated successfully.")
     except Exception as e:
         print(f"Error updating user_config.json: {e}")
-        
-def load_nutrition_data_from_csv(csv_path, nutrition_model):
+
+def load_nutrition_data_from_csv(csv_path, nutrition_view_model):
     try:
-        # Load the CSV file
+        # Read the CSV file
         df = pd.read_csv(csv_path, header=None)
 
-        # Print the first row of the CSV
-        print("First row of the CSV file:")
-        weight_value = df.iloc[1, 1]
-        print(weight_value)
+        # Access the user_nutrition_model from the nutrition_view_model
+        user_nutrition_model = nutrition_view_model.user_nutrition_model
+
+        # Manually extract the relevant data from specific rows and columns
+        # Extracting date and weight
+        user_nutrition_model.date = df.iloc[1, 0]
+        user_nutrition_model.weight = df.iloc[1, 1]
+
+        # Extracting goals data
+        user_nutrition_model.goal_protein = df.iloc[4, 0]
+        user_nutrition_model.goal_carbohydrates = df.iloc[4, 1]
+        user_nutrition_model.goal_fat = df.iloc[4, 2]
+        user_nutrition_model.goal_calories = df.iloc[4, 3]
+
+        # Extracting consumed data
+        user_nutrition_model.nutrition_data[CONSUMED_PROTEIN] = df.iloc[7, 0]
+        user_nutrition_model.nutrition_data[CONSUMED_CARBOHYDRATE] = df.iloc[7, 1]
+        user_nutrition_model.nutrition_data[CONSUMED_FAT] = df.iloc[7, 2]
+        user_nutrition_model.nutrition_data[CONSUMED_CALORIES] = df.iloc[7, 3]
+
+        # Extracting consumed ingredients
+        ingredients_df = df.iloc[13:, :2]
+        user_nutrition_model.consumed_ingredients = dict(zip(ingredients_df[0], ingredients_df[1]))
+
+        print(f"User Profile updated: {user_nutrition_model.__dict__}")
 
     except Exception as e:
-        print(f"Error loading CSV: {e}")
+        print(f"Error updating user profile from CSV: {e}")
