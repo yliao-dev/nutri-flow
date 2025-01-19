@@ -38,7 +38,7 @@
     "milk":{
         "id":4,
         "reference_serving_size":100,
-        "custom_serving_size":100,
+        "custom_serving_size":43,
         "nutrition":{
             "carbohydrates":5,
             "protein":3.4,
