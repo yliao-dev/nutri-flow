@@ -92,13 +92,14 @@ class DataScreen(ctk.CTkFrame):
         # Add consumed ingredients data
         consumed_ingredients = self.nutrition_view_model.get_consumed_ingredients()
         print(consumed_ingredients)
-        print(type(consumed_ingredients))
         for ingredient, amounts in consumed_ingredients.items():
-            print(consumed_ingredients.items())
-            csv_data.append([ingredient.replace("_", " ").title(), amounts[0]]) 
+            formatted_ingredient = ingredient.replace("_", " ").title()
+            amounts_str = ",".join(map(str, amounts))            
+            csv_data.append([formatted_ingredient, amounts_str])
 
         # Pass the final data to the `create_new_data` method
         self.create_new_data(csv_data)
+    
     def create_new_data(self, data):
         df = pd.DataFrame(data)
         """Create a new daily log CSV file with pandas."""
