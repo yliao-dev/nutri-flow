@@ -2,7 +2,7 @@ import customtkinter as ctk
 from ui.ingredients_ui.ingredient_card import IngredientCard
 import pandas as pd
 import json
-from config import INGREDIENTS_JSON_PATH
+from config import INGREDIENTS_JSON_PATH, USER_CONFIG_PATH
 
 class BottomFrame(ctk.CTkFrame):
     def __init__(self, master, nutrition_view_model, update_intake_callback, ingredient_cards):
@@ -72,6 +72,7 @@ class BottomFrame(ctk.CTkFrame):
         # Call the callback to update progress frames in HomeScreen
         self.update_intake_callback(nutrition_data)
         self.update_custom_serving_sizes_in_json(self.selected_ingredients)
+        self.update_user_config()
         # Reset selection after updating goals
         self.reset_selection()
         
@@ -100,6 +101,29 @@ class BottomFrame(ctk.CTkFrame):
             print("ingredient.json updated successfully.")
         except Exception as e:
             print(f"Error updating ingredient.json: {e}")
+    
+    def update_user_config(self):
+        try:
+            with open(USER_CONFIG_PATH, 'r') as file:
+                data = json.load(file)
+            # Update the consumed_ingredients with the data from the model
+            consumed_ingredients = self.nutrition_view_model.get_consumed_ingredients()
+            data["consumed_ingredients"] = consumed_ingredients
+
+            # Update the nutrition_data with the latest data
+            nutrition_data = self.nutrition_view_model.get_nutrition_data()
+            data["nutrition_data"]["consumed_protein"] = nutrition_data["protein"]
+            data["nutrition_data"]["consumed_carbohydrate"] = nutrition_data["carbohydrate"]
+            data["nutrition_data"]["consumed_calories"] = nutrition_data["calories"]
+            data["nutrition_data"]["consumed_fat"] = nutrition_data["fat"]
+            # Write the updated data back to the user_config.json file
+            with open(USER_CONFIG_PATH, 'w') as file:
+                json.dump(data, file, indent=4)
+
+            print("user_config.json updated successfully.")
+        
+        except Exception as e:
+            print(f"Error updating user_config.json: {e}")
 
     def reset_selection(self):
         self.selected_ingredients = []

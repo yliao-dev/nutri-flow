@@ -40,7 +40,10 @@ class App(ctk.CTk):
             goal_protein=user_profile_data["goal_protein"],
             goal_carbohydrates=user_profile_data["goal_carbohydrates"],
             goal_fat=user_profile_data["goal_fat"],
-            goal_calories=user_profile_data["goal_calories"]
+            goal_calories=user_profile_data["goal_calories"],
+            log_path=user_profile_data.get("log_path", ""),
+            nutrition_data=user_profile_data.get("nutrition_data", {}),
+            consumed_ingredients=user_profile_data.get("consumed_ingredients", {})
         )
         nutrition_model = NutritionModel(user_profile)
         nutrition_view_model = NutritionViewModel(user_profile, nutrition_model)

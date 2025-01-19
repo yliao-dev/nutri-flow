@@ -14,7 +14,7 @@
     "short_grain_rice":{
         "id":2,
         "reference_serving_size":100,
-        "custom_serving_size":300,
+        "custom_serving_size":290,
         "nutrition":{
             "carbohydrates":70,
             "protein":10,
@@ -26,7 +26,7 @@
     "egg":{
         "id":3,
         "reference_serving_size":100,
-        "custom_serving_size":15,
+        "custom_serving_size":30,
         "nutrition":{
             "carbohydrates":1.1,
             "protein":13,

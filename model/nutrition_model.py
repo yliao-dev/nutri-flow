@@ -5,12 +5,14 @@ class NutritionModel:
     def __init__(self, user_profile):
         self.user_profile = user_profile  # Store the UserProfile object
         self.nutrition_data = {
-            'protein': 0.0,  # In grams
-            'carbohydrate': 0.0,    # In grams
-            'calories': 0.0,  # In calories
-            'fat': 0.0,
+            'protein': user_profile.nutrition_data.get('consumed_protein', 0.0),
+            'carbohydrate': user_profile.nutrition_data.get('consumed_carbohydrate', 0.0),
+            'calories': user_profile.nutrition_data.get('consumed_calories', 0.0),
+            'fat': user_profile.nutrition_data.get('consumed_fat', 0.0),
         }
-        self.consumed_ingredients = {}
+
+        # Initialize consumed ingredients from user_profile
+        self.consumed_ingredients = user_profile.consumed_ingredients.copy()
 
     def update_nutrition(self, selected_ingredients):
         """
