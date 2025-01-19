@@ -57,37 +57,15 @@ def update_user_config(nutrition_view_model):
     except Exception as e:
         print(f"Error updating user_config.json: {e}")
         
-        
-def load_nutrition_data_from_import(csv_path, nutrition_model):
+def load_nutrition_data_from_csv(csv_path, nutrition_model):
     try:
-        df = pd.read_csv(csv_path)
+        # Load the CSV file
+        df = pd.read_csv(csv_path, header=None)
 
-        # Extract the nutritional data
-        protein_consumed = df.loc[df["Protein Consumed (g)"].notnull(), "Protein Consumed (g)"].values[0]
-        carbohydrate_consumed = df.loc[df["Carbohydrates Consumed (g)"].notnull(), "Carbohydrates Consumed (g)"].values[0]
-        fat_consumed = df.loc[df["Fat Consumed (g)"].notnull(), "Fat Consumed (g)"].values[0]
-        calories_consumed = df.loc[df["Calories Consumed (kcal)"].notnull(), "Calories Consumed (kcal)"].values[0]
-
-        # Update the nutrition_model's nutrition_data
-        nutrition_model.nutrition_data = {
-            "protein": protein_consumed,
-            "carbohydrate": carbohydrate_consumed,
-            "calories": calories_consumed,
-            "fat": fat_consumed
-        }
-
-        # Extract consumed ingredients and their amounts
-        consumed_ingredients = {}
-        ingredient_rows = df.loc[df["Consumed Ingredients"].notnull(), ["Consumed Ingredients", "Consumed Amount (g)"]]
-        for _, row in ingredient_rows.iterrows():
-            ingredient_name = row["Consumed Ingredients"]
-            amount = row["Consumed Amount (g)"]
-            consumed_ingredients[ingredient_name] = [amount]
-
-        # Update the nutrition_model's consumed_ingredients
-        nutrition_model.consumed_ingredients = consumed_ingredients
-
-        print("Nutrition data imported successfully.")
+        # Print the first row of the CSV
+        print("First row of the CSV file:")
+        weight_value = df.iloc[1, 1]
+        print(weight_value)
 
     except Exception as e:
-        print(f"Error loading nutrition data from CSV: {e}")
+        print(f"Error loading CSV: {e}")

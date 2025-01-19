@@ -34,6 +34,15 @@ class HomeScreen(ctk.CTkFrame):
                     fg_color="transparent", 
                 )
         self.weight_label.grid(row=0, column=2, padx=10, pady=10, sticky="nsew")
+        
+        self.date_label = ctk.CTkLabel(
+                    self,
+                    font=("Arial", 16, "bold"),
+                    text=f"Date: {self.nutrition_view_model.user_profile.date}",
+                    fg_color="transparent", 
+                )
+        self.date_label.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+        
         # Appearance Mode Selector (using a single image)
         self.mode_img = ctk.CTkImage(light_image=Image.open(DARK_MODE_IMG), size=(40, 40))
         self.mode_label = ctk.CTkLabel(

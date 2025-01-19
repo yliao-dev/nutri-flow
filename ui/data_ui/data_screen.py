@@ -4,7 +4,7 @@ import pandas as pd
 import customtkinter as ctk
 from datetime import datetime
 from config import LOG_PATH
-from model.data_manager import load_nutrition_data_from_import
+from model.data_manager import load_nutrition_data_from_csv
 
 class DataScreen(ctk.CTkFrame):
     def __init__(self, parent, nutrition_view_model):
@@ -52,7 +52,7 @@ class DataScreen(ctk.CTkFrame):
         if not file_path:
             print("No file selected.")
             return        
-        load_nutrition_data_from_import(file_path, self.nutrition_view_model)
+        load_nutrition_data_from_csv(file_path, self.nutrition_view_model)
     
 
 

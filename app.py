@@ -36,6 +36,7 @@ class App(ctk.CTk):
 
         user_profile_data = self.read_user_profile_from_json()
         user_profile = UserProfile(
+            date=user_profile_data["date"],
             weight=user_profile_data["weight"],
             goal_protein=user_profile_data["goal_protein"],
             goal_carbohydrates=user_profile_data["goal_carbohydrates"],

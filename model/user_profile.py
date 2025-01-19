@@ -2,8 +2,9 @@ class UserProfile:
     """
     Represents user nutrition goals and profile.
     """
-    def __init__(self, weight, goal_protein, goal_carbohydrates, goal_fat, goal_calories, log_path,
+    def __init__(self, date, weight, goal_protein, goal_carbohydrates, goal_fat, goal_calories, log_path,
                  nutrition_data=None, consumed_ingredients=None):
+        self.date = date
         self.weight = weight
         self.goal_protein = goal_protein
         self.goal_carbohydrates = goal_carbohydrates
