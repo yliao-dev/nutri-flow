@@ -1,7 +1,5 @@
 import customtkinter as ctk
 from ui.ingredients_ui.ingredient_card import IngredientCard
-import pandas as pd
-import json
 from model.data_manager import update_custom_serving_sizes_in_json, update_user_config
 
 class BottomFrame(ctk.CTkFrame):

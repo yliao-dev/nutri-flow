@@ -4,6 +4,7 @@ import pandas as pd
 import customtkinter as ctk
 from datetime import datetime
 from config import LOG_PATH
+from model.data_manager import load_nutrition_data_from_import
 
 class DataScreen(ctk.CTkFrame):
     def __init__(self, parent, nutrition_view_model):
@@ -50,45 +51,38 @@ class DataScreen(ctk.CTkFrame):
         
         if not file_path:
             print("No file selected.")
-            return
-        
-        try:
-            # Read the CSV file into a pandas DataFrame
-            df = pd.read_csv(file_path)
-            
-            print(f"File Path: {file_path}")
-            print("Content:")
-            print(df.head())  # Display the first few rows of the DataFrame
-        except Exception as e:
-            print(f"Failed to read file: {e}")
+            return        
+        load_nutrition_data_from_import(file_path, self.nutrition_view_model)
+    
 
 
     def export_data(self):
         timestamp = datetime.now().strftime("%Y-%m-%d")
         csv_data = [
-            ["Date"],
-            [timestamp],
-            ["Weight(kg)"],
-            [self.nutrition_view_model.user_profile.weight],
+            ["Date", "Weight (kg)"],
+            [timestamp, self.nutrition_view_model.user_profile.weight],
             [],
-            ["Protein Goal (g)", "Carbohydrates Goal (g)", "Calories Goal (kcal)"],
+            ["Protein Goal (g)", "Carbohydrates Goal (g)", "Fat Goal (g)", "Calories Goal (kcal)"],
             [
                 self.nutrition_view_model.user_profile.goal_protein,
                 self.nutrition_view_model.user_profile.goal_carbohydrates,
+                self.nutrition_view_model.user_profile.goal_fat,
                 self.nutrition_view_model.user_profile.goal_calories,
             ],
             [],
-            ["Protein Consumed (g)", "Carbohydrates Consumed (g)", "Calories Consumed (kcal)"],
+            ["Protein Consumed (g)", "Carbohydrates Consumed (g)", "Fat Consumed (g)", "Calories Consumed (kcal)"],
             [
                 self.nutrition_view_model.get_nutrition_data()['protein'],
                 self.nutrition_view_model.get_nutrition_data()['carbohydrate'],
+                self.nutrition_view_model.get_nutrition_data()['fat'],
                 self.nutrition_view_model.get_nutrition_data()['calories'],
             ],
             [],
-            ["Protein Percentage (%)", "Carbohydrates Percentage (%)", "Calories Percentage (%)"],
+            ["Protein Percentage (%)", "Carbohydrates Percentage (%)", "Fat Percentage (%)", "Calories Percentage (%)"],
             [
                 self.nutrition_view_model.get_nutrition_percentages()['protein'],
                 self.nutrition_view_model.get_nutrition_percentages()['carbohydrate'],
+                self.nutrition_view_model.get_nutrition_percentages()['fat'],
                 self.nutrition_view_model.get_nutrition_percentages()['calories'],
             ],
             [],
