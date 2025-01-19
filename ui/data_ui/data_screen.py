@@ -4,7 +4,7 @@ from tkinter import filedialog
 import pandas as pd
 import customtkinter as ctk
 from datetime import datetime
-from config import LOG_PATH
+from config import *
 from model.data_manager import load_nutrition_data_from_csv, update_user_config
 
 class DataScreen(ctk.CTkFrame):
@@ -69,26 +69,26 @@ class DataScreen(ctk.CTkFrame):
             [],
             ["Protein Goal (g)", "Carbohydrate Goal (g)", "Fat Goal (g)", "Calories Goal (kcal)"],
             [
-                self.nutrition_view_model.user_profile.goal_protein,
-                self.nutrition_view_model.user_profile.goal_carbohydrate,
-                self.nutrition_view_model.user_profile.goal_fat,
-                self.nutrition_view_model.user_profile.goal_calories,
+                self.nutrition_view_model.user_nutrition_model.goal_protein,
+                self.nutrition_view_model.user_nutrition_model.goal_carbohydrate,
+                self.nutrition_view_model.user_nutrition_model.goal_fat,
+                self.nutrition_view_model.user_nutrition_model.goal_calories,
             ],
             [],
             ["Protein Consumed (g)", "Carbohydrate Consumed (g)", "Fat Consumed (g)", "Calories Consumed (kcal)"],
             [
-                self.nutrition_view_model.get_nutrition_data()['protein'],
-                self.nutrition_view_model.get_nutrition_data()['carbohydrate'],
-                self.nutrition_view_model.get_nutrition_data()['fat'],
-                self.nutrition_view_model.get_nutrition_data()['calories'],
+                self.nutrition_view_model.get_nutrition_data()[CONSUMED_PROTEIN],
+                self.nutrition_view_model.get_nutrition_data()[CONSUMED_CARBOHYDRATE],
+                self.nutrition_view_model.get_nutrition_data()[CONSUMED_FAT],
+                self.nutrition_view_model.get_nutrition_data()[CONSUMED_CALORIES],
             ],
             [],
             ["Protein Percentage (%)", "Carbohydrate Percentage (%)", "Fat Percentage (%)", "Calories Percentage (%)"],
             [
-                self.nutrition_view_model.get_nutrition_percentages()['protein'],
-                self.nutrition_view_model.get_nutrition_percentages()['carbohydrate'],
-                self.nutrition_view_model.get_nutrition_percentages()['fat'],
-                self.nutrition_view_model.get_nutrition_percentages()['calories'],
+                self.nutrition_view_model.get_nutrition_percentages()[CONSUMED_PROTEIN],
+                self.nutrition_view_model.get_nutrition_percentages()[CONSUMED_CARBOHYDRATE],
+                self.nutrition_view_model.get_nutrition_percentages()[CONSUMED_FAT],
+                self.nutrition_view_model.get_nutrition_percentages()[CONSUMED_CALORIES],
             ],
             [],
             ["Consumed Ingredients", "Consumed Amount (g)"],
