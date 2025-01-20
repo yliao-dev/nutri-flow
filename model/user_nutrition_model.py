@@ -40,18 +40,23 @@ class UserNutritionModel:
 
         for ingredient in selected_ingredients:
             nutrition = ingredient.get("nutrition", {})
-            self.nutrition_data[CONSUMED_PROTEIN] += nutrition.get("protein", 0.0)
-            self.nutrition_data[CONSUMED_CARBOHYDRATE] += nutrition.get("carbohydrate", 0.0)
-            self.nutrition_data[CONSUMED_CALORIES] += nutrition.get("calories", 0.0)
-            self.nutrition_data[CONSUMED_FAT] += nutrition.get("fat", 0.0)
+            custom_serving_size = ingredient.get("custom_serving_size", 0.0)
+            reference_serving_size = ingredient.get("reference_serving_size", 99.0)
+            # Calculate the serving ratio
+            print(custom_serving_size, reference_serving_size)
+            serving_ratio = custom_serving_size / reference_serving_size
+            print(serving_ratio)
+            # Update nutrition data considering the serving ratio
+            self.nutrition_data[CONSUMED_PROTEIN] += nutrition.get("protein", 0.0) * serving_ratio
+            self.nutrition_data[CONSUMED_CARBOHYDRATE] += nutrition.get("carbohydrate", 0.0) * serving_ratio
+            self.nutrition_data[CONSUMED_CALORIES] += nutrition.get("calories", 0.0) * serving_ratio
+            self.nutrition_data[CONSUMED_FAT] += nutrition.get("fat", 0.0) * serving_ratio
+            
             name = ingredient.get("name")
-            amount = ingredient.get("custom_serving_size", 0.0)  # Amount consumed in grams
-
-            # Update the total amount consumed in the consumed_ingredients dictionary
             if name in self.consumed_ingredients:
-                self.consumed_ingredients[name].append(amount)
+                self.consumed_ingredients[name].append(custom_serving_size)
             else:
-                self.consumed_ingredients[name] = [amount]
+                self.consumed_ingredients[name] = [custom_serving_size]
         
 
     def get_nutrition_data(self):

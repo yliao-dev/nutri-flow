@@ -54,11 +54,9 @@ class ProgressFrame(ctk.CTkFrame):
         """Update the progress bar and labels based on new data."""
         if nutrition_data:
             self.consumed_value.update(nutrition_data)
-        # Get the target percentage for the goal nutrient
+
         percentage = round(self.calculate_percentage(self.goal_name), 2)
-        # Animate the progress bar to the new percentage
         self.progress_bar.animate_progress(percentage)
-        # Update the nutrition label with new data
         self.update_nutrition_label()
 
     def calculate_percentage(self, goal_name):
@@ -70,7 +68,7 @@ class ProgressFrame(ctk.CTkFrame):
     def update_nutrition_label(self):
         """Update the nutrition label and progress bar."""
         # Get the consumed value for the specific goal
-        consumed_value = round(self.consumed_value.get(f"consumed_{self.goal_name}", 0), 2)  # Ensure we use the correct key for consumed values
+        consumed_value = round(self.consumed_value.get(f"consumed_{self.goal_name}", 0), 2)
         # Get the goal value for the specific goal
         goal_value = self.goal_values.get(self.goal_name, 0)
         

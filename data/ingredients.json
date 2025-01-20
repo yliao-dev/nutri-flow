@@ -2,7 +2,7 @@
     "salmon":{
         "id":1,
         "reference_serving_size":100,
-        "custom_serving_size":40,
+        "custom_serving_size":30,
         "nutrition":{
             "carbohydrate":0,
             "protein":30,
