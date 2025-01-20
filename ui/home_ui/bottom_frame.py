@@ -51,16 +51,27 @@ class BottomFrame(ctk.CTkFrame):
     def update_selected_ingredients_label(self):
         selected_ingredients_text = self.format_ingredient_text(self.selected_ingredients)
         self.selected_ingredients_label.configure(
-            text=f"Selected Ingredients: {', '.join([ingredient['name'] for ingredient in self.selected_ingredients])}"
+            text=f"Selected Ingredients: {', '.join([ingredient['name'].replace('_', ' ').title() for ingredient in self.selected_ingredients])}"
         )
         self.selected_nutrition_label.configure(text=selected_ingredients_text)
 
     def format_ingredient_text(self, ingredients):
-        total_protein = round(sum([ingredient['nutrition']["protein"] for ingredient in ingredients]), 2)
-        total_carbs = round(sum([ingredient['nutrition']["carbohydrate"] for ingredient in ingredients]), 2)
-        total_calories = round(sum([ingredient['nutrition']["calories"] for ingredient in ingredients]), 2)
-
-        return f"Protein: {total_protein}g | Carbs: {total_carbs}g | Calories: {total_calories}g"
+        total_protein = round(sum([
+            ingredient['nutrition']["protein"] * (ingredient['custom_serving_size'] / ingredient['reference_serving_size'])
+            for ingredient in ingredients
+        ]), 2)
+        
+        total_carbohydrate = round(sum([
+            ingredient['nutrition']["carbohydrate"] * (ingredient['custom_serving_size'] / ingredient['reference_serving_size'])
+            for ingredient in ingredients
+        ]), 2)
+        
+        total_fat = round(sum([
+            ingredient['nutrition']["fat"] * (ingredient['custom_serving_size'] / ingredient['reference_serving_size'])
+            for ingredient in ingredients
+        ]), 2)
+        
+        return f"Protein: {total_protein}g | Carbohydrate: {total_carbohydrate}g | Fat: {total_fat}g"
 
     def update_intake(self):
         for ingredient_card in self.ingredient_cards:
