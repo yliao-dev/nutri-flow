@@ -34,7 +34,7 @@ class DataScreen(ctk.CTkFrame):
         self.export_button.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
         
         # Create New Data button
-        self.past_data_button = ctk.CTkButton(self.data_load_frame, text="New Daily Log", command=self.create_new_data)
+        self.past_data_button = ctk.CTkButton(self.data_load_frame, text="New Log\n((Restart Application))", command=self.create_new_data)
         self.past_data_button.grid(row=0, column=2, padx=10, pady=10, sticky="nsew")
         
         
@@ -43,12 +43,10 @@ class DataScreen(ctk.CTkFrame):
         import_nutrition_data_from_file(self.nutrition_view_model)
         write_to_user_config(self.nutrition_view_model)
         restart_app()
-
-    
     
     def export_data(self):
         export_nutrition_data_to_file(self.nutrition_view_model)
     
-    def create_new_data(self, csv_data):
-        create_new_log_file(csv_data)
+    def create_new_data(self):
+        create_new_log_file()
     
