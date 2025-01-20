@@ -26,9 +26,9 @@ def create_new_log_file(data):
         try:
             # Save the DataFrame to a CSV file
             df.to_csv(file_path, index=False, header=False)
-            print(f"New daily log created: {file_path}")
+            print(f"New nutrition log created: {file_path}")
         except Exception as e:
-            print(f"Failed to create new log: {e}")
+            print(f"Failed to create new nutrition log: {e}")
 
 
 
