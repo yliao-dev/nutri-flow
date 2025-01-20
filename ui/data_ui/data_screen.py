@@ -6,17 +6,31 @@ from model.data_manager import *
 class DataScreen(ctk.CTkFrame):
     def __init__(self, parent, nutrition_view_model):
         super().__init__(parent)
-        self.initialize_ui()
         self.nutrition_view_model = nutrition_view_model
         os.makedirs(LOG_PATH, exist_ok=True)
+        self.initialize_ui()
         
     def initialize_ui(self):
         self.grid_rowconfigure(0, weight=1)  # Dates row
         self.grid_rowconfigure(1, weight=3)  # Data detail row
         self.grid_rowconfigure(2, weight=1)  # Import/Export frame row
         self.grid_columnconfigure(0, weight=1)
-        
+        self.create_data_file_detail_frame()
         self.create_data_load_frame()
+    
+    def create_data_file_detail_frame(self):
+        self.data_file_detail_frame = ctk.CTkFrame(self)
+        self.data_file_detail_frame.grid(row=0, column=0, sticky="nsew", padx=20, pady=10)
+        self.data_file_detail_frame.grid_rowconfigure(0, weight=1)
+        self.data_file_detail_frame.grid_columnconfigure(0, weight=1)  
+        self.data_file_detail_frame.grid_columnconfigure(1, weight=1)
+        self.data_file_detail_frame = ctk.CTkLabel(
+                    self,
+                    font=("Arial", 16, "bold"),
+                    text=f"File: {self.nutrition_view_model.user_nutrition_model.log_path}",
+                    fg_color="transparent", 
+                )
+        self.data_file_detail_frame.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
         
     def create_data_load_frame(self):
         self.data_load_frame = ctk.CTkFrame(self)

@@ -109,7 +109,7 @@ def import_nutrition_data_from_file(nutrition_view_model):
         # Extracting date and weight
         user_nutrition_model.date = df.iloc[1, 0]
         user_nutrition_model.weight = df.iloc[1, 1]
-        user_nutrition_model.log_path = df.iloc[1, 2]
+        user_nutrition_model.log_path = os.path.basename(file_path)
 
         # Extracting goals data
         user_nutrition_model.goal_protein = df.iloc[4, 0]
@@ -135,10 +135,9 @@ def import_nutrition_data_from_file(nutrition_view_model):
         
 def export_nutrition_data_to_file(nutrition_view_model):
     timestamp = datetime.now().strftime("%Y-%m-%d")
-    file_name = f"nutrition_log_{timestamp}"
     csv_data = [
             ["Date", "Weight (kg)", "File name"],
-            [timestamp, nutrition_view_model.user_nutrition_model.weight, file_name],
+            [timestamp, nutrition_view_model.user_nutrition_model.weight, nutrition_view_model.user_nutrition_model.log_path],
             [],
             ["Protein Goal (g)", "Carbohydrate Goal (g)", "Fat Goal (g)", "Calories Goal (kcal)"],
             [
