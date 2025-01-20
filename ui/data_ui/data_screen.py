@@ -34,13 +34,15 @@ class DataScreen(ctk.CTkFrame):
         self.export_button.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
         
         # Create New Data button
-        self.past_data_button = ctk.CTkButton(self.data_load_frame, text="New Log\n((Restart Application))", command=self.create_new_data)
+        self.past_data_button = ctk.CTkButton(self.data_load_frame, text="New Log\n(Restart Application)", command=self.create_new_data)
         self.past_data_button.grid(row=0, column=2, padx=10, pady=10, sticky="nsew")
         
         
     def import_data(self):
         """Allow the user to select and read a CSV file using pandas."""
-        import_nutrition_data_from_file(self.nutrition_view_model)
+        if not import_nutrition_data_from_file(self.nutrition_view_model): 
+            print("Import canceled by the user.")
+            return
         write_to_user_config(self.nutrition_view_model)
         restart_app()
     

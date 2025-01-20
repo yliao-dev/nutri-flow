@@ -98,7 +98,7 @@ def import_nutrition_data_from_file(nutrition_view_model):
     )
     if not file_path:
         print("No file selected.")
-        return
+        return False
     try:
         # Read the CSV file
         df = pd.read_csv(file_path, header=None)
@@ -127,11 +127,11 @@ def import_nutrition_data_from_file(nutrition_view_model):
         # Extracting consumed ingredients
         ingredients_df = df.iloc[13:, :2]
         user_nutrition_model.consumed_ingredients = dict(zip(ingredients_df[0], ingredients_df[1]))
-
-        print(f"User Profile updated: {user_nutrition_model.__dict__}\n")
-
+        # print(f"User Profile updated: {user_nutrition_model.__dict__}\n")
+        return True
     except Exception as e:
         print(f"Error updating user profile from CSV: {e}")
+        return False
         
         
 def export_nutrition_data_to_file(nutrition_view_model):
