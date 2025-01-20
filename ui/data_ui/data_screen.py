@@ -1,8 +1,5 @@
 import os
-from tkinter import filedialog
-import pandas as pd
 import customtkinter as ctk
-from datetime import datetime
 from config import *
 from model.data_manager import *
 
@@ -43,16 +40,7 @@ class DataScreen(ctk.CTkFrame):
         
     def import_data(self):
         """Allow the user to select and read a CSV file using pandas."""
-        file_path = filedialog.askopenfilename(
-            title="Select a CSV File",
-            initialdir=LOG_PATH,
-            filetypes=(("CSV Files", "*.csv"),)
-        )
-        
-        if not file_path:
-            print("No file selected.")
-            return        
-        import_nutrition_data_from_file(file_path, self.nutrition_view_model)
+        import_nutrition_data_from_file(self.nutrition_view_model)
         write_to_user_config(self.nutrition_view_model)
         restart_app()
 

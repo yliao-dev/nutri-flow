@@ -3,6 +3,7 @@ import pandas as pd
 import json
 from config import *
 import sys
+from tkinter import filedialog
 
 
 
@@ -85,10 +86,18 @@ def write_to_user_config(nutrition_view_model):
     except Exception as e:
         print(f"Error updating user_config.json: {e}")
 
-def import_nutrition_data_from_file(csv_path, nutrition_view_model):
+def import_nutrition_data_from_file(nutrition_view_model):
+    file_path = filedialog.askopenfilename(
+            title="Please Select a Valid CSV File",
+            initialdir=LOG_PATH,
+            filetypes=(("CSV Files", "*.csv"),)
+    )
+    if not file_path:
+        print("No file selected.")
+        return
     try:
         # Read the CSV file
-        df = pd.read_csv(csv_path, header=None)
+        df = pd.read_csv(file_path, header=None)
 
         # Access the user_nutrition_model from the nutrition_view_model
         user_nutrition_model = nutrition_view_model.user_nutrition_model
