@@ -1,7 +1,6 @@
 import customtkinter as ctk
 from PIL import Image
-import json
-from config import INGREDIENTS_JSON_PATH
+
 
 class IngredientCard(ctk.CTkFrame):
     # Class-level attribute to keep track of the currently selected card for detail view
