@@ -7,7 +7,7 @@ class IngredientCard(ctk.CTkFrame):
     currently_selected_card = None
 
     def __init__(self, parent, index, ingredient_data, update_selected_data_callback, selection_type, width=400, height=500):
-        super().__init__(parent, corner_radius=10, width=width, height=height)
+        super().__init__(parent, corner_radius=0, width=width, height=height)
 
         # Ingredient data (loaded from JSON)
         self.ingredient_data = ingredient_data
