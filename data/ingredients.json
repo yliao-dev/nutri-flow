@@ -2,7 +2,7 @@
     "salmon":{
         "id":1,
         "reference_serving_size":100,
-        "custom_serving_size":50,
+        "custom_serving_size":40,
         "nutrition":{
             "carbohydrate":0,
             "protein":30,
@@ -38,7 +38,7 @@
     "milk":{
         "id":4,
         "reference_serving_size":100,
-        "custom_serving_size":43,
+        "custom_serving_size":50,
         "nutrition":{
             "carbohydrate":5,
             "protein":3.4,

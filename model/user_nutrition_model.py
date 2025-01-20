@@ -51,10 +51,10 @@ class UserNutritionModel:
         :return: A dictionary containing 'consumed_protein', 'consumed_carbohydrate', 'consumed_fat', and 'consumed_calories'.
         """
         return {
-            CONSUMED_PROTEIN: round(self.nutrition_data[CONSUMED_PROTEIN], 2),
-            CONSUMED_CARBOHYDRATE: round(self.nutrition_data[CONSUMED_CARBOHYDRATE], 2),
-            CONSUMED_FAT: round(self.nutrition_data[CONSUMED_FAT], 2),
-            CONSUMED_CALORIES: round(self.nutrition_data[CONSUMED_CALORIES], 2)
+            CONSUMED_PROTEIN: round(float(self.nutrition_data.get(CONSUMED_PROTEIN, 0)), 2),
+            CONSUMED_CARBOHYDRATE: round(float(self.nutrition_data.get(CONSUMED_CARBOHYDRATE, 0)), 2),
+            CONSUMED_FAT: round(float(self.nutrition_data.get(CONSUMED_FAT, 0)), 2),
+            CONSUMED_CALORIES: round(float(self.nutrition_data.get(CONSUMED_CALORIES, 0)), 2)
         }
 
     def get_consumed_ingredients(self):
@@ -70,10 +70,10 @@ class UserNutritionModel:
         :return: A dictionary with 'protein', 'carbohydrate', 'fat', and 'calories' percentages.
         """
         return {
-            "protein": self._calculate_percentage(self.nutrition_data[CONSUMED_PROTEIN], self.goal_protein),
-            "carbohydrate": self._calculate_percentage(self.nutrition_data[CONSUMED_CARBOHYDRATE], self.goal_carbohydrate),
-            "fat": self._calculate_percentage(self.nutrition_data[CONSUMED_FAT], self.goal_fat),
-            "calories": self._calculate_percentage(self.nutrition_data[CONSUMED_CALORIES], self.goal_calories)
+            CONSUMED_PROTEIN: self._calculate_percentage(self.nutrition_data[CONSUMED_PROTEIN], self.goal_protein),
+            CONSUMED_CARBOHYDRATE: self._calculate_percentage(self.nutrition_data[CONSUMED_CARBOHYDRATE], self.goal_carbohydrate),
+            CONSUMED_FAT: self._calculate_percentage(self.nutrition_data[CONSUMED_FAT], self.goal_fat),
+            CONSUMED_CALORIES: self._calculate_percentage(self.nutrition_data[CONSUMED_CALORIES], self.goal_calories)
         }
 
     def _calculate_percentage(self, current_value, goal_value):

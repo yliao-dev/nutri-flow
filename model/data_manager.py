@@ -37,10 +37,12 @@ def update_user_config(nutrition_view_model):
             data = json.load(file)
 
         consumed_ingredients = nutrition_view_model.get_consumed_ingredients()
-
         data["consumed_ingredients"] = consumed_ingredients
         nutrition_data = nutrition_view_model.get_nutrition_data()
         
+        # print("Nutrition data before conversion:", nutrition_data)
+        # print("Types of nutrition data values:", {k: type(v) for k, v in nutrition_data.items()})
+       
         # Use the global constants for updating nutrition data
         data["nutrition_data"].update({
             CONSUMED_PROTEIN: float(nutrition_data.get(CONSUMED_PROTEIN, 0.0)),
@@ -86,7 +88,7 @@ def load_nutrition_data_from_csv(csv_path, nutrition_view_model):
         ingredients_df = df.iloc[13:, :2]
         user_nutrition_model.consumed_ingredients = dict(zip(ingredients_df[0], ingredients_df[1]))
 
-        print(f"User Profile updated: {user_nutrition_model.__dict__}")
+        print(f"User Profile updated: {user_nutrition_model.__dict__}\n")
 
     except Exception as e:
         print(f"Error updating user profile from CSV: {e}")

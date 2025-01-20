@@ -47,7 +47,7 @@ class DataScreen(ctk.CTkFrame):
         file_path = filedialog.askopenfilename(
             title="Select a CSV File",
             initialdir=LOG_PATH,
-            filetypes=(("CSV Files", "*.csv"), ("All Files", "*.*"))
+            filetypes=(("CSV Files", "*.csv"),)
         )
         
         if not file_path:
@@ -55,7 +55,7 @@ class DataScreen(ctk.CTkFrame):
             return        
         load_nutrition_data_from_csv(file_path, self.nutrition_view_model)
         update_user_config(self.nutrition_view_model)
-        # self.restart_app()
+        self.restart_app()
 
     def restart_app(self):
         print("Restarting the application...")
