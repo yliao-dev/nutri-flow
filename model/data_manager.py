@@ -35,21 +35,18 @@ def update_user_config(nutrition_view_model):
         # Load the user configuration data
         with open(USER_CONFIG_PATH, 'r') as file:
             data = json.load(file)
-
-        consumed_ingredients = nutrition_view_model.get_consumed_ingredients()
-        data["consumed_ingredients"] = consumed_ingredients
-        nutrition_data = nutrition_view_model.get_nutrition_data()
+        data["date"] = nutrition_view_model.get_date()
+        data["weight"] = nutrition_view_model.get_weight()
+        data["log_path"] = nutrition_view_model.get_log_path()
         
-        # print("Nutrition data before conversion:", nutrition_data)
-        # print("Types of nutrition data values:", {k: type(v) for k, v in nutrition_data.items()})
-       
-        # Use the global constants for updating nutrition data
+        nutrition_data = nutrition_view_model.get_nutrition_data()
         data["nutrition_data"].update({
             CONSUMED_PROTEIN: float(nutrition_data.get(CONSUMED_PROTEIN, 0.0)),
             CONSUMED_CARBOHYDRATE: float(nutrition_data.get(CONSUMED_CARBOHYDRATE, 0.0)),
             CONSUMED_CALORIES: float(nutrition_data.get(CONSUMED_CALORIES, 0.0)),
             CONSUMED_FAT: float(nutrition_data.get(CONSUMED_FAT, 0.0)),
         })
+        data["consumed_ingredients"] = nutrition_view_model.get_consumed_ingredients()
 
         # Write updated data back to the user config file
         with open(USER_CONFIG_PATH, 'w') as file:

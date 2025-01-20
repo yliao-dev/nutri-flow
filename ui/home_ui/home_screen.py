@@ -32,7 +32,7 @@ class HomeScreen(ctk.CTkFrame):
                     fg_color="transparent", 
                 )
         self.weight_label.grid(row=0, column=2, padx=10, pady=10, sticky="nsew")
-        
+        print(self.nutrition_view_model.user_nutrition_model.date)
         self.date_label = ctk.CTkLabel(
                     self,
                     font=("Arial", 16, "bold"),

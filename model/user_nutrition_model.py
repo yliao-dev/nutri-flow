@@ -12,8 +12,8 @@ class UserNutritionModel:
         self.goal_carbohydrate = goal_carbohydrate
         self.goal_fat = goal_fat
         self.goal_calories = goal_calories
-        self.log_path = log_path or ""
-
+        self.log_path = log_path
+        
         # Nutrition tracking attributes
         self.nutrition_data = nutrition_data or {
             CONSUMED_PROTEIN: 0.0,
@@ -23,6 +23,15 @@ class UserNutritionModel:
         }
         self.consumed_ingredients = consumed_ingredients or {}
 
+    def get_date(self):
+        return self.date
+    
+    def get_weight(self):
+        return self.weight
+    
+    def get_log_path(self):
+        return self.log_path
+    
     def update_nutrition(self, selected_ingredients):
         """
         Update the nutrition data based on selected ingredients.
