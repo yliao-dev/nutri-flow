@@ -42,11 +42,8 @@ class UserNutritionModel:
             nutrition = ingredient.get("nutrition", {})
             custom_serving_size = ingredient.get("custom_serving_size", 0.0)
             reference_serving_size = ingredient.get("reference_serving_size", 99.0)
-            # Calculate the serving ratio
-            print(custom_serving_size, reference_serving_size)
             serving_ratio = custom_serving_size / reference_serving_size
-            print(serving_ratio)
-            # Update nutrition data considering the serving ratio
+
             self.nutrition_data[CONSUMED_PROTEIN] += nutrition.get("protein", 0.0) * serving_ratio
             self.nutrition_data[CONSUMED_CARBOHYDRATE] += nutrition.get("carbohydrate", 0.0) * serving_ratio
             self.nutrition_data[CONSUMED_CALORIES] += nutrition.get("calories", 0.0) * serving_ratio

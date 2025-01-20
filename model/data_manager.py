@@ -67,7 +67,7 @@ def write_custom_serving_sizes_to_ingredients_json(selected_ingredients):
         
         # Save back to JSON
         df.to_json(INGREDIENTS_JSON_PATH, orient='index', indent=4)
-        print("ingredient.json updated successfully.")
+        # print("ingredient.json updated successfully.")
     except Exception as e:
         print(f"Error updating ingredient.json: {e}")
 
@@ -96,7 +96,7 @@ def write_to_user_config(nutrition_view_model):
         with open(USER_CONFIG_PATH, 'w') as file:
             json.dump(data, file, indent=4)
 
-        print("user_config.json updated successfully.")
+        # print("user_config.json updated successfully.")
     except Exception as e:
         print(f"Error updating user_config.json: {e}")
 
