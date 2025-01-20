@@ -7,6 +7,7 @@ myenv/*
 *.py[cod]
 
 *.csv
+data/ingredients.json
 
 # IDE/editor specific files
 .vscode/
