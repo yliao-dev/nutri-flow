@@ -1,8 +1,38 @@
+from datetime import datetime
 import pandas as pd
 import json
 from config import *
+import sys
 
-def update_custom_serving_sizes_in_json(selected_ingredients):
+
+
+def restart_app():
+        print("Restarting the application...")
+        os.execv(sys.executable, [sys.executable, "app.py"])
+        
+def create_new_log_file(data):
+        df = pd.DataFrame(data)
+        """Create a new daily log CSV file with pandas."""
+        timestamp = datetime.now().strftime("%Y-%m-%d")
+        file_name = f"nutrition_log_{timestamp}.csv"
+        file_path = os.path.join(LOG_PATH, file_name)
+        
+        counter = 1
+        while os.path.exists(file_path):
+            file_name = f"nutrition_log_{timestamp}({counter}).csv"
+            file_path = os.path.join(LOG_PATH, file_name)
+            counter += 1
+        
+        try:
+            # Save the DataFrame to a CSV file
+            df.to_csv(file_path, index=False, header=False)
+            print(f"New daily log created: {file_path}")
+        except Exception as e:
+            print(f"Failed to create new log: {e}")
+
+
+
+def write_custom_serving_sizes_to_ingredient_json(selected_ingredients):
     """
     Update the 'custom_serving_size' field in ingredient.json based on selected ingredients.
     """
@@ -26,8 +56,7 @@ def update_custom_serving_sizes_in_json(selected_ingredients):
     except Exception as e:
         print(f"Error updating ingredient.json: {e}")
 
-
-def update_user_config(nutrition_view_model):
+def write_to_user_config(nutrition_view_model):
     """
     Update the user_config.json with consumed ingredients and nutrition data.
     """
@@ -56,7 +85,7 @@ def update_user_config(nutrition_view_model):
     except Exception as e:
         print(f"Error updating user_config.json: {e}")
 
-def load_nutrition_data_from_csv(csv_path, nutrition_view_model):
+def import_nutrition_data_from_file(csv_path, nutrition_view_model):
     try:
         # Read the CSV file
         df = pd.read_csv(csv_path, header=None)
@@ -68,6 +97,7 @@ def load_nutrition_data_from_csv(csv_path, nutrition_view_model):
         # Extracting date and weight
         user_nutrition_model.date = df.iloc[1, 0]
         user_nutrition_model.weight = df.iloc[1, 1]
+        user_nutrition_model.log_path = df.iloc[1, 2]
 
         # Extracting goals data
         user_nutrition_model.goal_protein = df.iloc[4, 0]
@@ -89,3 +119,48 @@ def load_nutrition_data_from_csv(csv_path, nutrition_view_model):
 
     except Exception as e:
         print(f"Error updating user profile from CSV: {e}")
+        
+        
+def export_nutrition_data_to_file(nutrition_view_model):
+    timestamp = datetime.now().strftime("%Y-%m-%d")
+    file_name = f"nutrition_log_{timestamp}"
+    csv_data = [
+            ["Date", "Weight (kg)", "File name"],
+            [timestamp, nutrition_view_model.user_nutrition_model.weight, file_name],
+            [],
+            ["Protein Goal (g)", "Carbohydrate Goal (g)", "Fat Goal (g)", "Calories Goal (kcal)"],
+            [
+                nutrition_view_model.user_nutrition_model.goal_protein,
+                nutrition_view_model.user_nutrition_model.goal_carbohydrate,
+                nutrition_view_model.user_nutrition_model.goal_fat,
+                nutrition_view_model.user_nutrition_model.goal_calories,
+            ],
+            [],
+            ["Protein Consumed (g)", "Carbohydrate Consumed (g)", "Fat Consumed (g)", "Calories Consumed (kcal)"],
+            [
+                nutrition_view_model.get_nutrition_data()[CONSUMED_PROTEIN],
+                nutrition_view_model.get_nutrition_data()[CONSUMED_CARBOHYDRATE],
+                nutrition_view_model.get_nutrition_data()[CONSUMED_FAT],
+                nutrition_view_model.get_nutrition_data()[CONSUMED_CALORIES],
+            ],
+            [],
+            ["Protein Percentage (%)", "Carbohydrate Percentage (%)", "Fat Percentage (%)", "Calories Percentage (%)"],
+            [
+                nutrition_view_model.get_nutrition_percentages()[CONSUMED_PROTEIN],
+                nutrition_view_model.get_nutrition_percentages()[CONSUMED_CARBOHYDRATE],
+                nutrition_view_model.get_nutrition_percentages()[CONSUMED_FAT],
+                nutrition_view_model.get_nutrition_percentages()[CONSUMED_CALORIES],
+            ],
+            [],
+            ["Consumed Ingredients", "Consumed Amount (g)"],
+        ]
+
+        # Add consumed ingredients data
+    consumed_ingredients = nutrition_view_model.get_consumed_ingredients()
+    for ingredient, amounts in consumed_ingredients.items():
+        formatted_ingredient = ingredient.replace("_", " ").title()
+        amounts_str = ",".join(map(str, amounts))            
+        csv_data.append([formatted_ingredient, amounts_str])
+
+    create_new_log_file(csv_data)
+    

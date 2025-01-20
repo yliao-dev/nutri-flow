@@ -1,11 +1,10 @@
 import os
-import sys
 from tkinter import filedialog
 import pandas as pd
 import customtkinter as ctk
 from datetime import datetime
 from config import *
-from model.data_manager import load_nutrition_data_from_csv, update_user_config
+from model.data_manager import *
 
 class DataScreen(ctk.CTkFrame):
     def __init__(self, parent, nutrition_view_model):
@@ -53,73 +52,15 @@ class DataScreen(ctk.CTkFrame):
         if not file_path:
             print("No file selected.")
             return        
-        load_nutrition_data_from_csv(file_path, self.nutrition_view_model)
-        update_user_config(self.nutrition_view_model)
-        self.restart_app()
+        import_nutrition_data_from_file(file_path, self.nutrition_view_model)
+        write_to_user_config(self.nutrition_view_model)
+        restart_app()
 
-    def restart_app(self):
-        print("Restarting the application...")
-        os.execv(sys.executable, [sys.executable, "app.py"])
+    
     
     def export_data(self):
-        timestamp = datetime.now().strftime("%Y-%m-%d")
-        csv_data = [
-            ["Date", "Weight (kg)"],
-            [timestamp, self.nutrition_view_model.user_nutrition_model.weight],
-            [],
-            ["Protein Goal (g)", "Carbohydrate Goal (g)", "Fat Goal (g)", "Calories Goal (kcal)"],
-            [
-                self.nutrition_view_model.user_nutrition_model.goal_protein,
-                self.nutrition_view_model.user_nutrition_model.goal_carbohydrate,
-                self.nutrition_view_model.user_nutrition_model.goal_fat,
-                self.nutrition_view_model.user_nutrition_model.goal_calories,
-            ],
-            [],
-            ["Protein Consumed (g)", "Carbohydrate Consumed (g)", "Fat Consumed (g)", "Calories Consumed (kcal)"],
-            [
-                self.nutrition_view_model.get_nutrition_data()[CONSUMED_PROTEIN],
-                self.nutrition_view_model.get_nutrition_data()[CONSUMED_CARBOHYDRATE],
-                self.nutrition_view_model.get_nutrition_data()[CONSUMED_FAT],
-                self.nutrition_view_model.get_nutrition_data()[CONSUMED_CALORIES],
-            ],
-            [],
-            ["Protein Percentage (%)", "Carbohydrate Percentage (%)", "Fat Percentage (%)", "Calories Percentage (%)"],
-            [
-                self.nutrition_view_model.get_nutrition_percentages()[CONSUMED_PROTEIN],
-                self.nutrition_view_model.get_nutrition_percentages()[CONSUMED_CARBOHYDRATE],
-                self.nutrition_view_model.get_nutrition_percentages()[CONSUMED_FAT],
-                self.nutrition_view_model.get_nutrition_percentages()[CONSUMED_CALORIES],
-            ],
-            [],
-            ["Consumed Ingredients", "Consumed Amount (g)"],
-        ]
-
-        # Add consumed ingredients data
-        consumed_ingredients = self.nutrition_view_model.get_consumed_ingredients()
-        for ingredient, amounts in consumed_ingredients.items():
-            formatted_ingredient = ingredient.replace("_", " ").title()
-            amounts_str = ",".join(map(str, amounts))            
-            csv_data.append([formatted_ingredient, amounts_str])
-
-        # Pass the final data to the `create_new_data` method
-        self.create_new_data(csv_data)
+        export_nutrition_data_to_file(self.nutrition_view_model)
     
-    def create_new_data(self, data):
-        df = pd.DataFrame(data)
-        """Create a new daily log CSV file with pandas."""
-        timestamp = datetime.now().strftime("%Y-%m-%d")
-        file_name = f"nutrition_log_{timestamp}.csv"
-        file_path = os.path.join(LOG_PATH, file_name)
-        
-        counter = 1
-        while os.path.exists(file_path):
-            file_name = f"nutrition_log_{timestamp}({counter}).csv"
-            file_path = os.path.join(LOG_PATH, file_name)
-            counter += 1
-        
-        try:
-            # Save the DataFrame to a CSV file
-            df.to_csv(file_path, index=False, header=False)
-            print(f"New daily log created: {file_path}")
-        except Exception as e:
-            print(f"Failed to create new log: {e}")
+    def create_new_data(self, csv_data):
+        create_new_log_file(csv_data)
+    
