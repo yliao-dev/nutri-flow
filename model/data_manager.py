@@ -10,7 +10,18 @@ from tkinter import filedialog
 def restart_app():
         print("Restarting the application...")
         os.execv(sys.executable, [sys.executable, "app.py"])
-        
+
+
+def load_from_ingredients_json():
+    with open(INGREDIENTS_JSON_PATH, "r") as file:
+        data = json.load(file)
+    ingredients = []
+    for ingredient_name, details in data.items():
+        ingredient_details = details.copy()
+        ingredient_details["name"] = ingredient_name
+        ingredients.append(ingredient_details)
+    return ingredients
+
 def create_new_log_file(data):
     df = pd.DataFrame(data)
     """Create a new daily log CSV file with pandas."""
@@ -36,7 +47,7 @@ def create_new_log_file(data):
         print(f"Failed to create new nutrition log: {e}")
 
 
-def write_custom_serving_sizes_to_ingredient_json(selected_ingredients):
+def write_custom_serving_sizes_to_ingredients_json(selected_ingredients):
     """
     Update the 'custom_serving_size' field in ingredient.json based on selected ingredients.
     """

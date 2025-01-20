@@ -49,43 +49,6 @@ class IngredientCard(ctk.CTkFrame):
             self.card_label.bind("<Enter>", self.on_hover)
             self.card_label.bind("<Leave>", self.on_leave)
             self.card_label.bind("<Button-1>", self.toggle_select)
-
-    def add_custom_serving_size(self):
-        """Add an editable entry for the custom serving size in grams."""
-        if not hasattr(self, 'serving_size_entry'):
-            custom_serving_size = self.ingredient_data.get("custom_serving_size", 100)
-            self.serving_size_var = ctk.StringVar(value=custom_serving_size) 
-            validate_command = self.register(self.validate_serving_size_input)
-            # Create the entry widget for serving size
-            self.serving_size_entry = ctk.CTkEntry(
-                self,
-                width=200,
-                font=("Arial", 12),
-                placeholder_text="Enter serving size in grams",
-                textvariable=self.serving_size_var,
-                validate="key",  # Enable validation for each key press
-                validatecommand=(validate_command, "%P")
-            )
-            # Place it in the grid row after the image
-            self.serving_size_entry.grid(row=5, column=0, pady=(10, 0))
-            
-    #TODO: everytime on_serving_size_change is called, update the ingredient.json file
-    def on_serving_size_change(self, event=None):
-        """Handle changes to the serving size when the user finishes editing."""
-        new_serving_size = self.serving_size_var.get()
-        try:
-            new_serving_size = float(new_serving_size)
-            self.ingredient_data["custom_serving_size"] = new_serving_size
-            # print(f"Updated serving size: {new_serving_size} grams")
-        except ValueError:
-            print("Invalid serving size entered.")
-    
-    def validate_serving_size_input(self, value):
-        """Validate the input for the serving size entry."""
-        # Allow only digits and one decimal point
-        if value == "" or value.isdigit() or (value.count('.') == 1 and value.replace('.', '').isdigit()):
-            return True
-        return False
     
     def add_nutrition_data(self):
         """Add the nutritional information labels."""
@@ -175,17 +138,38 @@ class IngredientCard(ctk.CTkFrame):
         """Reset the appearance of the card when the hover ends."""
         if not self.selected:
             self.configure(fg_color=self.default_border_color)
-
-# Function to load the ingredients data from the JSON file
-def load_ingredients_data():
-    with open(INGREDIENTS_JSON_PATH, "r") as file:
-        data = json.load(file)
-
-    ingredients = []
-    for ingredient_name, details in data.items():
-        # Add the ingredient name to each ingredient's details
-        ingredient_details = details.copy()
-        ingredient_details["name"] = ingredient_name
-        ingredients.append(ingredient_details)
-
-    return ingredients
+    
+    def add_custom_serving_size(self):
+        """Add an editable entry for the custom serving size in grams."""
+        if not hasattr(self, 'serving_size_entry'):
+            custom_serving_size = self.ingredient_data.get("custom_serving_size", 100)
+            self.serving_size_var = ctk.StringVar(value=custom_serving_size) 
+            validate_command = self.register(self.validate_serving_size_input)
+            # Create the entry widget for serving size
+            self.serving_size_entry = ctk.CTkEntry(
+                self,
+                width=200,
+                font=("Arial", 12),
+                placeholder_text="Enter serving size in grams",
+                textvariable=self.serving_size_var,
+                validate="key",  # Enable validation for each key press
+                validatecommand=(validate_command, "%P")
+            )
+            # Place it in the grid row after the image
+            self.serving_size_entry.grid(row=5, column=0, pady=(10, 0))
+            
+    def on_serving_size_change(self, event=None):
+        """Handle changes to the serving size when the user finishes editing."""
+        new_serving_size = self.serving_size_var.get()
+        try:
+            new_serving_size = float(new_serving_size)
+            self.ingredient_data["custom_serving_size"] = new_serving_size
+        except ValueError:
+            print("Invalid serving size entered.")
+    
+    def validate_serving_size_input(self, value):
+        """Validate the input for the serving size entry."""
+        # Allow only digits and one decimal point
+        if value == "" or value.isdigit() or (value.count('.') == 1 and value.replace('.', '').isdigit()):
+            return True
+        return False

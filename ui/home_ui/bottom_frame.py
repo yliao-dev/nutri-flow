@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from ui.ingredients_ui.ingredient_card import IngredientCard
-from model.data_manager import write_custom_serving_sizes_to_ingredient_json, write_to_user_config
+from model.data_manager import write_custom_serving_sizes_to_ingredients_json, write_to_user_config
 
 class BottomFrame(ctk.CTkFrame):
     def __init__(self, master, nutrition_view_model, update_intake_callback, ingredient_cards):
@@ -80,7 +80,7 @@ class BottomFrame(ctk.CTkFrame):
         nutrition_data = self.nutrition_view_model.get_nutrition_data()
         # Call the callback to update progress frames in HomeScreen
         self.update_intake_callback(nutrition_data)
-        write_custom_serving_sizes_to_ingredient_json(self.selected_ingredients)
+        write_custom_serving_sizes_to_ingredients_json(self.selected_ingredients)
         write_to_user_config(self.nutrition_view_model)
         # Reset selection after updating goals
         self.reset_selection()

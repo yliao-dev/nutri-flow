@@ -1,16 +1,17 @@
 import customtkinter as ctk
 from ui.home_ui.progress_frame import ProgressFrame
-from ui.ingredients_ui.ingredient_card import IngredientCard, load_ingredients_data
+from ui.ingredients_ui.ingredient_card import IngredientCard
 from ui.home_ui.bottom_frame import BottomFrame
 from PIL import Image
 from config import DARK_MODE_IMG
+from model.data_manager import load_from_ingredients_json
 
 class HomeScreen(ctk.CTkFrame):
     def __init__(self, master, nutrition_view_model):
         super().__init__(master)
 
         self.nutrition_view_model = nutrition_view_model
-        self.ingredients_data = load_ingredients_data()
+        self.ingredients_data = load_from_ingredients_json()
         self.user_goals = {
             "protein": self.nutrition_view_model.user_nutrition_model.goal_protein,
             "carbohydrate": self.nutrition_view_model.user_nutrition_model.goal_carbohydrate,

@@ -1,6 +1,7 @@
 import customtkinter as ctk
-from ui.ingredients_ui.ingredient_card import IngredientCard, load_ingredients_data
+from ui.ingredients_ui.ingredient_card import IngredientCard
 from PIL import Image
+from model.data_manager import load_from_ingredients_json
 
 
 class IngredientScreen(ctk.CTkFrame):
@@ -8,7 +9,7 @@ class IngredientScreen(ctk.CTkFrame):
         super().__init__(parent, width=width, height=height)
 
         # Load ingredient data
-        self.ingredients_data = load_ingredients_data()
+        self.ingredients_data = load_from_ingredients_json()
 
         # Initialize UI
         self.initialize_ui()
