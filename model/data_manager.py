@@ -12,29 +12,28 @@ def restart_app():
         os.execv(sys.executable, [sys.executable, "app.py"])
         
 def create_new_log_file(data):
-        df = pd.DataFrame(data)
-        """Create a new daily log CSV file with pandas."""
-        timestamp = datetime.now().strftime("%Y-%m-%d")
-        file_name = f"nutrition_log_{timestamp}.csv"
-    
-        # Open a "Save As" dialog to select the file location
-        file_path = filedialog.asksaveasfilename(
-            title="Save Nutrition Log As",
-            initialfile=file_name,
-            defaultextension=".csv",
-            filetypes=(("CSV Files", "*.csv"), ("All Files", "*.*"))
-        )
+    df = pd.DataFrame(data)
+    """Create a new daily log CSV file with pandas."""
+    timestamp = datetime.now().strftime("%Y-%m-%d")
+    file_name = f"nutrition_log_{timestamp}.csv"
 
-        if not file_path:
-            print("Save operation canceled.")
-            return
-        try:
-            # Save the DataFrame to a CSV file
-            df.to_csv(file_path, index=False, header=False)
-            print(f"New nutrition log created: {file_path}")
-        except Exception as e:
-            print(f"Failed to create new nutrition log: {e}")
+    # Open a "Save As" dialog to select the file location
+    file_path = filedialog.asksaveasfilename(
+        title="Save Nutrition Log As",
+        initialfile=file_name,
+        defaultextension=".csv",
+        filetypes=(("CSV Files", "*.csv"), ("All Files", "*.*"))
+    )
+    if not file_path:
+        print("No new file created.")
+        return
 
+    try:
+        # Save the DataFrame to a CSV file
+        df.to_csv(file_path, index=False, header=False)
+        print(f"New nutrition log created: {file_path}")
+    except Exception as e:
+        print(f"Failed to create new nutrition log: {e}")
 
 
 def write_custom_serving_sizes_to_ingredient_json(selected_ingredients):
@@ -176,4 +175,31 @@ def export_nutrition_data_to_file(nutrition_view_model):
         csv_data.append([formatted_ingredient, amounts_str])
 
     create_new_log_file(csv_data)
+    
+def fresh_user_config(nutrition_view_model):
+    try:
+        # Load the user configuration data
+        with open(USER_CONFIG_PATH, 'r') as file:
+            data = json.load(file)
+        timestamp = datetime.now().strftime("%Y-%m-%d")
+        data["date"] = timestamp
+        data["weight"] = nutrition_view_model.get_weight()
+        data["log_path"] = ""
+        
+        nutrition_data = nutrition_view_model.get_nutrition_data()
+        data["nutrition_data"].update({
+            CONSUMED_PROTEIN: 0.0,
+            CONSUMED_CARBOHYDRATE: 0.0,
+            CONSUMED_CALORIES: 0.0,
+            CONSUMED_FAT: 0.0,
+        })
+        data["consumed_ingredients"] = {}
+
+        # Write updated data back to the user config file
+        with open(USER_CONFIG_PATH, 'w') as file:
+            json.dump(data, file, indent=4)
+
+        print("user_config.json refreshed successfully.")
+    except Exception as e:
+        print(f"Error refreshing user_config.json: {e}")
     
