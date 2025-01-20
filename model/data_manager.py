@@ -16,14 +16,18 @@ def create_new_log_file(data):
         """Create a new daily log CSV file with pandas."""
         timestamp = datetime.now().strftime("%Y-%m-%d")
         file_name = f"nutrition_log_{timestamp}.csv"
-        file_path = os.path.join(LOG_PATH, file_name)
-        
-        counter = 1
-        while os.path.exists(file_path):
-            file_name = f"nutrition_log_{timestamp}({counter}).csv"
-            file_path = os.path.join(LOG_PATH, file_name)
-            counter += 1
-        
+    
+        # Open a "Save As" dialog to select the file location
+        file_path = filedialog.asksaveasfilename(
+            title="Save Nutrition Log As",
+            initialfile=file_name,
+            defaultextension=".csv",
+            filetypes=(("CSV Files", "*.csv"), ("All Files", "*.*"))
+        )
+
+        if not file_path:
+            print("Save operation canceled.")
+            return
         try:
             # Save the DataFrame to a CSV file
             df.to_csv(file_path, index=False, header=False)
