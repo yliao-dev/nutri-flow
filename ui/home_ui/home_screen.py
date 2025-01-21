@@ -94,19 +94,28 @@ class HomeScreen(ctk.CTkFrame):
         self.ingredients_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=0, sticky="nsew")
 
         self.canvas = ctk.CTkCanvas(self.ingredients_frame, highlightthickness=0)
-        self.canvas.pack(side="top", fill="both", expand=True)
+        self.canvas.pack(side="left", fill="both", expand=True)
 
-        self.scrollbar = ctk.CTkScrollbar(self.ingredients_frame, orientation="horizontal", command=self.canvas.xview)
-        self.scrollbar.pack(side="bottom", fill="x")
+        # Set up vertical scrollbar
+        self.scrollbar = ctk.CTkScrollbar(self.ingredients_frame, orientation="vertical", command=self.canvas.yview)
+        self.scrollbar.pack(side="right", fill="y")
 
-        self.canvas.configure(xscrollcommand=self.scrollbar.set)
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
 
         self.scrollable_frame = ctk.CTkFrame(self.canvas)
         self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+
+        # Adjust scrollable_frame size dynamically
         self.scrollable_frame.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
 
     def populate_ingredient_cards(self):
-        for ingredient in self.ingredients_data:
+        # Adjust number of columns per row (e.g., 3 cards per row)
+        cards_per_row = 5
+        for i, ingredient in enumerate(self.ingredients_data):
+            # Calculate row and column position
+            row = i // cards_per_row
+            col = i % cards_per_row
+
             ingredient_card = IngredientCard(
                 self.scrollable_frame,
                 index=ingredient["id"],
@@ -118,8 +127,16 @@ class HomeScreen(ctk.CTkFrame):
             ingredient_card.add_nutrition_data()
             ingredient_card.add_image(ingredient["image"])
             ingredient_card.add_custom_serving_size()
-            ingredient_card.grid(row=0, column=ingredient["id"], padx=5, pady=5, sticky="nsew")
+
+            # Place the card in the grid
+            ingredient_card.grid(row=row, column=col, padx=5, pady=5, sticky="nsew")
+
+            # Make sure the cards list gets updated
             self.ingredient_cards.append(ingredient_card)
+
+        # Configure column weights to ensure equal width
+        for col in range(cards_per_row):
+            self.scrollable_frame.grid_columnconfigure(col, weight=1)
 
     def update_bottom_frame(self, ingredients_data, add):
         self.bottom_frame.update_selected_data(ingredients_data, add)
