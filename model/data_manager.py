@@ -105,7 +105,6 @@ def write_to_user_config(nutrition_view_model):
             CONSUMED_CALORIES: float(nutrition_data.get(CONSUMED_CALORIES, 0.0)),
             CONSUMED_FAT: float(nutrition_data.get(CONSUMED_FAT, 0.0)),
         })
-        data["consumed_ingredients"] = nutrition_view_model.get_consumed_ingredients()
 
         # Write updated data back to the user config file
         with open(USER_CONFIG_PATH, 'w') as file:
@@ -151,7 +150,9 @@ def import_nutrition_data_from_file(nutrition_view_model):
 
         # Extracting consumed ingredients
         ingredients_df = df.iloc[13:, :2]
-        user_nutrition_model.consumed_ingredients = dict(zip(ingredients_df[0], ingredients_df[1]))
+        consumed_amount = [json.loads(ingredient) for ingredient in ingredients_df.iloc[:, 1]]
+        user_nutrition_model.consumed_ingredients = dict(zip(ingredients_df[0], consumed_amount))
+
         # print(f"User Profile updated: {user_nutrition_model.__dict__}\n")
         return True
     except Exception as e:
@@ -194,10 +195,8 @@ def export_nutrition_data_to_file(nutrition_view_model):
 
         # Add consumed ingredients data
     consumed_ingredients = nutrition_view_model.get_consumed_ingredients()
-    for ingredient, amounts in consumed_ingredients.items():
-        formatted_ingredient = ingredient.replace("_", " ").title()
-        amounts_str = ",".join(map(str, amounts))            
-        csv_data.append([formatted_ingredient, amounts_str])
+    for ingredient, consumed_amounts in consumed_ingredients.items():
+        csv_data.append([ingredient, consumed_amounts])
 
     create_new_log_file(csv_data)
     
