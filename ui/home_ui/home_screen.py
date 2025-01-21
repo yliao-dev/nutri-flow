@@ -9,7 +9,8 @@ from model.data_manager import load_from_ingredients_json
 class HomeScreen(ctk.CTkFrame):
     def __init__(self, master, nutrition_view_model):
         super().__init__(master)
-
+        self.resize_debounce = None
+        
         self.nutrition_view_model = nutrition_view_model
         self.ingredients_data = load_from_ingredients_json()
         self.user_goals = {
@@ -93,10 +94,11 @@ class HomeScreen(ctk.CTkFrame):
         self.ingredients_frame = ctk.CTkFrame(self)
         self.ingredients_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=0, sticky="nsew")
 
+        self.ingredients_frame.bind("<Configure>", self.on_frame_resize)  # Bind resize event
+        
         self.canvas = ctk.CTkCanvas(self.ingredients_frame, highlightthickness=0)
         self.canvas.pack(side="left", fill="both", expand=True)
 
-        # Set up vertical scrollbar
         self.scrollbar = ctk.CTkScrollbar(self.ingredients_frame, orientation="vertical", command=self.canvas.yview)
         self.scrollbar.pack(side="right", fill="y")
 
@@ -104,16 +106,31 @@ class HomeScreen(ctk.CTkFrame):
 
         self.scrollable_frame = ctk.CTkFrame(self.canvas)
         self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
-
-        # Adjust scrollable_frame size dynamically
         self.scrollable_frame.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
 
+    def on_frame_resize(self, event):
+        # Recalculate the number of cards per row when the frame size changes
+        if self.resize_debounce is not None:
+            self.after_cancel(self.resize_debounce)
+        
+        # Schedule the function to be called after 200 ms (adjust this as needed)
+        self.resize_debounce = self.after(0, self.populate_ingredient_cards)
 
-    
+
+    def calculate_cards_per_row(self):
+        frame_width = self.ingredients_frame.winfo_width()        
+        card_width = 150
+        cards_per_row = frame_width // card_width
+        return max(3, cards_per_row)
     
     def populate_ingredient_cards(self):
-        # Adjust number of columns per row (e.g., 3 cards per row)
-        cards_per_row = 6
+        # Get the number of cards per row based on the current frame size
+        cards_per_row = self.calculate_cards_per_row()
+
+        # Clear the current ingredient cards before repopulating (optional)
+        for widget in self.scrollable_frame.winfo_children():
+            widget.destroy()
+
         for i, ingredient in enumerate(self.ingredients_data):
             # Calculate row and column position
             row = i // cards_per_row
