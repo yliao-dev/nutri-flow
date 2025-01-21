@@ -105,6 +105,7 @@ def write_to_user_config(nutrition_view_model):
             CONSUMED_CALORIES: float(nutrition_data.get(CONSUMED_CALORIES, 0.0)),
             CONSUMED_FAT: float(nutrition_data.get(CONSUMED_FAT, 0.0)),
         })
+        data["consumed_ingredients"] = nutrition_view_model.get_consumed_ingredients()
 
         # Write updated data back to the user config file
         with open(USER_CONFIG_PATH, 'w') as file:
