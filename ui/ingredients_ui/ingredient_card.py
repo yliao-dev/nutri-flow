@@ -6,9 +6,9 @@ class IngredientCard(ctk.CTkFrame):
     # Class-level attribute to keep track of the currently selected card for detail view
     currently_selected_card = None
 
-    def __init__(self, parent, index, ingredient_data, update_selected_data_callback, selection_type, width=400, height=500):
+    def __init__(self, parent, index, ingredient_data, update_selected_data_callback, selection_type, width, height):
         super().__init__(parent, corner_radius=0, width=width, height=height)
-
+        self.grid_propagate(False)
         # Ingredient data (loaded from JSON)
         self.ingredient_data = ingredient_data
         self.index = index

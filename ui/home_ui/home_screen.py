@@ -108,9 +108,12 @@ class HomeScreen(ctk.CTkFrame):
         # Adjust scrollable_frame size dynamically
         self.scrollable_frame.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
 
+
+    
+    
     def populate_ingredient_cards(self):
         # Adjust number of columns per row (e.g., 3 cards per row)
-        cards_per_row = 5
+        cards_per_row = 6
         for i, ingredient in enumerate(self.ingredients_data):
             # Calculate row and column position
             row = i // cards_per_row
@@ -121,7 +124,9 @@ class HomeScreen(ctk.CTkFrame):
                 index=ingredient["id"],
                 ingredient_data=ingredient,
                 update_selected_data_callback=self.update_bottom_frame,
-                selection_type="intake"
+                selection_type="intake",
+                width=150,
+                height=250
             )
             ingredient_card.add_name()
             ingredient_card.add_nutrition_data()

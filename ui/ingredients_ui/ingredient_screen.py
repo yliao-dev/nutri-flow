@@ -116,7 +116,9 @@ class IngredientScreen(ctk.CTkFrame):
                 index=index,
                 ingredient_data=ingredient,
                 update_selected_data_callback=self.update_selected_ingredient,
-                selection_type="detail"
+                selection_type="detail",
+                width=150,
+                height=200,
             )
             ingredient_card.add_name()
             ingredient_card.add_image(ingredient["image"])
