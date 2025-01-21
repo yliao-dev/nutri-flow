@@ -127,9 +127,10 @@ class HomeScreen(ctk.CTkFrame):
         # Get the number of cards per row based on the current frame size
         cards_per_row = self.calculate_cards_per_row()
 
-        # Clear the current ingredient cards before repopulating (optional)
+        # Clear the current ingredient cards before repopulating
         for widget in self.scrollable_frame.winfo_children():
             widget.destroy()
+        self.ingredient_cards.clear()  # Reset the list of ingredient cards
 
         for i, ingredient in enumerate(self.ingredients_data):
             # Calculate row and column position
@@ -153,7 +154,7 @@ class HomeScreen(ctk.CTkFrame):
             # Place the card in the grid
             ingredient_card.grid(row=row, column=col, padx=5, pady=5, sticky="nsew")
 
-            # Make sure the cards list gets updated
+            # Add the card to the list
             self.ingredient_cards.append(ingredient_card)
 
         # Configure column weights to ensure equal width
