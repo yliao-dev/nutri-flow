@@ -104,8 +104,8 @@ class IngredientCard(ctk.CTkFrame):
         self.selected = not self.selected
         border_color = self.highlight_color if self.selected else self.default_border_color
         self.configure(fg_color=border_color)
-
         if self.selected:
+            self.on_serving_size_change()
             self.update_selected_data_callback(self.ingredient_data, add=True)
         else:
             self.update_selected_data_callback(self.ingredient_data, add=False)
