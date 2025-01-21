@@ -19,8 +19,23 @@ def load_from_ingredients_json():
     for ingredient_name, details in data.items():
         ingredient_details = details.copy()
         ingredient_details["name"] = ingredient_name
+        ingredient_details["frequency_of_use"] = details.get("frequency_of_use", 0)
+        ingredient_details["last_used_date"] = details.get("last_used_date", None)
         ingredients.append(ingredient_details)
     return ingredients
+
+def sort_ingredients(ingredients, criteria="frequency_of_use", descending=True):
+    return sorted(ingredients, key=lambda x: x[criteria] or 0, reverse=descending)
+
+def update_ingredient_usage(ingredient_name):
+    with open(INGREDIENTS_JSON_PATH, "r+") as file:
+        data = json.load(file)
+        if ingredient_name in data:
+            data[ingredient_name]["frequency_of_use"] = data[ingredient_name].get("frequency_of_use", 0) + 1
+            data[ingredient_name]["last_used_date"] = datetime.now().isoformat()
+            file.seek(0)
+            json.dump(data, file, indent=4)
+            file.truncate()
 
 def create_new_log_file(data):
     df = pd.DataFrame(data)

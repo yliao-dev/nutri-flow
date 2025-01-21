@@ -4,7 +4,7 @@ from ui.ingredients_ui.ingredient_card import IngredientCard
 from ui.home_ui.bottom_frame import BottomFrame
 from PIL import Image
 from config import DARK_MODE_IMG
-from model.data_manager import load_from_ingredients_json
+from model.data_manager import load_from_ingredients_json, sort_ingredients
 
 class HomeScreen(ctk.CTkFrame):
     def __init__(self, master, nutrition_view_model):
@@ -13,6 +13,8 @@ class HomeScreen(ctk.CTkFrame):
         
         self.nutrition_view_model = nutrition_view_model
         self.ingredients_data = load_from_ingredients_json()
+        sorted_ingredients = sort_ingredients(self.ingredients_data, criteria="frequency_of_use")
+        self.ingredients_data = sorted_ingredients
         self.user_goals = {
             "protein": self.nutrition_view_model.user_nutrition_model.goal_protein,
             "carbohydrate": self.nutrition_view_model.user_nutrition_model.goal_carbohydrate,
@@ -40,7 +42,12 @@ class HomeScreen(ctk.CTkFrame):
                     text=f"Date: {self.nutrition_view_model.user_nutrition_model.date}",
                     fg_color="transparent", 
                 )
-        self.date_label.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+        # self.date_label.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+        
+        self.sorting_var = ctk.StringVar(value="Sort by")
+        self.sorting_menu = ctk.CTkOptionMenu(self, variable=self.sorting_var, values=["Frequency", "Alphabetical", "Recently Used"],
+                                        command=self.apply_sorting)
+        self.sorting_menu.grid(row=0, column=0, padx=10, pady=10)
         
         # Appearance Mode Selector (using a single image)
         self.mode_img = ctk.CTkImage(light_image=Image.open(DARK_MODE_IMG), size=(40, 40))
@@ -187,3 +194,12 @@ class HomeScreen(ctk.CTkFrame):
             ctk.set_appearance_mode("Light")  # Switch to light mode
         else:
             ctk.set_appearance_mode("Dark")  # Switch to dark mode
+            
+    def apply_sorting(self, selected_option):
+        if selected_option == "Frequency":
+            print("Sorting by frequency.")
+        elif selected_option == "Alphabetical":
+            print("Sorting alphabetically.")
+        elif selected_option == "Recently Used":
+            print("Sorting by recent usage.")
+        sort_ingredients(self.ingredients_data, selected_option)

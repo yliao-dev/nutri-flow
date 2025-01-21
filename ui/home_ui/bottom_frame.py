@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from ui.ingredients_ui.ingredient_card import IngredientCard
-from model.data_manager import write_custom_serving_sizes_to_ingredients_json, write_to_user_config
+from model.data_manager import *
 
 class BottomFrame(ctk.CTkFrame):
     def __init__(self, master, nutrition_view_model, update_intake_callback, ingredient_cards):
@@ -76,6 +76,9 @@ class BottomFrame(ctk.CTkFrame):
     def update_intake(self):
         for ingredient_card in self.ingredient_cards:
             ingredient_card.on_serving_size_change()
+            ingredient_name = ingredient_card.ingredient_data["name"]  # Extract ingredient ID or name
+            update_ingredient_usage(ingredient_name)
+            
         self.nutrition_view_model.update_nutrition(self.selected_ingredients)
         nutrition_data = self.nutrition_view_model.get_nutrition_data()
         # Call the callback to update progress frames in HomeScreen
