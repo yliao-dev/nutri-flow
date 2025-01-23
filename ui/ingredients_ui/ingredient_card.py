@@ -148,7 +148,7 @@ class IngredientCard(ctk.CTkFrame):
             self.serving_size_entry = ctk.CTkEntry(
                 self,
                 width=200,
-                font=("Arial", 12),
+                font=("Arial", 14),
                 placeholder_text="Enter serving size in grams",
                 textvariable=self.serving_size_var,
                 validate="key",  # Enable validation for each key press
