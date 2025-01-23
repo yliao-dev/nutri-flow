@@ -11,38 +11,6 @@ def restart_app():
         print("Restarting the application...")
         os.execv(sys.executable, [sys.executable, "app.py"])
 
-
-def load_from_ingredients_json():
-    with open(INGREDIENTS_JSON_PATH, "r") as file:
-        data = json.load(file)
-    ingredients = []
-    for ingredient_name, details in data.items():
-        ingredient_details = details.copy()
-        ingredient_details["name"] = ingredient_name
-        ingredient_details["frequency_of_use"] = details.get("frequency_of_use", 0)
-        ingredient_details["last_used_date"] = details.get("last_used_date", None)
-        ingredients.append(ingredient_details)
-    return ingredients
-
-def sort_ingredients(ingredients, criteria="frequency_of_use", descending=True):
-    return sorted(ingredients, key=lambda x: x.get(criteria, 0), reverse=descending)
-
-def write_ingredient_usage_to_ingredients_json(selected_ingredients):
-    with open(INGREDIENTS_JSON_PATH, "r+") as file:
-        data = json.load(file)
-        for ingredient in selected_ingredients:
-            ingredient_name = ingredient.get("name")
-            if ingredient_name in data:
-                data[ingredient_name]["frequency_of_use"] = data[ingredient_name].get("frequency_of_use", 0) + 1
-                data[ingredient_name]["last_used_date"] = datetime.now().isoformat()
-                # print(f"Updated {ingredient_name}: frequency_of_use = {data[ingredient_name]['frequency_of_use']}, last_used_date = {data[ingredient_name]['last_used_date']}")
-            else:
-                print(f"Ingredient {ingredient_name} not found in data.")
-        
-        file.seek(0)
-        json.dump(data, file, indent=4)
-        file.truncate()
-
 def create_new_log_file(data):
     df = pd.DataFrame(data)
     """Create a new daily log CSV file with pandas."""
@@ -67,28 +35,44 @@ def create_new_log_file(data):
     except Exception as e:
         print(f"Failed to create new nutrition log: {e}")
 
+def load_from_ingredients_json():
+    with open(INGREDIENTS_JSON_PATH, "r") as file:
+        data = json.load(file)
+    ingredients = []
+    for ingredient_name, details in data.items():
+        ingredient_details = details.copy()
+        ingredient_details["name"] = ingredient_name
+        ingredient_details["frequency_of_use"] = details.get("frequency_of_use", 0)
+        ingredient_details["last_used_date"] = details.get("last_used_date", None)
+        ingredients.append(ingredient_details)
+    return ingredients
 
-def write_custom_serving_sizes_to_ingredients_json(selected_ingredients):
-    """
-    Update the 'custom_serving_size' field in ingredient.json based on selected ingredients.
-    """
+def sort_ingredients(ingredients, criteria="frequency_of_use", descending=True):
+    return sorted(ingredients, key=lambda x: x.get(criteria, 0), reverse=descending)
+
+def write_to_ingredients_json(selected_ingredients):
     try:
-        with open(INGREDIENTS_JSON_PATH, 'r') as file:
-            data = json.load(file)
-        
-        # Convert to DataFrame for easier manipulation
-        df = pd.DataFrame.from_dict(data, orient='index')
+        with open(INGREDIENTS_JSON_PATH, 'r+') as file:
+            data = json.load(file)            
+            df = pd.DataFrame.from_dict(data, orient='index')
+            for ingredient in selected_ingredients:
+                ingredient_name = ingredient.get("name")
+                
+                if ingredient_name in df.index:
+                    if "frequency_of_use" in df.columns:
+                        df.at[ingredient_name, "frequency_of_use"] = df.at[ingredient_name, "frequency_of_use"] + 1
+                    
+                    if "last_used_date" in df.columns:
+                        df.at[ingredient_name, "last_used_date"] = datetime.now().isoformat()
+                    
+                    if "custom_serving_size" in ingredient:
+                        df.at[ingredient_name, "custom_serving_size"] = ingredient["custom_serving_size"]
+                else:
+                    print(f"Ingredient {ingredient_name} not found in data.")
+            
+            df.to_json(INGREDIENTS_JSON_PATH, orient='index', indent=4)
+            # print("ingredient.json updated successfully.")
 
-        # Update custom serving sizes
-        for ingredient in selected_ingredients:
-            ingredient_name = ingredient["name"]
-            if ingredient_name in df.index:
-                df.at[ingredient_name, "custom_serving_size"] = ingredient["custom_serving_size"]
-                # df.at[ingredient_name, "frequency_of_use"] = ingredient["frequency_of_use"]
-                # df.at[ingredient_name, "last_used_date"] = ingredient["last_used_date"]
-        # Save back to JSON
-        df.to_json(INGREDIENTS_JSON_PATH, orient='index', indent=4)
-        # print("ingredient.json updated successfully.")
     except Exception as e:
         print(f"Error updating ingredient.json: {e}")
 

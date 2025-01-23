@@ -80,8 +80,7 @@ class BottomFrame(ctk.CTkFrame):
         self.nutrition_view_model.update_nutrition(self.selected_ingredients)
         nutrition_data = self.nutrition_view_model.get_nutrition_data()
         self.update_intake_callback(nutrition_data)
-        write_ingredient_usage_to_ingredients_json(self.selected_ingredients)
-        write_custom_serving_sizes_to_ingredients_json(self.selected_ingredients)
+        write_to_ingredients_json(self.selected_ingredients)
         write_to_user_config(self.nutrition_view_model)
         
         self.reset_selection()
