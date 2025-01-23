@@ -23,10 +23,11 @@ class BottomFrame(ctk.CTkFrame):
         self.grid_rowconfigure(1, weight=1)
 
         # Sort dropdown on the most left side, row 0
+        sort_list = ["Frequency", "Alphabetical", "Recently Used", "Protein", "Carbohydrate"]
         self.sorting_var = ctk.StringVar(value="Sort Cards by")
         self.sorting_menu = ctk.CTkOptionMenu(
             self, variable=self.sorting_var,
-            values=["Frequency", "Alphabetical", "Recently Used"],
+            values=sort_list,
             command=self.toggle_sorting,
             fg_color=self.highlight_color,
             button_color=self.highlight_color,

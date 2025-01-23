@@ -48,8 +48,17 @@ def load_from_ingredients_json():
     return ingredients
 
 def sort_ingredients(ingredients, criteria="frequency_of_use", descending=True):
-    return sorted(ingredients, key=lambda x: x.get(criteria, 0), reverse=descending)
-
+    if criteria in ["protein", "carbohydrate"]:
+        return sorted(
+            ingredients, 
+            key=lambda x: x["nutrition"].get(criteria, 0), 
+            reverse=descending
+        )
+    return sorted(
+        ingredients, 
+        key=lambda x: x.get(criteria, 0), 
+        reverse=descending
+    )
 def write_to_ingredients_json(selected_ingredients):
     try:
         with open(INGREDIENTS_JSON_PATH, 'r+') as file:

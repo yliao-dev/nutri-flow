@@ -196,15 +196,18 @@ class HomeScreen(ctk.CTkFrame):
     def sort_cards(self, selected_option):
         # Map selected options to the corresponding sorting criteria
         self.ingredients_data = load_from_ingredients_json()
+        descending = True
         if selected_option == "Frequency":
             criteria = "frequency_of_use"
-            descending = True
         elif selected_option == "Alphabetical":
             criteria = "name"
             descending = False
         elif selected_option == "Recently Used":
             criteria = "last_used_date"
-            descending = True
+        elif selected_option == "Protein":
+            criteria = "protein"
+        elif selected_option == "Carbohydrate":
+            criteria = "carbohydrate"
         self.ingredients_data = sort_ingredients(self.ingredients_data, criteria, descending)
         self.populate_ingredient_cards()
         # ingredient_keys = [ingredient["name"] for ingredient in self.ingredients_data if "name" in ingredient]
