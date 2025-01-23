@@ -76,7 +76,7 @@ class BottomFrame(ctk.CTkFrame):
     def update_intake(self):
         for ingredient_card in self.ingredient_cards:
             ingredient_card.on_serving_size_change()
-            update_ingredient_usage(ingredient_card.ingredient_data["name"])
+        update_ingredient_usage(self.selected_ingredients)
             
         self.nutrition_view_model.update_nutrition(self.selected_ingredients)
         nutrition_data = self.nutrition_view_model.get_nutrition_data()
