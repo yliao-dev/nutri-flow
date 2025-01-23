@@ -214,4 +214,4 @@ class HomeScreen(ctk.CTkFrame):
         self.ingredients_data = sort_ingredients(self.ingredients_data, criteria, descending)
         ingredient_keys = [ingredient["name"] for ingredient in self.ingredients_data if "name" in ingredient]
         print(ingredient_keys)
-        # self.populate_ingredient_cards()
+        self.populate_ingredient_cards()
