@@ -42,12 +42,9 @@ class HomeScreen(ctk.CTkFrame):
                     text=f"Date: {self.nutrition_view_model.user_nutrition_model.date}",
                     fg_color="transparent", 
                 )
-        # self.date_label.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+        self.date_label.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
         
-        self.sorting_var = ctk.StringVar(value="Sort by")
-        self.sorting_menu = ctk.CTkOptionMenu(self, variable=self.sorting_var, values=["Frequency", "Alphabetical", "Recently Used"],
-                                        command=self.toggle_sorting)
-        self.sorting_menu.grid(row=0, column=0, padx=10, pady=10)
+        
         
         # Appearance Mode Selector (using a single image)
         self.mode_img = ctk.CTkImage(light_image=Image.open(DARK_MODE_IMG), size=(40, 40))
@@ -176,6 +173,7 @@ class HomeScreen(ctk.CTkFrame):
             master=self,
             nutrition_view_model=self.nutrition_view_model,
             update_intake_callback=self.update_intake,
+            sort_cards_callback=self.sort_cards,
             ingredient_cards=self.ingredient_cards,
         )
         self.bottom_frame.grid(row=3, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
@@ -195,7 +193,7 @@ class HomeScreen(ctk.CTkFrame):
         else:
             ctk.set_appearance_mode("Dark")  # Switch to dark mode
             
-    def toggle_sorting(self, selected_option):
+    def sort_cards(self, selected_option):
         # Map selected options to the corresponding sorting criteria
         self.ingredients_data = load_from_ingredients_json()
         if selected_option == "Frequency":
