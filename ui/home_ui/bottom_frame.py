@@ -15,32 +15,39 @@ class BottomFrame(ctk.CTkFrame):
         self.initialize_ui()
 
     def initialize_ui(self):
-        # Configure grid for proper spacing and row/column weights
-        self.grid_rowconfigure(0, weight=1)  # Row for the labels
-        self.grid_rowconfigure(1, weight=3)  # Row for the button with higher weight to allow expansion
-        self.grid_columnconfigure(0, weight=1)  # Column for the first label
-        self.grid_columnconfigure(1, weight=1)  # Column for the second label (nutrition label)
-
-        # Re-add the labels
-        self.selected_ingredients_label = ctk.CTkLabel(self, text="Selected Ingredients:", font=("Arial", 12))
-        self.selected_ingredients_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
-
-        self.sorting_var = ctk.StringVar(value="Sort Cards by")
-        self.sorting_menu = ctk.CTkOptionMenu(self, variable=self.sorting_var, values=["Frequency", "Alphabetical", "Recently Used"],
-                                        command=self.toggle_sorting)
-        self.sorting_menu.grid(row=0, column=2, padx=10, pady=10, sticky="e")
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=2)
+        self.grid_columnconfigure(2, weight=3)
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(1, weight=1)
         
-        self.selected_nutrition_label = ctk.CTkLabel(self, text="Protein: 0g | Carbs: 0g | Calories: 0g", font=("Arial", 12))
-        self.selected_nutrition_label.grid(row=0, column=1, padx=10, pady=5, sticky="e")
+        # Sort dropdown on the most left side, row 0
+        self.sorting_var = ctk.StringVar(value="Sort Cards by")
+        self.sorting_menu = ctk.CTkOptionMenu(
+            self, variable=self.sorting_var,
+            values=["Frequency", "Alphabetical", "Recently Used"],
+            command=self.toggle_sorting
+        )
+        self.sorting_menu.grid(row=0, column=0, padx=10, pady=10, sticky="w")
 
-        # Use the existing update_button and make it take the entire space (row 1)
-        self.update_button = ctk.CTkButton(self, hover_color="#2c2c2c", text="Update Intake", command=self.update_intake, state=ctk.DISABLED)
-        self.update_button.grid(row=1, column=3, columnspan=3, padx=10, pady=10, sticky="nsew")  # Button in a separate row, spanning both columns
+        # Labels on row 1, left side
+        self.selected_ingredients_label = ctk.CTkLabel(
+            self, text="Selected Ingredients:", font=("Arial", 12)
+        )
+        self.selected_ingredients_label.grid(row=1, column=0, padx=10, pady=5, sticky="w")
 
-        # Ensure the button expands both vertically and horizontally by setting weight to 1
-        self.grid_rowconfigure(1, weight=3)  # Row with the button has weight=3 to allow it to expand
-        self.grid_columnconfigure(0, weight=1)  # Column with the button has weight=1
-        self.grid_columnconfigure(1, weight=1)  # Column for the button has weight=1 for the same grid
+        self.selected_nutrition_label = ctk.CTkLabel(
+            self, text="Protein: 0g | Carbs: 0g | Calories: 0g", font=("Arial", 12)
+        )
+        self.selected_nutrition_label.grid(row=1, column=1, padx=10, pady=5, sticky="w")
+
+        # Update Intake button on the most right side, taking 1/3 of the space, spanning both rows
+        self.update_button = ctk.CTkButton(
+            self, hover_color="#2c2c2c", text="Update Intake",
+            command=self.update_intake, state=ctk.DISABLED
+        )
+        self.update_button.grid(row=0, column=2, rowspan=2, padx=10, pady=10, sticky="nsew")
+
 
     def toggle_sorting(self, selected_option):
         self.sort_cards_callback(selected_option)
