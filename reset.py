@@ -4,13 +4,13 @@ from config import INGREDIENTS_JSON_PATH
 
 # Function to reset the 'frequency_of_use' or 'last_used_date' for all ingredients
 def reset_all_data(reset_type, data):
-    for item in data:
+    for item in data.values():  # Iterate through the values (ingredient data)
         if reset_type == "frequency_of_use":
-            data[item]["frequency_of_use"] = 0
-            print(f"Frequency of use for {data[item]['name']} has been reset.")
+            item["frequency_of_use"] = 0
+            print(f"Frequency of use for {item['name']} has been reset.")
         elif reset_type == "last_used_date":
-            data[item]["last_used_date"] = str(datetime.now())
-            print(f"Last used date for {data[item]['name']} has been reset.")
+            item["last_used_date"] = datetime.now().isoformat()  # Reset date to current time in ISO format
+            print(f"Last used date for {item['name']} has been reset.")
         else:
             print("Invalid reset type. Please choose 'frequency_of_use' or 'last_used_date'.")
     return data
