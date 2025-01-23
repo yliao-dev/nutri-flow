@@ -25,7 +25,7 @@ def load_from_ingredients_json():
     return ingredients
 
 def sort_ingredients(ingredients, criteria="frequency_of_use", descending=True):
-    return sorted(ingredients, key=lambda x: x[criteria] or 0, reverse=descending)
+    return sorted(ingredients, key=lambda x: x.get(criteria, 0), reverse=descending)
 
 def update_ingredient_usage(ingredient_name):
     with open(INGREDIENTS_JSON_PATH, "r+") as file:

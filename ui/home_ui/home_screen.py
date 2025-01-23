@@ -196,10 +196,22 @@ class HomeScreen(ctk.CTkFrame):
             ctk.set_appearance_mode("Dark")  # Switch to dark mode
             
     def apply_sorting(self, selected_option):
+        # Map selected options to the corresponding sorting criteria
         if selected_option == "Frequency":
+            criteria = "frequency_of_use"
+            descending = True
             print("Sorting by frequency.")
         elif selected_option == "Alphabetical":
+            criteria = "name"  # Assuming 'id' or another key is used for alphabetical sorting
             print("Sorting alphabetically.")
+            descending = False
         elif selected_option == "Recently Used":
+            criteria = "last_used_date"
+            descending = True
             print("Sorting by recent usage.")
-        sort_ingredients(self.ingredients_data, selected_option)
+
+        # Sort the ingredients data based on the selected criteria
+        self.ingredients_data = sort_ingredients(self.ingredients_data, criteria, descending)
+        ingredient_keys = [ingredient["name"] for ingredient in self.ingredients_data if "name" in ingredient]
+        print(ingredient_keys)
+        # self.populate_ingredient_cards()
