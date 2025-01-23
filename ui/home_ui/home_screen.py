@@ -15,8 +15,6 @@ class HomeScreen(ctk.CTkFrame):
         self.ingredients_data = load_from_ingredients_json()
         sorted_ingredients = sort_ingredients(self.ingredients_data, criteria="frequency_of_use")
         self.ingredients_data = sorted_ingredients
-        ingredient_keys = [ingredient["name"] for ingredient in self.ingredients_data if "name" in ingredient]
-        print(ingredient_keys)
         self.user_goals = {
             "protein": self.nutrition_view_model.user_nutrition_model.goal_protein,
             "carbohydrate": self.nutrition_view_model.user_nutrition_model.goal_carbohydrate,
@@ -48,7 +46,7 @@ class HomeScreen(ctk.CTkFrame):
         
         self.sorting_var = ctk.StringVar(value="Sort by")
         self.sorting_menu = ctk.CTkOptionMenu(self, variable=self.sorting_var, values=["Frequency", "Alphabetical", "Recently Used"],
-                                        command=self.apply_sorting)
+                                        command=self.toggle_sorting)
         self.sorting_menu.grid(row=0, column=0, padx=10, pady=10)
         
         # Appearance Mode Selector (using a single image)
@@ -197,21 +195,19 @@ class HomeScreen(ctk.CTkFrame):
         else:
             ctk.set_appearance_mode("Dark")  # Switch to dark mode
             
-    def apply_sorting(self, selected_option):
+    def toggle_sorting(self, selected_option):
         # Map selected options to the corresponding sorting criteria
+        self.ingredients_data = load_from_ingredients_json()
         if selected_option == "Frequency":
             criteria = "frequency_of_use"
             descending = True
-            print("Sorting by frequency.")
         elif selected_option == "Alphabetical":
             criteria = "name"
-            print("Sorting alphabetically.")
             descending = False
         elif selected_option == "Recently Used":
             criteria = "last_used_date"
             descending = True
-            print("Sorting by recent usage.")
         self.ingredients_data = sort_ingredients(self.ingredients_data, criteria, descending)
+        self.populate_ingredient_cards()
         # ingredient_keys = [ingredient["name"] for ingredient in self.ingredients_data if "name" in ingredient]
         # print(ingredient_keys,"\n")
-        # self.populate_ingredient_cards()

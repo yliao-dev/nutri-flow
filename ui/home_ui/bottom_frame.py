@@ -76,21 +76,18 @@ class BottomFrame(ctk.CTkFrame):
     def update_intake(self):
         for ingredient_card in self.ingredient_cards:
             ingredient_card.on_serving_size_change()
-        update_ingredient_usage(self.selected_ingredients)
-            
+        
         self.nutrition_view_model.update_nutrition(self.selected_ingredients)
         nutrition_data = self.nutrition_view_model.get_nutrition_data()
-        # Call the callback to update progress frames in HomeScreen
         self.update_intake_callback(nutrition_data)
+        write_ingredient_usage_to_ingredients_json(self.selected_ingredients)
         write_custom_serving_sizes_to_ingredients_json(self.selected_ingredients)
         write_to_user_config(self.nutrition_view_model)
-        # Reset selection after updating goals
+        
         self.reset_selection()
         
     def reset_selection(self):
         self.selected_ingredients = []
-
-        # Reset all ingredient cards
         for ingredient_card in self.ingredient_cards:
             if isinstance(ingredient_card, IngredientCard):
                 ingredient_card.deselect()
