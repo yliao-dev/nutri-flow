@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from ui.home_ui.progress_frame import ProgressFrame
-from ui.ingredients_ui.ingredient_card import IngredientCard
+from ui.home_ui.ingredients_frame import IngredientsFrame  # Import IngredientsFrame
 from ui.home_ui.bottom_frame import BottomFrame
 from PIL import Image
 from config import DARK_MODE_IMG
@@ -44,8 +44,6 @@ class HomeScreen(ctk.CTkFrame):
                 )
         self.date_label.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
         
-        
-        
         # Appearance Mode Selector (using a single image)
         self.mode_img = ctk.CTkImage(light_image=Image.open(DARK_MODE_IMG), size=(40, 40))
         self.mode_label = ctk.CTkLabel(
@@ -64,8 +62,7 @@ class HomeScreen(ctk.CTkFrame):
         self.configure_grid()
        
         self.create_progress_frames()
-        self.create_ingredients_frame()
-        self.populate_ingredient_cards()
+        self.create_ingredients_frame()  # Replace the old frame with IngredientsFrame
         self.create_bottom_frame()
 
     def configure_grid(self):
@@ -95,75 +92,13 @@ class HomeScreen(ctk.CTkFrame):
         return progress_frame
 
     def create_ingredients_frame(self):
-        self.ingredients_frame = ctk.CTkFrame(self)
+        # Use IngredientsFrame instead of the old frame
+        self.ingredients_frame = IngredientsFrame(
+            master=self,
+            ingredients_data=self.ingredients_data,
+            update_bottom_frame_callback=self.update_bottom_frame,
+        )
         self.ingredients_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=0, sticky="nsew")
-
-        self.ingredients_frame.bind("<Configure>", self.on_frame_resize)  # Bind resize event
-        
-        self.canvas = ctk.CTkCanvas(self.ingredients_frame, highlightthickness=0)
-        self.canvas.pack(side="left", fill="both", expand=True)
-
-        self.scrollbar = ctk.CTkScrollbar(self.ingredients_frame, orientation="vertical", command=self.canvas.yview)
-        self.scrollbar.pack(side="right", fill="y")
-
-        self.canvas.configure(yscrollcommand=self.scrollbar.set)
-
-        self.scrollable_frame = ctk.CTkFrame(self.canvas)
-        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
-        self.scrollable_frame.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
-
-    def on_frame_resize(self, event):
-        # Recalculate the number of cards per row when the frame size changes
-        if self.resize_debounce is not None:
-            self.after_cancel(self.resize_debounce)
-        
-        # Schedule the function to be called after 200 ms (adjust this as needed)
-        self.resize_debounce = self.after(0, self.populate_ingredient_cards)
-
-
-    def calculate_cards_per_row(self):
-        frame_width = self.ingredients_frame.winfo_width()        
-        card_width = 150
-        cards_per_row = frame_width // card_width
-        return max(3, cards_per_row)
-    
-    def populate_ingredient_cards(self):
-        # Get the number of cards per row based on the current frame size
-        cards_per_row = self.calculate_cards_per_row()
-
-        # Clear the current ingredient cards before repopulating
-        for widget in self.scrollable_frame.winfo_children():
-            widget.destroy()
-        self.ingredient_cards.clear()  # Reset the list of ingredient cards
-
-        for i, ingredient in enumerate(self.ingredients_data):
-            # Calculate row and column position
-            row = i // cards_per_row
-            col = i % cards_per_row
-
-            ingredient_card = IngredientCard(
-                self.scrollable_frame,
-                index=ingredient["id"],
-                ingredient_data=ingredient,
-                update_selected_data_callback=self.update_bottom_frame,
-                selection_type="intake",
-                width=150,
-                height=250
-            )
-            ingredient_card.add_name()
-            ingredient_card.add_nutrition_data()
-            ingredient_card.add_image(ingredient["image"])
-            ingredient_card.add_custom_serving_size()
-
-            # Place the card in the grid
-            ingredient_card.grid(row=row, column=col, padx=5, pady=5, sticky="nsew")
-
-            # Add the card to the list
-            self.ingredient_cards.append(ingredient_card)
-
-        # Configure column weights to ensure equal width
-        for col in range(cards_per_row):
-            self.scrollable_frame.grid_columnconfigure(col, weight=1)
 
     def update_bottom_frame(self, ingredients_data, add):
         self.bottom_frame.update_selected_data(ingredients_data, add)
@@ -174,7 +109,7 @@ class HomeScreen(ctk.CTkFrame):
             nutrition_view_model=self.nutrition_view_model,
             update_intake_callback=self.update_intake,
             sort_cards_callback=self.sort_cards,
-            ingredient_cards=self.ingredient_cards,
+            ingredient_cards=self.ingredients_data  # Pass ingredient data to BottomFrame
         )
         self.bottom_frame.grid(row=3, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
 
@@ -182,7 +117,6 @@ class HomeScreen(ctk.CTkFrame):
         # Update each progress frame with the new data
         for _, progress_frame in self.progress_frames.items():
             progress_frame.update(nutrition_data)
-            
             
     def toggle_appearance_mode(self):
         """Toggle between light and dark mode when clicked."""
@@ -209,6 +143,5 @@ class HomeScreen(ctk.CTkFrame):
         elif selected_option == "Carbohydrate":
             criteria = "carbohydrate"
         self.ingredients_data = sort_ingredients(self.ingredients_data, criteria, descending)
-        self.populate_ingredient_cards()
-        # ingredient_keys = [ingredient["name"] for ingredient in self.ingredients_data if "name" in ingredient]
-        # print(ingredient_keys,"\n")
+        self.ingredients_frame.ingredients_data = self.ingredients_data
+        self.ingredients_frame.populate_ingredient_cards()  # Re-populate the ingredient cards after sorting
