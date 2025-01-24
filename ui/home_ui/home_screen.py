@@ -5,6 +5,7 @@ from ui.home_ui.bottom_frame import BottomFrame
 from PIL import Image
 from config import DARK_MODE_IMG
 from model.data_manager import load_from_ingredients_json, sort_ingredients
+from ui.splash_screen import SplashScreen  # Assuming SplashScreen is a separate widget
 
 class HomeScreen(ctk.CTkFrame):
     def __init__(self, master, nutrition_view_model):
@@ -12,9 +13,8 @@ class HomeScreen(ctk.CTkFrame):
         self.resize_debounce = None
         
         self.nutrition_view_model = nutrition_view_model
-        self.ingredients_data = load_from_ingredients_json()
-        sorted_ingredients = sort_ingredients(self.ingredients_data, criteria="frequency_of_use")
-        self.ingredients_data = sorted_ingredients
+        self.ingredients_data = []
+        self.sorted_ingredients = []
         self.user_goals = {
             "protein": self.nutrition_view_model.user_nutrition_model.goal_protein,
             "carbohydrate": self.nutrition_view_model.user_nutrition_model.goal_carbohydrate,
@@ -24,9 +24,13 @@ class HomeScreen(ctk.CTkFrame):
 
         self.progress_frames = {}  # Dictionary to store the progress frames
         self.ingredient_cards = []  # List to store IngredientCard instances
+        self.splash_screen = SplashScreen(master)  # Initialize SplashScreen
         self.initialize_ui()
 
     def initialize_ui(self):
+        # Display splash screen initially
+        self.splash_screen.grid(row=0, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
+        
         self.label = ctk.CTkLabel(self, text="Nutrition Progress", font=("Arial", 20, "bold"))
         self.label.grid(row=0, column=1, columnspan=1, pady=5, sticky="nsew") 
         self.weight_label = ctk.CTkLabel(
@@ -60,10 +64,16 @@ class HomeScreen(ctk.CTkFrame):
     
         # Configure the grid
         self.configure_grid()
-       
-        self.create_progress_frames()
-        self.create_ingredients_frame()  # Replace the old frame with IngredientsFrame
-        self.create_bottom_frame()
+
+        # Create loading indicator before data is loaded
+        self.loading_label = ctk.CTkLabel(self, text="Loading Ingredients...", font=("Arial", 16))
+        self.loading_label.grid(row=2, column=0, columnspan=3, pady=20)
+
+        # Load ingredients data immediately, without waiting for the splash screen
+        self.load_ingredients_data()  # Immediately load the data
+        
+        # Use a 2-second delay to hide the splash screen and display the main content
+        self.after(500, self.hide_splash_screen)
 
     def configure_grid(self):
         for column in range(3):
@@ -71,6 +81,23 @@ class HomeScreen(ctk.CTkFrame):
         self.grid_rowconfigure(1, weight=2, minsize=150)  # Adjusted minsize for better display
         self.grid_rowconfigure(2, weight=2)
         self.grid_rowconfigure(3, weight=1)
+
+    def load_ingredients_data(self):
+        # Load ingredients data and sort it immediately
+        self.ingredients_data = load_from_ingredients_json()
+        self.sorted_ingredients = sort_ingredients(self.ingredients_data, criteria="frequency_of_use")
+
+        # Proceed to create UI components now that the data is loaded
+        self.create_ingredients_frame()  # Replace the old frame with IngredientsFrame
+        self.create_bottom_frame()
+
+    def hide_splash_screen(self):
+        # Hide the splash screen after 2 seconds
+        self.splash_screen.hide()
+        self.loading_label.grid_forget()  # Remove the loading label
+
+        # Now delay the creation of progress frames
+        self.after(500, self.create_progress_frames)  # Delay creating progress frames
 
     def create_progress_frames(self):
         goal_names = ["protein", "carbohydrate", "fat"]
@@ -95,7 +122,7 @@ class HomeScreen(ctk.CTkFrame):
         # Use IngredientsFrame instead of the old frame
         self.ingredients_frame = IngredientsFrame(
             master=self,
-            ingredients_data=self.ingredients_data,
+            ingredients_data=self.sorted_ingredients,
             update_bottom_frame_callback=self.update_bottom_frame,
         )
         self.ingredients_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=0, sticky="nsew")
