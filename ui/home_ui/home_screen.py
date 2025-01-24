@@ -108,7 +108,7 @@ class HomeScreen(ctk.CTkFrame):
             master=self,
             nutrition_view_model=self.nutrition_view_model,
             update_intake_callback=self.update_intake,
-            sort_cards_callback=self.sort_cards,
+            update_cards_callback=self.sort_cards,
             ingredient_cards=self.ingredients_frame.ingredient_cards  # Pass ingredient data to BottomFrame
         )
         self.bottom_frame.grid(row=3, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")

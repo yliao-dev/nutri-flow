@@ -3,12 +3,12 @@ from ui.ingredients_ui.ingredient_card import IngredientCard
 from model.data_manager import *
 
 class BottomFrame(ctk.CTkFrame):
-    def __init__(self, master, nutrition_view_model, update_intake_callback, sort_cards_callback, ingredient_cards):
+    def __init__(self, master, nutrition_view_model, update_intake_callback, update_cards_callback, ingredient_cards):
         super().__init__(master)
 
         self.nutrition_view_model = nutrition_view_model
         self.update_intake_callback = update_intake_callback
-        self.sort_cards_callback = sort_cards_callback
+        self.update_cards_callback = update_cards_callback
         self.ingredient_cards = ingredient_cards
         self.selected_ingredients = []
         self.highlight_color = "#2980B9"
@@ -63,7 +63,7 @@ class BottomFrame(ctk.CTkFrame):
 
 
     def toggle_sorting(self, selected_option):
-        self.sort_cards_callback(selected_option)
+        self.update_cards_callback(selected_option)
     
     def update_selected_data(self, ingredient_data, add=False):
         if add:
