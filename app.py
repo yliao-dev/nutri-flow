@@ -24,7 +24,7 @@ class App(ctk.CTk):
         self.grid_rowconfigure(0, weight=1)  # Expandable row
 
         # Tabs and event handling methods
-        tabs = ["Home", "Ingredients", "Data"]
+        tabs = ["Home", "Data", "Ingredients"]
 
         # Create Sidebar and pass event handlers
         self.sidebar = Sidebar(
@@ -50,8 +50,8 @@ class App(ctk.CTk):
         # Initialize screens
         self.screens = {
             "Home": HomeScreen(self, nutrition_view_model),
+            "Data": DataScreen(self, nutrition_view_model),
             "Ingredients": IngredientScreen(self),
-            "Data": DataScreen(self, nutrition_view_model)
         }
 
         # Add screens to Column 1 and hide them initially
