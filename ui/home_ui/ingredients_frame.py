@@ -44,10 +44,9 @@ class IngredientsFrame(ctk.CTkFrame):
 
         # Clear the current ingredient cards before repopulating
         for widget in self.scrollable_frame.winfo_children():
-            widget.grid_forget()  # Forget widgets to avoid re-layouting them one by one
+            widget.destroy()
         self.ingredient_cards.clear()  # Reset the list of ingredient cards
 
-        # Creating a batch of widgets without updating the layout immediately
         for i, ingredient in enumerate(self.ingredients_data):
             # Calculate row and column position
             row = i // cards_per_row
@@ -67,20 +66,12 @@ class IngredientsFrame(ctk.CTkFrame):
             ingredient_card.add_image(ingredient["image"])
             ingredient_card.add_custom_serving_size()
 
-            # Add the card to the list (without grid for now)
-            self.ingredient_cards.append((ingredient_card, row, col))
+            # Place the card in the grid
+            ingredient_card.grid(row=row, column=col, padx=5, pady=5, sticky="nsew")
 
-        # Now, update the grid for all cards after the loop
-        def place_cards():
-            for ingredient_card, row, col in self.ingredient_cards:
-                ingredient_card.grid(row=row, column=col, padx=5, pady=5, sticky="nsew")
+            # Add the card to the list
+            self.ingredient_cards.append(ingredient_card)
 
-            # Configure column weights to ensure equal width
-            for col in range(cards_per_row):
-                self.scrollable_frame.grid_columnconfigure(col, weight=1)
-
-        # Defer the placement of cards to prevent UI freeze
-        self.after(1, place_cards)
-
-        # Optionally force the layout to update after batch placement
-        self.update_idletasks()
+        # Configure column weights to ensure equal width
+        for col in range(cards_per_row):
+            self.scrollable_frame.grid_columnconfigure(col, weight=1)
