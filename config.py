@@ -17,3 +17,4 @@ CONSUMED_PROTEIN = "consumed_protein"
 CONSUMED_CARBOHYDRATE = "consumed_carbohydrate"
 CONSUMED_FAT = "consumed_fat"
 CONSUMED_CALORIES = "consumed_calories"
+LOADING_TIME = 300

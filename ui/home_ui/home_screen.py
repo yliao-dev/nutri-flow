@@ -3,7 +3,7 @@ from ui.home_ui.progress_frame import ProgressFrame
 from ui.home_ui.ingredients_frame import IngredientsFrame  # Import IngredientsFrame
 from ui.home_ui.bottom_frame import BottomFrame
 from PIL import Image
-from config import DARK_MODE_IMG
+from config import DARK_MODE_IMG, LOADING_TIME
 from model.data_manager import load_from_ingredients_json, sort_ingredients
 from ui.splash_screen import SplashScreen  # Assuming SplashScreen is a separate widget
 
@@ -73,7 +73,7 @@ class HomeScreen(ctk.CTkFrame):
         self.load_ingredients_data()  # Immediately load the data
         
         # Use a 2-second delay to hide the splash screen and display the main content
-        self.after(500, self.hide_splash_screen)
+        self.after(LOADING_TIME, self.hide_splash_screen)  # Splash screen hides after 500ms
 
     def configure_grid(self):
         for column in range(3):
@@ -92,12 +92,12 @@ class HomeScreen(ctk.CTkFrame):
         self.create_bottom_frame()
 
     def hide_splash_screen(self):
-        # Hide the splash screen after 2 seconds
+        # Hide the splash screen after 500ms
         self.splash_screen.hide()
         self.loading_label.grid_forget()  # Remove the loading label
 
         # Now delay the creation of progress frames
-        self.after(500, self.create_progress_frames)  # Delay creating progress frames
+        self.after(LOADING_TIME, self.create_progress_frames)  # Delay creating progress frames (same delay as splash)
 
     def create_progress_frames(self):
         goal_names = ["protein", "carbohydrate", "fat"]
