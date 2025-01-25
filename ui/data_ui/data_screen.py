@@ -66,9 +66,10 @@ class DataScreen(ctk.CTkFrame):
     
     def create_new_data(self):
         timestamp = datetime.now().strftime("%Y-%m-%d")
-        file_name = f"nutrition_log_{timestamp}.csv"
-        if not create_new_log_file("", file_name):
+        new_file_name = f"nutrition_log_{timestamp}.csv"
+        file_name = get_unique_filename(new_file_name)
+        if not create_new_log_file([], file_name):
             return
-        fresh_user_config(self.nutrition_view_model)
+        fresh_user_config(self.nutrition_view_model, file_name)
         restart_app()
     

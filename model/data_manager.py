@@ -11,11 +11,19 @@ def restart_app():
         print("Restarting the application...")
         os.execv(sys.executable, [sys.executable, "app.py"])
 
+def get_unique_filename(file_name):
+    file_path = os.path.join(LOG_PATH, file_name)
+    base_name, ext = os.path.splitext(file_name)
+    version = 1
+
+    while os.path.exists(file_path):
+        file_name = f"{base_name}({version}){ext}"
+        file_path = os.path.join(LOG_PATH, file_name)
+        version += 1
+
+    return file_name
+
 def create_new_log_file(data, file_name):
-    """
-    Create a new daily log CSV file with pandas and handle dynamic versioning.
-    """
-    df = pd.DataFrame(data)
     file_path = filedialog.asksaveasfilename(
         title="Save Nutrition Log As",
         initialfile=file_name,
@@ -28,7 +36,7 @@ def create_new_log_file(data, file_name):
         return False
 
     try:
-        # Save the DataFrame to a CSV file
+        df = pd.DataFrame(data)
         df.to_csv(file_path, index=False, header=False)
         print(f"New nutrition log created: {file_path}")
         return True
@@ -201,14 +209,14 @@ def export_nutrition_data_to_file(nutrition_view_model):
         csv_data.append([ingredient, consumed_amounts])
     return create_new_log_file(csv_data, nutrition_view_model.get_log_path())
     
-def fresh_user_config(nutrition_view_model):
+def fresh_user_config(nutrition_view_model, new_file_name):
     try:
         with open(USER_CONFIG_PATH, 'r') as file:
             data = json.load(file)
         timestamp = datetime.now().strftime("%Y-%m-%d")
         data["date"] = timestamp
         data["weight"] = nutrition_view_model.get_weight()
-        data["log_path"] = ""        
+        data["log_path"] = new_file_name        
         data["nutrition_data"].update({
             CONSUMED_PROTEIN: 0.0,
             CONSUMED_CARBOHYDRATE: 0.0,
