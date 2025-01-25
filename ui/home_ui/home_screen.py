@@ -5,7 +5,7 @@ from ui.home_ui.bottom_frame import BottomFrame
 from PIL import Image
 from config import DARK_MODE_IMG, LOADING_TIME
 from model.data_manager import load_from_ingredients_json, sort_ingredients
-from ui.splash_screen import SplashScreen  # Assuming SplashScreen is a separate widget
+from ui.splash_screen import SplashScreen
 
 class HomeScreen(ctk.CTkFrame):
     def __init__(self, master, nutrition_view_model):
@@ -24,13 +24,11 @@ class HomeScreen(ctk.CTkFrame):
 
         self.progress_frames = {}  # Dictionary to store the progress frames
         self.ingredient_cards = []  # List to store IngredientCard instances
-        self.splash_screen = SplashScreen(master)  # Initialize SplashScreen
+        self.splash_screen = SplashScreen(master)
         self.initialize_ui()
 
     def initialize_ui(self):
-        # Display splash screen initially
-        self.splash_screen.grid(row=0, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
-        
+        self.splash_screen.grid(row=0, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")        
         self.label = ctk.CTkLabel(self, text="Nutrition Progress", font=("Arial", 20, "bold"))
         self.label.grid(row=0, column=1, columnspan=1, pady=5, sticky="nsew") 
         self.weight_label = ctk.CTkLabel(
@@ -62,23 +60,15 @@ class HomeScreen(ctk.CTkFrame):
         self.mode_label.bind("<Leave>", lambda event: self.mode_label.configure(fg_color="transparent"))
         self.mode_label.grid(row=0, column=2, padx=10, pady=10, sticky="e")
     
-        # Configure the grid
         self.configure_grid()
-
-        # Create loading indicator before data is loaded
-        self.loading_label = ctk.CTkLabel(self, text="Loading Ingredients...", font=("Arial", 16))
-        self.loading_label.grid(row=2, column=0, columnspan=3, pady=20)
-
-        # Load ingredients data immediately, without waiting for the splash screen
         self.load_ingredients_data()  # Immediately load the data
         
-        # Use a 2-second delay to hide the splash screen and display the main content
-        self.after(LOADING_TIME, self.hide_splash_screen)  # Splash screen hides after 500ms
+        self.after(LOADING_TIME, self.hide_splash_screen)
 
     def configure_grid(self):
         for column in range(3):
             self.grid_columnconfigure(column, weight=1, uniform="nutrition")
-        self.grid_rowconfigure(1, weight=2, minsize=150)  # Adjusted minsize for better display
+        self.grid_rowconfigure(1, weight=2, minsize=150)
         self.grid_rowconfigure(2, weight=2)
         self.grid_rowconfigure(3, weight=1)
 
@@ -88,16 +78,13 @@ class HomeScreen(ctk.CTkFrame):
         self.sorted_ingredients = sort_ingredients(self.ingredients_data, criteria="frequency_of_use")
 
         # Proceed to create UI components now that the data is loaded
+        self.create_progress_frames()
         self.create_ingredients_frame()  # Replace the old frame with IngredientsFrame
         self.create_bottom_frame()
 
     def hide_splash_screen(self):
-        # Hide the splash screen after 500ms
         self.splash_screen.hide()
-        self.loading_label.grid_forget()  # Remove the loading label
-
-        # Now delay the creation of progress frames
-        self.after(LOADING_TIME, self.create_progress_frames)  # Delay creating progress frames (same delay as splash)
+        self.create_progress_frames
 
     def create_progress_frames(self):
         goal_names = ["protein", "carbohydrate", "fat"]
