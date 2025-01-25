@@ -14,7 +14,7 @@ class SplashScreen(ctk.CTkFrame):
         # Load the image using CTkImage
         self.image = ctk.CTkImage(
             Image.open(SPLASH_IMG),
-            size=(300, 300)  # Adjust the size if needed
+            size=(200, 200)  # Adjust the size if needed
         )
         
         # Display the image

@@ -11,29 +11,32 @@ def restart_app():
         print("Restarting the application...")
         os.execv(sys.executable, [sys.executable, "app.py"])
 
-def create_new_log_file(data):
+def create_new_log_file(data, file_name):
+    """
+    Create a new daily log CSV file with pandas and handle dynamic versioning.
+    """
     df = pd.DataFrame(data)
-    """Create a new daily log CSV file with pandas."""
-    timestamp = datetime.now().strftime("%Y-%m-%d")
-    file_name = f"nutrition_log_{timestamp}.csv"
-
-    # Open a "Save As" dialog to select the file location
     file_path = filedialog.asksaveasfilename(
         title="Save Nutrition Log As",
         initialfile=file_name,
         defaultextension=".csv",
         filetypes=(("CSV Files", "*.csv"), ("All Files", "*.*"))
     )
+
     if not file_path:
         print("No new file created.")
-        return
+        return False
 
     try:
         # Save the DataFrame to a CSV file
         df.to_csv(file_path, index=False, header=False)
         print(f"New nutrition log created: {file_path}")
+        return True
     except Exception as e:
         print(f"Failed to create new nutrition log: {e}")
+        return False
+
+
 
 def load_from_ingredients_json():
     with open(INGREDIENTS_JSON_PATH, "r") as file:
@@ -161,10 +164,9 @@ def import_nutrition_data_from_file(nutrition_view_model):
         
         
 def export_nutrition_data_to_file(nutrition_view_model):
-    timestamp = datetime.now().strftime("%Y-%m-%d")
     csv_data = [
             ["Date", "Weight (kg)", "File name"],
-            [timestamp, nutrition_view_model.user_nutrition_model.weight, nutrition_view_model.user_nutrition_model.log_path],
+            [datetime.now().strftime("%Y-%m-%d"), nutrition_view_model.user_nutrition_model.weight, nutrition_view_model.user_nutrition_model.log_path],
             [],
             ["Protein Goal (g)", "Carbohydrate Goal (g)", "Fat Goal (g)", "Calories Goal (kcal)"],
             [
@@ -197,20 +199,16 @@ def export_nutrition_data_to_file(nutrition_view_model):
     consumed_ingredients = nutrition_view_model.get_consumed_ingredients()
     for ingredient, consumed_amounts in consumed_ingredients.items():
         csv_data.append([ingredient, consumed_amounts])
-
-    create_new_log_file(csv_data)
+    return create_new_log_file(csv_data, nutrition_view_model.get_log_path())
     
 def fresh_user_config(nutrition_view_model):
     try:
-        # Load the user configuration data
         with open(USER_CONFIG_PATH, 'r') as file:
             data = json.load(file)
         timestamp = datetime.now().strftime("%Y-%m-%d")
         data["date"] = timestamp
         data["weight"] = nutrition_view_model.get_weight()
-        data["log_path"] = ""
-        
-        nutrition_data = nutrition_view_model.get_nutrition_data()
+        data["log_path"] = ""        
         data["nutrition_data"].update({
             CONSUMED_PROTEIN: 0.0,
             CONSUMED_CARBOHYDRATE: 0.0,

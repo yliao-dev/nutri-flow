@@ -60,9 +60,14 @@ class DataScreen(ctk.CTkFrame):
         restart_app()
     
     def export_data(self):
-        export_nutrition_data_to_file(self.nutrition_view_model)
+        if not export_nutrition_data_to_file(self.nutrition_view_model):
+            return
+            
     
     def create_new_data(self):
+        if not export_nutrition_data_to_file(self.nutrition_view_model):
+            return
         fresh_user_config(self.nutrition_view_model)
+        write_to_user_config(self.nutrition_view_model)
         restart_app()
     
