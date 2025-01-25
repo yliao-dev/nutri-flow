@@ -10,7 +10,8 @@ ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 LOG_PATH = os.path.join(ROOT_PATH, "nutrition_logs")
 USER_CONFIG_PATH = os.path.join(ROOT_PATH, "data", "user_config.json")
 INGREDIENTS_JSON_PATH = os.path.join(ROOT_PATH, "data", "ingredients.json")
-DARK_MODE_IMG = "data/dark-mode.png"
+DARK_MODE_IMG = "data/image/dark-mode.png"
+SPLASH_IMG = "data/image/loading-bar.png"
 
 # Global constants for nutrition data keys
 CONSUMED_PROTEIN = "consumed_protein"
