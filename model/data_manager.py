@@ -304,14 +304,21 @@ def export_all_logs_to_report(file_name):
                     ingredient = items[0].strip()
                     raw_amount = items[1].strip().rstrip(",")  # Remove trailing commas
 
-                    # Handle list-like amounts or single values
-                    if raw_amount.startswith("[") and raw_amount.endswith("]"):
-                        amount_list = raw_amount[1:-1].split(",")
-                        total_amount = sum(float(amt.strip()) for amt in amount_list)
-                        formatted_amount = str(total_amount)
-                    else:
-                        formatted_amount = raw_amount
+                    if raw_amount.startswith("\"[") and raw_amount.endswith("]\""):
+                        raw_amount = raw_amount[2:-2]  # Remove the extra quotes and brackets
+                    elif raw_amount.startswith("[") and raw_amount.endswith("]"):
+                        raw_amount = raw_amount[1:-1]  # Remove just the brackets
 
+                    # Now split by commas and sum the amounts
+                    amount_list = raw_amount.split(",")
+                    try:
+                        total_amount = sum([float(amt.strip()) for amt in amount_list])  # Sum all the amounts
+                        formatted_amount = str(total_amount)  # Convert sum to string
+                    except ValueError as e:
+                        print(f"Error converting amount to float: {e}")
+                        formatted_amount = "0.0"  # Set to 0.0 if conversion fails
+
+                    # Append the ingredient and formatted amount
                     ingredients.append(ingredient)
                     amounts.append(formatted_amount)
 
@@ -340,6 +347,7 @@ def export_all_logs_to_report(file_name):
         
         for r in csv_data:
             print(r)
+        create_new_log_file(csv_data, file_name)
         return True
 
     except Exception as e:
