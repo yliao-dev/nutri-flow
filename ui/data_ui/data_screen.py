@@ -11,11 +11,12 @@ class DataScreen(ctk.CTkFrame):
         self.initialize_ui()
         
     def initialize_ui(self):
-        self.grid_rowconfigure(0, weight=1)  # Dates row
-        self.grid_rowconfigure(1, weight=3)  # Data detail row
+        self.grid_rowconfigure(0, weight=3)  # Data detail row
+        self.grid_rowconfigure(1, weight=1)  # Data middle row
         self.grid_rowconfigure(2, weight=1)  # Import/Export frame row
         self.grid_columnconfigure(0, weight=1)
         self.create_data_file_detail_frame()
+        self.create_data_middle_frame()
         self.create_data_load_frame()
     
     def create_data_file_detail_frame(self):
@@ -31,6 +32,22 @@ class DataScreen(ctk.CTkFrame):
                     fg_color="transparent", 
                 )
         self.data_file_detail_frame.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+        
+    def create_data_middle_frame(self):
+        self.data_middle_frame = ctk.CTkFrame(self)
+        self.data_middle_frame.grid(row=1, column=0, sticky="nsew", padx=20, pady=10)
+        self.data_middle_frame.grid_rowconfigure(0, weight=1)
+        self.data_middle_frame.grid_columnconfigure(0, weight=1)  
+        self.data_middle_frame.grid_columnconfigure(1, weight=1)
+        self.data_middle_frame.grid_columnconfigure(2, weight=1)
+        self.generate_report_button = ctk.CTkButton(
+                    self.data_middle_frame,
+                    text="Generate Report\n(All files from nutrition_logs) ",
+                    fg_color="#2980B9",
+                    hover_color="#2c2c2c",
+                    command=self.generate_report
+                )
+        self.generate_report_button.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
         
     def create_data_load_frame(self):
         self.data_load_frame = ctk.CTkFrame(self)
@@ -72,4 +89,7 @@ class DataScreen(ctk.CTkFrame):
             return
         fresh_user_config(self.nutrition_view_model, file_name)
         restart_app()
+    
+    def generate_report(self):
+        print("generate_report")
     

@@ -53,7 +53,8 @@ class BottomFrame(ctk.CTkFrame):
 
         # Update Intake button on the most right side, taking 1/3 of the space, spanning both rows
         self.update_button = ctk.CTkButton(
-            self, hover_color="#2c2c2c", 
+            self, 
+            hover_color="#2c2c2c", 
             text="Update Intake", 
             font=("Arial", 16),
             command=self.update_intake, 
