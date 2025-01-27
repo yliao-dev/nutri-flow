@@ -235,3 +235,114 @@ def fresh_user_config(nutrition_view_model, new_file_name):
     except Exception as e:
         print(f"Error refreshing user_config.json: {e}")
     
+    
+def export_all_logs_to_report(file_name):
+    log_files = [
+        f for f in os.listdir(LOG_PATH)
+        if f.startswith("nutrition_log") and f.endswith(".csv")
+    ]
+
+    if not log_files:
+        print("No nutrition log files found.")
+        return False
+
+    try:
+        titles = [
+            "Date",
+            "Weight (kg)",
+            "Protein Goal (g)",
+            "Carbohydrate Goal (g)",
+            "Fat Goal (g)",
+            "Calories Goal (kcal)",
+            "Protein Consumed (g)",
+            "Carbohydrate Consumed (g)",
+            "Fat Consumed (g)",
+            "Calories Consumed (kcal)",
+            "Protein Percentage (%)",
+            "Carbohydrate Percentage (%)",
+            "Fat Percentage (%)",
+            "Calories Percentage (%)",
+            "Consumed Ingredients",
+            "Consumed Amounts (g)",
+        ]
+
+        csv_data = [titles]
+
+        for log_file in log_files:
+            file_path = os.path.join(LOG_PATH, log_file)
+            with open(file_path, "r") as f:
+                lines = f.readlines()
+
+            date = lines[1].strip().split(",")[0]  # Date from the second row
+            weight_kg = float(lines[1].strip().split(",")[1])  # Weight (kg) from the second row
+
+            goals_row = lines[4].strip().split(",")
+            protein_goal = float(goals_row[0])
+            carbohydrate_goal = float(goals_row[1])
+            fat_goal = float(goals_row[2])
+            calories_goal = float(goals_row[3])
+
+            consumed_row = lines[7].strip().split(",")
+            protein_consumed = float(consumed_row[0])
+            carbohydrate_consumed = float(consumed_row[1])
+            fat_consumed = float(consumed_row[2])
+            calories_consumed = float(consumed_row[3])
+
+            percentages_row = lines[10].strip().split(",")
+            protein_percentage = float(percentages_row[0])
+            carbohydrate_percentage = float(percentages_row[1])
+            fat_percentage = float(percentages_row[2])
+            calories_percentage = float(percentages_row[3])
+
+            # Consumed ingredients and amounts (index 13 onwards)
+            ingredients = []
+            amounts = []
+
+            for line in lines[13:]:
+                items = line.strip().split(",", 1)  # Only split on the first comma
+                if len(items) > 1:
+                    ingredient = items[0].strip()
+                    raw_amount = items[1].strip().rstrip(",")  # Remove trailing commas
+
+                    # Handle list-like amounts or single values
+                    if raw_amount.startswith("[") and raw_amount.endswith("]"):
+                        amount_list = raw_amount[1:-1].split(",")
+                        total_amount = sum(float(amt.strip()) for amt in amount_list)
+                        formatted_amount = str(total_amount)
+                    else:
+                        formatted_amount = raw_amount
+
+                    ingredients.append(ingredient)
+                    amounts.append(formatted_amount)
+
+            ingredients = ",".join(ingredients)
+            amounts = ",".join(amounts)
+
+            # Append extracted row to csv_data
+            csv_data.append([
+                date,
+                weight_kg,
+                protein_goal,
+                carbohydrate_goal,
+                fat_goal,
+                calories_goal,
+                protein_consumed,
+                carbohydrate_consumed,
+                fat_consumed,
+                calories_consumed,
+                protein_percentage,
+                carbohydrate_percentage,
+                fat_percentage,
+                calories_percentage,
+                ingredients,
+                amounts,
+            ])
+        
+        for r in csv_data:
+            print(r)
+        return True
+
+    except Exception as e:
+        print(f"Failed to export logs: {e}")
+        return False
+    

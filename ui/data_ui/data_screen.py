@@ -91,5 +91,8 @@ class DataScreen(ctk.CTkFrame):
         restart_app()
     
     def generate_report(self):
-        print("generate_report")
+        timestamp = datetime.now().strftime("%Y-%m-%d")
+        new_file_name = f"nutrition_log_{timestamp}.csv"
+        file_name = get_unique_filename(new_file_name)
+        export_all_logs_to_report(file_name)
     
