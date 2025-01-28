@@ -120,9 +120,11 @@ class HomeScreen(ctk.CTkFrame):
     def create_bottom_frame(self):
         self.bottom_frame = BottomFrame(
             master=self,
+            ingredients_data=self.ingredients_data,
             nutrition_view_model=self.nutrition_view_model,
             update_intake_callback=self.update_intake,
-            update_cards_callback=self.sort_cards,
+            sort_cards_callback=self.sort_cards,
+            search_cards_callback=self.search_cards,
             ingredient_cards=self.ingredients_frame.ingredient_cards  # Pass ingredient data to BottomFrame
         )
         self.bottom_frame.grid(row=3, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
@@ -159,3 +161,9 @@ class HomeScreen(ctk.CTkFrame):
         self.ingredients_data = sort_ingredients(self.ingredients_data, criteria, descending)
         self.ingredients_frame.ingredients_data = self.ingredients_data
         self.ingredients_frame.populate_ingredient_cards()  # Re-populate the ingredient cards after sorting
+    
+    def search_cards(self, *args):
+        print("search_cards")
+        # self.ingredients_data = sort_ingredients(self.ingredients_data, criteria, descending)
+        # self.ingredients_frame.ingredients_data = self.ingredients_data
+        # self.ingredients_frame.populate_ingredient_cards()

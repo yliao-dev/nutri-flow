@@ -38,7 +38,6 @@ class IngredientsFrame(ctk.CTkFrame):
         card_width = 150
         return max(3, frame_width // card_width)
 
-    
     def populate_ingredient_cards(self):
         # Get the number of cards per row based on the current frame size
         cards_per_row = self.calculate_cards_per_row()
@@ -76,3 +75,8 @@ class IngredientsFrame(ctk.CTkFrame):
         # Configure column weights to ensure equal width
         for col in range(cards_per_row):
             self.scrollable_frame.grid_columnconfigure(col, weight=1)
+
+    def update_ingredient_cards(self, filtered_ingredients):
+        # Update the ingredient cards based on the filtered ingredients
+        self.ingredients_data = filtered_ingredients  # Update data with the filtered ingredients
+        self.populate_ingredient_cards()

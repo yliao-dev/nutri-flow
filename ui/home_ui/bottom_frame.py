@@ -3,12 +3,14 @@ from ui.ingredients_ui.ingredient_card import IngredientCard
 from model.data_manager import *
 
 class BottomFrame(ctk.CTkFrame):
-    def __init__(self, master, nutrition_view_model, update_intake_callback, update_cards_callback, ingredient_cards):
+    def __init__(self, master, nutrition_view_model, ingredients_data, update_intake_callback, sort_cards_callback, search_cards_callback, ingredient_cards):
         super().__init__(master)
-
+        
         self.nutrition_view_model = nutrition_view_model
+        self.ingredients_data = ingredients_data  # Set the ingredients_data
         self.update_intake_callback = update_intake_callback
-        self.update_cards_callback = update_cards_callback
+        self.sort_cards_callback = sort_cards_callback
+        self.search_cards_callback = search_cards_callback
         self.ingredient_cards = ingredient_cards
         self.selected_ingredients = []
         self.highlight_color = "#2980B9"
@@ -35,6 +37,19 @@ class BottomFrame(ctk.CTkFrame):
         )
         self.sorting_menu.grid(row=0, column=1, padx=10, pady=10, sticky="e")
 
+    # Search bar for ingredient search, row 1 column 1
+        self.search_var = ctk.StringVar()
+        self.search_entry = ctk.CTkEntry(
+            self, 
+            textvariable=self.search_var,
+            placeholder_text="Search Ingredients...",
+            fg_color=self.highlight_color,
+            width=200
+        )
+        self.search_entry.grid(row=1, column=1, padx=10, pady=10, sticky="ew")
+        # Optional: Bind the entry widget to call a function when the user types (for real-time search filtering)
+        self.search_var.trace_add("write", self.on_search_change)
+        
         self.selected_ingredients_label = ctk.CTkLabel(
             self,
             text="Selected Ingredients:",
@@ -62,9 +77,6 @@ class BottomFrame(ctk.CTkFrame):
         )
         self.update_button.grid(row=0, column=2, rowspan=2, padx=10, pady=10, sticky="nsew")
 
-
-    def toggle_sorting(self, selected_option):
-        self.update_cards_callback(selected_option)
     
     def update_selected_data(self, ingredient_data, add=False):
         if add:
@@ -122,3 +134,24 @@ class BottomFrame(ctk.CTkFrame):
 
         self.update_selected_ingredients_label()
         self.update_button.configure(state=ctk.DISABLED)
+
+    def toggle_sorting(self, selected_option):
+        self.sort_cards_callback(selected_option)
+        
+    def on_search_change(self, *args):
+        # Get the search query and filter the ingredient cards based on that.
+        search_query = self.search_var.get().lower()
+        
+        # Call your filtering function or update logic
+        filtered_ingredients = self.filter_ingredients(search_query)
+        
+        # Trigger callback in IngredientsFrame with the filtered ingredients
+        self.search_cards_callback(filtered_ingredients)
+    
+    def filter_ingredients(self, query):
+        # Filter ingredients by matching the search query (case insensitive) in the name
+        filtered_ingredients = [
+            ingredient for ingredient in self.ingredients_data 
+            if query in ingredient["name"].lower()
+        ]
+        return filtered_ingredients
