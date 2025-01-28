@@ -39,18 +39,20 @@ class IngredientsFrame(ctk.CTkFrame):
         return max(3, frame_width // card_width)
 
     def populate_ingredient_cards(self):
-        # Get the number of cards per row based on the current frame size
         cards_per_row = self.calculate_cards_per_row()
 
         # Clear the current ingredient cards before repopulating
         for widget in self.scrollable_frame.winfo_children():
             widget.destroy()
-        self.ingredient_cards.clear()  # Reset the list of ingredient cards
+        self.ingredient_cards.clear()
 
-        for i, ingredient in enumerate(self.ingredients_data):
-            # Calculate row and column position
-            row = i // cards_per_row
-            col = i % cards_per_row
+        def display_card_with_animation(index):
+            if index >= len(self.ingredients_data):
+                return  # Stop if all cards are displayed
+
+            ingredient = self.ingredients_data[index]
+            row = index // cards_per_row
+            col = index % cards_per_row
 
             ingredient_card = IngredientCard(
                 self.scrollable_frame,
@@ -68,10 +70,43 @@ class IngredientsFrame(ctk.CTkFrame):
 
             # Place the card in the grid
             ingredient_card.grid(row=row, column=col, padx=5, pady=5, sticky="nsew")
-
-            # Add the card to the list
             self.ingredient_cards.append(ingredient_card)
+
+            # Start fade-in animation
+            self.fade_in_card(ingredient_card)
+
+            # Schedule the next card
+            self.after(50, lambda: display_card_with_animation(index + 1))
+
+        # Start displaying the cards
+        display_card_with_animation(0)
 
         # Configure column weights to ensure equal width
         for col in range(cards_per_row):
             self.scrollable_frame.grid_columnconfigure(col, weight=1)
+
+
+    def fade_in_card(self, card):
+        """Simulate a fade-in effect with visibility checks."""
+        opacity_levels = [0.1 * i for i in range(1, 11)]  # Gradual increase in visibility
+
+        def set_opacity(level_index):
+            if level_index >= len(opacity_levels):
+                return  # Stop the animation once fully visible
+
+            # Check if the widget still exists
+            if not str(card).startswith("."):
+                return  # Stop if the widget was destroyed
+
+            card.update_idletasks()  # Force UI redraw
+            card.master.update_idletasks()
+
+            # Ensure the card is visible (grid)
+            try:
+                card.grid()
+            except Exception:
+                return  # Prevent errors if the widget no longer exists
+
+            self.after(30, lambda: set_opacity(level_index + 1))  # Adjust speed of fade-in
+
+        set_opacity(0)
