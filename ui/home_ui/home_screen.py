@@ -162,8 +162,7 @@ class HomeScreen(ctk.CTkFrame):
         self.ingredients_frame.ingredients_data = self.ingredients_data
         self.ingredients_frame.populate_ingredient_cards()  # Re-populate the ingredient cards after sorting
     
-    def search_cards(self, *args):
-        print("search_cards")
-        # self.ingredients_data = sort_ingredients(self.ingredients_data, criteria, descending)
-        # self.ingredients_frame.ingredients_data = self.ingredients_data
-        # self.ingredients_frame.populate_ingredient_cards()
+    def search_cards(self, filtered_ingredients):
+        self.ingredients_data = filtered_ingredients
+        self.ingredients_frame.ingredients_data = self.ingredients_data
+        self.ingredients_frame.populate_ingredient_cards()

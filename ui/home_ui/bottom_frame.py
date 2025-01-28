@@ -139,13 +139,8 @@ class BottomFrame(ctk.CTkFrame):
         self.sort_cards_callback(selected_option)
         
     def on_search_change(self, *args):
-        # Get the search query and filter the ingredient cards based on that.
-        search_query = self.search_var.get().lower()
-        
-        # Call your filtering function or update logic
+        search_query = self.search_var.get().lower()        
         filtered_ingredients = self.filter_ingredients(search_query)
-        
-        # Trigger callback in IngredientsFrame with the filtered ingredients
         self.search_cards_callback(filtered_ingredients)
     
     def filter_ingredients(self, query):
