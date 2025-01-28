@@ -33,16 +33,17 @@ def create_new_log_file(data, file_name):
 
     if not file_path:
         print("No new file created.")
-        return False
+        return None  # Return None if no file is created
 
     try:
         df = pd.DataFrame(data)
         df.to_csv(file_path, index=False, header=False)
-        print(f"New nutrition log created: {file_path}")
-        return True
+        created_file_name = os.path.basename(file_path)  # Extract just the file name
+        print(f"New nutrition log created: {created_file_name}")
+        return created_file_name  # Return only the file name
     except Exception as e:
         print(f"Failed to create new nutrition log: {e}")
-        return False
+        return None
 
 
 
@@ -210,7 +211,37 @@ def export_nutrition_data_to_file(nutrition_view_model):
         csv_data.append([ingredient, consumed_amounts])
     
     return create_new_log_file(csv_data, nutrition_view_model.get_log_path())
-    
+
+def new_nutrition_data_to_file(nutrition_view_model):
+        timestamp = datetime.now().strftime("%Y-%m-%d")
+        new_file_name = f"nutrition_log_{timestamp}.csv"
+        file_name = get_unique_filename(new_file_name)
+        csv_data = [
+            ["Date", "Weight (kg)", "File name"],
+            [timestamp, nutrition_view_model.user_nutrition_model.weight, nutrition_view_model.user_nutrition_model.log_path],
+            [],
+            ["Protein Goal (g)", "Carbohydrate Goal (g)", "Fat Goal (g)", "Calories Goal (kcal)"],
+            [
+                nutrition_view_model.user_nutrition_model.goal_protein,
+                nutrition_view_model.user_nutrition_model.goal_carbohydrate,
+                nutrition_view_model.user_nutrition_model.goal_fat,
+                nutrition_view_model.user_nutrition_model.goal_calories,
+            ],
+            [],
+            ["Protein Consumed (g)", "Carbohydrate Consumed (g)", "Fat Consumed (g)", "Calories Consumed (kcal)"],
+            [0,0,0,0],
+            [],
+            ["Protein Percentage (%)", "Carbohydrate Percentage (%)", "Fat Percentage (%)", "Calories Percentage (%)"],
+            [0,0,0,0],
+            [],
+            ["Consumed Ingredients", "Consumed Amount (g)"],
+        ]
+        created_file_name = create_new_log_file(csv_data, file_name)
+        if not created_file_name:
+            return
+        fresh_user_config(nutrition_view_model, created_file_name)
+
+
 def fresh_user_config(nutrition_view_model, new_file_name):
     try:
         with open(USER_CONFIG_PATH, 'r') as file:
