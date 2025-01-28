@@ -344,9 +344,6 @@ def export_all_logs_to_report(file_name):
                 ingredients,
                 amounts,
             ])
-        
-        for r in csv_data:
-            print(r)
         create_new_log_file(csv_data, file_name)
         return True
 
