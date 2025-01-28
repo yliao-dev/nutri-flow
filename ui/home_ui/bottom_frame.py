@@ -144,9 +144,9 @@ class BottomFrame(ctk.CTkFrame):
         self.search_cards_callback(filtered_ingredients)
     
     def filter_ingredients(self, query):
-        # Filter ingredients by matching the search query (case insensitive) in the name
-        filtered_ingredients = [
-            ingredient for ingredient in self.ingredients_data 
+        if not query:
+            return self.ingredients_data
+        return [
+            ingredient for ingredient in self.ingredients_data
             if query in ingredient["name"].lower()
         ]
-        return filtered_ingredients
