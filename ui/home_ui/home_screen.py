@@ -24,11 +24,11 @@ class HomeScreen(ctk.CTkFrame):
 
         self.progress_frames = {}  # Dictionary to store the progress frames
         self.ingredient_cards = []  # List to store IngredientCard instances
-        self.splash_screen = SplashScreen(master)
+        # self.splash_screen = SplashScreen(master)
         self.initialize_ui()
 
     def initialize_ui(self):
-        self.splash_screen.grid(row=0, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")        
+        # self.splash_screen.grid(row=0, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")        
         self.label = ctk.CTkLabel(self, text="Nutrition Progress", font=("Arial", 20, "bold"))
         self.label.grid(row=0, column=1, columnspan=1, pady=5, sticky="nsew") 
         self.weight_label = ctk.CTkLabel(
@@ -63,7 +63,7 @@ class HomeScreen(ctk.CTkFrame):
         self.configure_grid()
         self.load_ingredients_data()  # Immediately load the data
         
-        self.after(LOADING_TIME, self.hide_splash_screen)
+        # self.after(LOADING_TIME, self.hide_splash_screen)
 
     def configure_grid(self):
         for column in range(3):
@@ -82,9 +82,9 @@ class HomeScreen(ctk.CTkFrame):
         self.create_ingredients_frame()  # Replace the old frame with IngredientsFrame
         self.create_bottom_frame()
 
-    def hide_splash_screen(self):
-        self.splash_screen.hide()
-        self.create_progress_frames
+    # def hide_splash_screen(self):
+    #     self.splash_screen.hide()
+    #     self.create_progress_frames
 
     def create_progress_frames(self):
         goal_names = ["protein", "carbohydrate", "fat"]
