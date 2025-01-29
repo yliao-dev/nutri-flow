@@ -207,7 +207,6 @@ def export_nutrition_data_to_file(nutrition_view_model):
         # Add consumed ingredients data
     consumed_ingredients = nutrition_view_model.get_consumed_ingredients()
     for ingredient, consumed_amounts in consumed_ingredients.items():
-        print(consumed_amounts)
         csv_data.append([ingredient, consumed_amounts])
     
     return create_new_log_file(csv_data, nutrition_view_model.get_log_path())
