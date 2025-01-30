@@ -87,8 +87,8 @@ class IngredientsFrame(ctk.CTkFrame):
         # Ensure the row is correctly sized
         self.scrollable_frame.grid_rowconfigure(row, weight=1)
 
-        # Start fade-in animation
-        self.fade_in_card(ingredient_card, lambda: self.display_card_with_animation(index + 1))
+        # Start fade-in animation and schedule the next card a bit earlier
+        self.fade_in_card(ingredient_card, lambda: self.after(10, lambda: self.display_card_with_animation(index + 1)))
 
     def fade_in_card(self, card, callback):
         """Simulate a fade-in effect with controlled timing to prevent skipping."""
@@ -111,6 +111,6 @@ class IngredientsFrame(ctk.CTkFrame):
             except Exception:
                 return  # Prevent errors if the widget is gone
 
-            self.after(15, lambda: set_opacity(level_index + 1))
+            self.after(10, lambda: set_opacity(level_index + 1))
 
         set_opacity(0)
