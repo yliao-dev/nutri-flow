@@ -39,74 +39,78 @@ class IngredientsFrame(ctk.CTkFrame):
         return max(3, frame_width // card_width)
 
     def populate_ingredient_cards(self):
-        cards_per_row = self.calculate_cards_per_row()
+        # Calculate number of columns once
+        self.cards_per_row = self.calculate_cards_per_row()
 
         # Clear the current ingredient cards before repopulating
         for widget in self.scrollable_frame.winfo_children():
             widget.destroy()
         self.ingredient_cards.clear()
 
-        def display_card_with_animation(index):
-            if index >= len(self.ingredients_data):
-                return  # Stop if all cards are displayed
-
-            ingredient = self.ingredients_data[index]
-            row = index // cards_per_row
-            col = index % cards_per_row
-
-            ingredient_card = IngredientCard(
-                self.scrollable_frame,
-                index=ingredient["id"],
-                ingredient_data=ingredient,
-                update_selected_data_callback=self.update_bottom_frame_callback,
-                selection_type="intake",
-                width=150,
-                height=250
-            )
-            ingredient_card.add_name()
-            ingredient_card.add_nutrition_data()
-            ingredient_card.add_image(ingredient["image"])
-            ingredient_card.add_custom_serving_size()
-
-            # Place the card in the grid
-            ingredient_card.grid(row=row, column=col, padx=5, pady=5, sticky="nsew")
-            self.ingredient_cards.append(ingredient_card)
-
-            # Start fade-in animation
-            self.fade_in_card(ingredient_card)
-
-            # Schedule the next card
-            self.after(50, lambda: display_card_with_animation(index + 1))
-
-        # Start displaying the cards
-        display_card_with_animation(0)
-
-        # Configure column weights to ensure equal width
-        for col in range(cards_per_row):
+        # Ensure column weights are correctly set
+        for col in range(self.cards_per_row):
             self.scrollable_frame.grid_columnconfigure(col, weight=1)
 
+        # Start displaying cards one by one
+        self.display_card_with_animation(0)
 
-    def fade_in_card(self, card):
-        """Simulate a fade-in effect with visibility checks."""
-        opacity_levels = [0.1 * i for i in range(1, 11)]  # Gradual increase in visibility
+    def display_card_with_animation(self, index):
+        """Recursively display ingredient cards with one-by-one animation, ensuring each row fills before new ones appear."""
+        
+        if index >= len(self.ingredients_data):
+            self.canvas.configure(scrollregion=self.canvas.bbox("all"))  # Ensure scrolling updates correctly
+            return  # Stop if all cards are placed
+
+        ingredient = self.ingredients_data[index]
+        row = index // self.cards_per_row
+        col = index % self.cards_per_row
+
+        # Create ingredient card
+        ingredient_card = IngredientCard(
+            self.scrollable_frame,
+            index=ingredient["id"],
+            ingredient_data=ingredient,
+            update_selected_data_callback=self.update_bottom_frame_callback,
+            selection_type="intake",
+            width=150,
+            height=250
+        )
+        ingredient_card.add_name()
+        ingredient_card.add_nutrition_data()
+        ingredient_card.add_image(ingredient["image"])
+        ingredient_card.add_custom_serving_size()
+
+        # Place card in correct row and column
+        ingredient_card.grid(row=row, column=col, padx=5, pady=5, sticky="nsew")
+        self.ingredient_cards.append(ingredient_card)
+
+        # Ensure the row is correctly sized
+        self.scrollable_frame.grid_rowconfigure(row, weight=1)
+
+        # Start fade-in animation
+        self.fade_in_card(ingredient_card, lambda: self.display_card_with_animation(index + 1))
+
+    def fade_in_card(self, card, callback):
+        """Simulate a fade-in effect with controlled timing to prevent skipping."""
+        opacity_levels = [0.2 * i for i in range(1, 6)]  # Gradual visibility increase
 
         def set_opacity(level_index):
             if level_index >= len(opacity_levels):
-                return  # Stop the animation once fully visible
+                callback()  # Only trigger the next card when fade-in is complete
+                return
 
-            # Check if the widget still exists
             if not str(card).startswith("."):
-                return  # Stop if the widget was destroyed
+                return  # Stop if widget is destroyed
 
             card.update_idletasks()  # Force UI redraw
             card.master.update_idletasks()
 
-            # Ensure the card is visible (grid)
+            # Ensure the card remains visible in the grid
             try:
                 card.grid()
             except Exception:
-                return  # Prevent errors if the widget no longer exists
+                return  # Prevent errors if the widget is gone
 
-            self.after(30, lambda: set_opacity(level_index + 1))  # Adjust speed of fade-in
+            self.after(15, lambda: set_opacity(level_index + 1))
 
         set_opacity(0)
