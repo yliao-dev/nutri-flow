@@ -1,0 +1,23 @@
+{
+    "date": "2025-02-09",
+    "weight": "76",
+    "goal_protein": 155,
+    "goal_carbohydrate": 360,
+    "goal_fat": 67,
+    "goal_calories": 2568,
+    "log_path": "nutrition_log_2025-02-09.csv",
+    "nutrition_data": {
+        "consumed_protein": 19.09,
+        "consumed_carbohydrate": 42.62,
+        "consumed_calories": 351.09,
+        "consumed_fat": 11.52
+    },
+    "consumed_ingredients": {
+        "egg": [
+            88.0
+        ],
+        "bread": [
+            85.0
+        ]
+    }
+}
