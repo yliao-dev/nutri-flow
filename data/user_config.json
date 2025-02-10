@@ -1,20 +1,32 @@
 {
-    "date": "2025-02-09",
+    "date": "2025-02-10",
     "weight": "76",
     "goal_protein": 155,
     "goal_carbohydrate": 360,
     "goal_fat": 67,
     "goal_calories": 2568,
-    "log_path": "nutrition_log_2025-02-09.csv",
+    "log_path": "nutrition_log_2025-02-10.csv",
     "nutrition_data": {
-        "consumed_protein": 19.09,
-        "consumed_carbohydrate": 42.62,
-        "consumed_calories": 351.09,
-        "consumed_fat": 11.52
+        "consumed_protein": 64.57,
+        "consumed_carbohydrate": 211.97,
+        "consumed_calories": 1379.51,
+        "consumed_fat": 34.16
     },
     "consumed_ingredients": {
+        "long_grain_rice": [
+            210.0
+        ],
         "egg": [
             88.0
+        ],
+        "mandarin": [
+            44.0
+        ],
+        "beef": [
+            100.0
+        ],
+        "tomato": [
+            100.0
         ],
         "bread": [
             85.0

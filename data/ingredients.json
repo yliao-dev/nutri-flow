@@ -41,8 +41,8 @@
             "fat":10
         },
         "image":".\/data\/image\/egg.png",
-        "frequency_of_use":20,
-        "last_used_date":"2025-02-09T11:41:15.807373"
+        "frequency_of_use":22,
+        "last_used_date":"2025-02-10T14:53:45.888288"
     },
     "milk":{
         "id":4,
@@ -56,8 +56,8 @@
             "fat":1
         },
         "image":".\/data\/image\/milk.png",
-        "frequency_of_use":20,
-        "last_used_date":"2025-02-08T10:27:16.689451"
+        "frequency_of_use":21,
+        "last_used_date":"2025-02-09T14:30:12.519207"
     },
     "oatmeal":{
         "id":5,
@@ -71,14 +71,14 @@
             "fat":6.9
         },
         "image":".\/data\/image\/oatmeal.png",
-        "frequency_of_use":29,
-        "last_used_date":"2025-02-08T10:27:18.099541"
+        "frequency_of_use":30,
+        "last_used_date":"2025-02-09T14:30:12.519020"
     },
     "beef":{
         "id":6,
         "name":"Beef",
         "reference_serving_size":100,
-        "custom_serving_size":20.0,
+        "custom_serving_size":100.0,
         "nutrition":{
             "carbohydrate":0,
             "protein":26,
@@ -86,8 +86,8 @@
             "fat":20
         },
         "image":".\/data\/image\/beef.png",
-        "frequency_of_use":10,
-        "last_used_date":"2025-01-30T19:58:35.164616"
+        "frequency_of_use":12,
+        "last_used_date":"2025-02-10T14:53:53.286417"
     },
     "chicken_breast":{
         "id":7,
@@ -108,7 +108,7 @@
         "id":8,
         "name":"Chicken Leg",
         "reference_serving_size":100,
-        "custom_serving_size":150.0,
+        "custom_serving_size":50.0,
         "nutrition":{
             "carbohydrate":0,
             "protein":24,
@@ -116,8 +116,8 @@
             "fat":10
         },
         "image":".\/data\/image\/chicken_leg.png",
-        "frequency_of_use":2,
-        "last_used_date":"2025-02-08T14:26:37.615577"
+        "frequency_of_use":3,
+        "last_used_date":"2025-02-09T14:30:19.464088"
     },
     "apple":{
         "id":9,
@@ -146,8 +146,8 @@
             "fat":3.2
         },
         "image":".\/data\/image\/bread.png",
-        "frequency_of_use":11,
-        "last_used_date":"2025-02-09T11:41:58.653979"
+        "frequency_of_use":12,
+        "last_used_date":"2025-02-10T14:54:21.291061"
     },
     "broccoli":{
         "id":11,
@@ -191,8 +191,8 @@
             "fat":1.1
         },
         "image":".\/data\/image\/long_grain_rice.png",
-        "frequency_of_use":31,
-        "last_used_date":"2025-02-08T16:29:38.153854"
+        "frequency_of_use":33,
+        "last_used_date":"2025-02-10T14:53:45.888075"
     },
     "orange":{
         "id":15,
@@ -251,8 +251,8 @@
             "fat":1.6
         },
         "image":".\/data\/image\/whey_protein.png",
-        "frequency_of_use":4,
-        "last_used_date":"2025-02-06T19:43:55.939755"
+        "frequency_of_use":5,
+        "last_used_date":"2025-02-09T14:32:11.983690"
     },
     "beetroot":{
         "id":19,
@@ -296,8 +296,8 @@
             "fat":0.3
         },
         "image":".\/data\/image\/mandarin.png",
-        "frequency_of_use":26,
-        "last_used_date":"2025-02-07T21:04:04.686609"
+        "frequency_of_use":28,
+        "last_used_date":"2025-02-10T14:53:48.178008"
     },
     "chicken_wing":{
         "id":22,
@@ -371,8 +371,8 @@
             "fat":0.2
         },
         "image":".\/data\/image\/tomato.png",
-        "frequency_of_use":3,
-        "last_used_date":"2025-02-07T12:42:58.095428"
+        "frequency_of_use":4,
+        "last_used_date":"2025-02-10T14:53:58.269637"
     },
     "pelmeni":{
         "id":27,
@@ -461,8 +461,8 @@
             "fat":4.6
         },
         "image":".\/data\/image\/tortilla.png",
-        "frequency_of_use":2,
-        "last_used_date":"2025-02-07T12:42:46.144326"
+        "frequency_of_use":3,
+        "last_used_date":"2025-02-09T14:30:23.478978"
     },
     "duck":{
         "id":33,
