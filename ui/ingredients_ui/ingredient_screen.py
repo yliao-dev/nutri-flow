@@ -20,6 +20,7 @@ class IngredientScreen(ctk.CTkFrame):
         self.grid_rowconfigure(0, weight=0)  # Title row
         self.grid_rowconfigure(1, weight=3)  # Ingredient detail row
         self.grid_rowconfigure(2, weight=1)  # Ingredients frame row
+        self.grid_rowconfigure(3, weight=1)  # Add Ingredient frame row
         self.grid_columnconfigure(0, weight=1)
 
         # Title
@@ -28,6 +29,7 @@ class IngredientScreen(ctk.CTkFrame):
 
         self.create_ingredient_detail_frame()
         self.create_ingredients_frame()
+        self.create_add_ingredient_frame()
         self.populate_ingredient_cards()
 
     def create_ingredients_frame(self):
@@ -85,6 +87,18 @@ class IngredientScreen(ctk.CTkFrame):
         # Nutrition text widget: Placed on the right side
         self.detail_info_label = ctk.CTkLabel(self.ingredient_detail_frame, text="", font=("Arial", 12), justify="left")
         self.detail_info_label.grid(row=1, column=1, padx=10, pady=10, sticky="nw")
+        
+    def create_add_ingredient_frame(self):
+        self.add_ingredient_frame = ctk.CTkFrame(self)
+        self.add_ingredient_frame.grid(row=3, column=0, padx=10, pady=5, sticky="nsew")
+        self.add_ingredient_frame.grid_rowconfigure(0, weight=1)
+
+        # Create Import Data button
+        self.add_ingredient_button = ctk.CTkButton(
+            self.add_ingredient_frame, 
+            text="Add Ingredient",
+            command=self.add_ingredient)
+        self.add_ingredient_button.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
 
     def update_selected_ingredient(self, ingredient_data):
         """Update the UI to display selected ingredient details."""
@@ -126,3 +140,6 @@ class IngredientScreen(ctk.CTkFrame):
 
             ingredient_card.grid(row=0, column=index, padx=5, pady=5, sticky="nsew")
             self.ingredient_cards.append(ingredient_card)
+
+    def add_ingredient(self):
+        print("add_ingredient")
