@@ -11,6 +11,8 @@ LOG_PATH = os.path.join(ROOT_PATH, "nutrition_logs")
 USER_CONFIG_PATH = os.path.join(ROOT_PATH, "data", "user_config.json")
 INGREDIENTS_JSON_PATH = os.path.join(ROOT_PATH, "data", "ingredients.json")
 DARK_MODE_IMG = "data/image/dark-mode.png"
+ADD_INGREDIENT_IMG = "data/image/add-ingredient.png"
+
 SPLASH_IMG = "data/image/loading-bar.png"
 
 # Global constants for nutrition data keys

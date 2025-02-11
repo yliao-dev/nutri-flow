@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from config import ADD_INGREDIENT_IMG
 from ui.ingredients_ui.ingredient_card import IngredientCard
 from PIL import Image
 from model.data_manager import load_from_ingredients_json, sort_ingredients
@@ -20,7 +21,7 @@ class IngredientScreen(ctk.CTkFrame):
         self.grid_rowconfigure(0, weight=0)  # Title row
         self.grid_rowconfigure(1, weight=3)  # Ingredient detail row
         self.grid_rowconfigure(2, weight=1)  # Ingredients frame row
-        self.grid_rowconfigure(3, weight=1)  # Add Ingredient frame row
+        self.grid_rowconfigure(3, weight=0)  # Add Ingredient frame row
         self.grid_columnconfigure(0, weight=1)
 
         # Title
@@ -93,12 +94,27 @@ class IngredientScreen(ctk.CTkFrame):
         self.add_ingredient_frame.grid(row=3, column=0, padx=10, pady=5, sticky="nsew")
         self.add_ingredient_frame.grid_rowconfigure(0, weight=1)
 
-        # Create Import Data button
+        button_width = 80  # Set your preferred size
+        button_height = 60  # Adjust height as needed
+
+        # Load and resize image to exactly fit the button size
+        img = Image.open(ADD_INGREDIENT_IMG)
+        img = img.resize((button_width, button_height), Image.LANCZOS)
+
+        add_ingredient_image = ctk.CTkImage(light_image=img, size=(button_width, button_height))
+
+        # Create button with fixed size and stretched image
         self.add_ingredient_button = ctk.CTkButton(
-            self.add_ingredient_frame, 
-            text="Add Ingredient",
-            command=self.add_ingredient)
-        self.add_ingredient_button.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+            self.add_ingredient_frame,
+            image=add_ingredient_image,
+            text="",
+            command=self.add_ingredient,
+            width=button_width,
+            height=button_height,
+            fg_color="transparent",
+            corner_radius=0
+        )
+        self.add_ingredient_button.grid(row=0, column=0, padx=0, pady=0, sticky="nsew")
 
     def update_selected_ingredient(self, ingredient_data):
         """Update the UI to display selected ingredient details."""
