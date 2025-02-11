@@ -28,7 +28,7 @@ class DataScreen(ctk.CTkFrame):
         self.data_file_detail_frame = ctk.CTkLabel(
                     self,
                     font=("Arial", 16, "bold"),
-                    text=f"File: {self.nutrition_view_model.user_nutrition_model.log_path}",
+                    text=f"{self.nutrition_view_model.user_nutrition_model.log_path}",
                     fg_color="transparent", 
                 )
         self.data_file_detail_frame.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
