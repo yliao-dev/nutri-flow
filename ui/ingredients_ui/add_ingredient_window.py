@@ -27,37 +27,52 @@ class AddIngredientWindow(ctk.CTkToplevel):
         
     def create_widgets(self):
         """Create UI elements for the pop-up window."""
-        # Image Selection
-        self.image_label = ctk.CTkLabel(self, text="No Image Selected", width=128, height=128, fg_color="gray")
-        self.image_label.pack(pady=10)
+        self.grid_rowconfigure(1, weight=1)  # Allow main content to expand
+        self.grid_columnconfigure(0, weight=1)  # Make it stretch horizontally
+
+        # Image Selection (Fixed Size)
+        self.image_label = ctk.CTkLabel(
+            self, text="No Image Selected",
+            fg_color="gray",
+            width=128, height=128
+        )
+        self.image_label.pack(pady=10)  # No expand, keeps fixed size
 
         self.select_image_button = ctk.CTkButton(self, text="Select Image", command=self.select_image)
-        self.select_image_button.pack(pady=5)
+        self.select_image_button.pack(pady=5, padx=20, fill="x")  # Full width
 
         # Nutrition Inputs
         self.nutrition_inputs = {}
         fields = ["Carbohydrates (g)", "Protein (g)", "Fat (g)", "Calories (kcal)"]
+        nutrition_frame = ctk.CTkFrame(self)
+        nutrition_frame.pack(pady=10, padx=20, expand=True, fill="both")  # Takes full space
+
         for field in fields:
-            frame = ctk.CTkFrame(self)
+            frame = ctk.CTkFrame(nutrition_frame)
             frame.pack(pady=5, padx=20, fill="x")
 
             label = ctk.CTkLabel(frame, text=field, anchor="w")
             label.pack(side="left", padx=5)
 
             entry = ctk.CTkEntry(frame)
-            entry.pack(side="right", expand=True, padx=5)
+            entry.pack(side="right", expand=True, padx=5, fill="x")  # Entry fields stretch
             self.nutrition_inputs[field] = entry
 
-        # Buttons (Confirm & Cancel)
+        # Buttons (Confirm & Cancel) at the bottom, equal space
         button_frame = ctk.CTkFrame(self)
-        button_frame.pack(side="bottom", pady=10)
+        button_frame.pack(side="bottom", pady=10, padx=20, fill="x")
 
-        self.cancel_button = ctk.CTkButton(button_frame, text="Cancel", command=self.destroy)
-        self.cancel_button.pack(side="right", padx=5)
+        button_frame.grid_columnconfigure(0, weight=1) 
+        button_frame.grid_columnconfigure(1, weight=1)
 
         self.confirm_button = ctk.CTkButton(button_frame, text="Confirm", command=self.confirm)
-        self.confirm_button.pack(side="right", padx=5)
+        self.confirm_button.grid(row=0, column=0, sticky="ew", padx=5, pady=5) 
 
+        self.cancel_button = ctk.CTkButton(
+            button_frame, text="Cancel", command=self.destroy, fg_color="red", hover_color="dark red"
+        )
+        self.cancel_button.grid(row=0, column=1, sticky="ew", padx=5, pady=5)
+        
     def select_image(self):
         """Open file dialog to select an image."""
         file_path = filedialog.askopenfilename(
@@ -83,9 +98,10 @@ class AddIngredientWindow(ctk.CTkToplevel):
             
     def confirm(self):
         """Collect input data and pass it back to the main screen."""
-        ingredient_data = {
-            "image": self.selected_image_path,
-            "nutrition": {field: self.nutrition_inputs[field].get() for field in self.nutrition_inputs}
-        }
-        self.on_confirm_callback(ingredient_data)
+        # ingredient_data = {
+        #     "image": self.selected_image_path,
+        #     "nutrition": {field: self.nutrition_inputs[field].get() for field in self.nutrition_inputs}
+        # }
+        # self.on_confirm_callback(ingredient_data)
+        print("todo")
         self.destroy()
