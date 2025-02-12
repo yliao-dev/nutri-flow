@@ -5,6 +5,8 @@ ctk.set_appearance_mode("System")
 ctk.set_default_color_theme("blue")
 WIDTH = 1200
 HEIGHT = 800
+ADD_INGREDIENT_WIDTH=256
+ADD_INGREDIENT_HEIGHT=512
 
 ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 LOG_PATH = os.path.join(ROOT_PATH, "nutrition_logs")
