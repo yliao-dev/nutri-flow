@@ -2,6 +2,8 @@ import customtkinter as ctk
 from tkinter import filedialog
 from PIL import Image
 
+from config import IMG_FOLDER_PATH
+
 class AddIngredientWindow(ctk.CTkToplevel):
     def __init__(self, master, on_confirm_callback):
         super().__init__(master)
@@ -51,9 +53,9 @@ class AddIngredientWindow(ctk.CTkToplevel):
     def select_image(self):
         """Open file dialog to select an image."""
         file_path = filedialog.askopenfilename(
-            filetypes=[("Image Files", "*.png;*.jpg;*.jpeg")]
-            )
-
+            initialdir=IMG_FOLDER_PATH,
+            filetypes=[("Image Files", ("*.png", "*.jpg", "*.jpeg"))]  # Use a tuple inside
+        )
         if not file_path:
             print("No new image selected.")
             return None  # Return None if no file is created
