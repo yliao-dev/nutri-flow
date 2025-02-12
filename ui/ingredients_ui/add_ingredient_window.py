@@ -50,12 +50,18 @@ class AddIngredientWindow(ctk.CTkToplevel):
 
     def select_image(self):
         """Open file dialog to select an image."""
-        file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg")])
-        if file_path:
-            self.selected_image_path = file_path
-            img = Image.open(file_path)
-            img = img.resize((200, 150), Image.LANCZOS)
-            self.image_label.configure(image=ctk.CTkImage(img), text="")
+        file_path = filedialog.askopenfilename(
+            filetypes=[("Image Files", "*.png;*.jpg;*.jpeg")]
+            )
+
+        if not file_path:
+            print("No new image selected.")
+            return None  # Return None if no file is created
+
+        self.selected_image_path = file_path
+        img = Image.open(file_path)
+        img = img.resize((200, 150), Image.LANCZOS)
+        self.image_label.configure(image=ctk.CTkImage(img), text="")
 
     def confirm(self):
         """Collect input data and pass it back to the main screen."""
