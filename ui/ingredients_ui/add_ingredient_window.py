@@ -43,7 +43,7 @@ class AddIngredientWindow(ctk.CTkToplevel):
 
         # Nutrition Inputs
         self.nutrition_inputs = {}
-        fields = ["Carbohydrates (g)", "Protein (g)", "Fat (g)", "Calories (kcal)"]
+        fields = ["Name", "Carbohydrates (g)", "Protein (g)", "Fat (g)", "Calories (kcal)"]
         nutrition_frame = ctk.CTkFrame(self)
         nutrition_frame.pack(pady=10, padx=20, expand=True, fill="both")  # Takes full space
 
