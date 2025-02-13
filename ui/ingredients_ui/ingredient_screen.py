@@ -2,7 +2,7 @@ import customtkinter as ctk
 from config import ADD_INGREDIENT_IMG
 from ui.ingredients_ui.ingredient_card import IngredientCard
 from PIL import Image
-from model.data_manager import load_from_ingredients_json, sort_ingredients
+from model.data_manager import add_ingredient_to_ingredients_json, load_from_ingredients_json, sort_ingredients
 from ui.ingredients_ui.add_ingredient_window import AddIngredientWindow  # Import new pop-up
 
 
@@ -162,6 +162,6 @@ class IngredientScreen(ctk.CTkFrame):
         """Open the Add Ingredient pop-up window."""
         def on_confirm(new_ingredient):
             print("New Ingredient:", new_ingredient)
-            # TODO: Save new ingredient to JSON or update UI dynamically
+            add_ingredient_to_ingredients_json(new_ingredient)
         
         AddIngredientWindow(self, on_confirm)

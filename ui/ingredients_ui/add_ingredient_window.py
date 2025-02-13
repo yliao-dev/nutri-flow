@@ -43,10 +43,20 @@ class AddIngredientWindow(ctk.CTkToplevel):
 
         # Nutrition Inputs
         self.nutrition_inputs = {}
-        fields = ["Name", "Carbohydrates (g)", "Protein (g)", "Fat (g)", "Calories (kcal)"]
+        fields = ["Carbohydrates (g)", "Protein (g)", "Fat (g)", "Calories (kcal)"]
         nutrition_frame = ctk.CTkFrame(self)
         nutrition_frame.pack(pady=10, padx=20, expand=True, fill="both")  # Takes full space
         vcmd = (self.register(self.validate_unit_input), "%P")  # %P is the new text value
+
+        # Name Field (Separate from Nutrition Fields)
+        name_frame = ctk.CTkFrame(nutrition_frame)
+        name_frame.pack(pady=5, padx=20, fill="x")
+
+        name_label = ctk.CTkLabel(name_frame, text="Ingredient Name", anchor="w")
+        name_label.pack(side="left", padx=5)
+
+        self.name_input = ctk.CTkEntry(name_frame)  # Store separately
+        self.name_input.pack(side="right", expand=True, padx=5, fill="x")
 
         for field in fields:
             frame = ctk.CTkFrame(nutrition_frame)
@@ -99,22 +109,17 @@ class AddIngredientWindow(ctk.CTkToplevel):
             
     def confirm(self):
         """Collect input data and pass it back to the main screen."""
-        nutrition =  {field: self.nutrition_inputs[field].get() for field in self.nutrition_inputs}
-        print(nutrition)
-        app_root = os.path.dirname(os.path.abspath(__file__))  
-        print(self.selected_image_path)
-        relative_path = ""
-        # Convert absolute path to relative path
-        if self.selected_image_path:
-            relative_path = os.path.relpath(self.selected_image_path, start=app_root)
-        else:
-            relative_path = "No image selected"
-        print(relative_path)
-        # ingredient_data = {
-        #     "image": self.selected_image_path,
-        #     "nutrition": {field: self.nutrition_inputs[field].get() for field in self.nutrition_inputs}
-        # }
-        # self.on_confirm_callback(ingredient_data)
+        # app_root = os.path.dirname(os.path.abspath(__file__))  
+        # if self.selected_image_path:
+        #     relative_path = os.path.relpath(self.selected_image_path, start=app_root)
+        # else:
+        #     relative_path = "No image selected"
+        ingredient_data = {
+            "name": self.name_input.get(),
+            "image": self.selected_image_path,
+            "nutrition": {field: self.nutrition_inputs[field].get() for field in self.nutrition_inputs}
+        }
+        self.on_confirm_callback(ingredient_data)
         self.destroy()
     
     def validate_unit_input(self, value):

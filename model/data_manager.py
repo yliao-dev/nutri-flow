@@ -381,3 +381,60 @@ def export_all_logs_to_report(file_name):
         print(f"Failed to export logs: {e}")
         return False
     
+    
+    
+def add_ingredient_to_ingredients_json(new_ingredient):
+    try:
+        # Load existing JSON data
+        if os.path.exists(INGREDIENTS_JSON_PATH):
+            with open(INGREDIENTS_JSON_PATH, 'r+', encoding='utf-8') as file:
+                try:
+                    data = json.load(file)
+                except json.JSONDecodeError:
+                    data = {}  # Handle empty or invalid JSON files
+        else:
+            data = {}
+
+        # Get the last ID and increment it
+        last_id = max([int(v["id"]) for v in data.values()], default=0)
+        new_id = last_id + 1
+
+        # Generate key from name
+        raw_name = new_ingredient["name"]
+        key_name = raw_name.lower().replace(" ", "_")
+
+        nutrition_mapping = {
+            "Carbohydrates (g)": "carbohydrate",
+            "Protein (g)": "protein",
+            "Fat (g)": "fat",
+            "Calories (kcal)": "calories"
+        }
+        # Convert nutrition data structure
+        formatted_nutrition = {
+            nutrition_mapping[key]: float(value) if value else 0  # Convert to float
+            for key, value in new_ingredient["nutrition"].items()
+            if key in nutrition_mapping
+        }
+        # Create the new ingredient entry
+        new_entry = {
+            "id": new_id,
+            "name": raw_name,
+            "reference_serving_size": 100,
+            "custom_serving_size": 0,
+            "nutrition": formatted_nutrition,
+            "image": new_ingredient["image"],
+            "frequency_of_use": 0,
+            "last_used_date": None  # Explicitly set to null
+        }
+
+        # Add new ingredient to the dictionary
+        data[key_name] = new_entry
+
+        # Save updated JSON
+        with open(INGREDIENTS_JSON_PATH, 'w', encoding='utf-8') as file:
+            json.dump(data, file, indent=4)
+
+        print(f"Added ingredient: {raw_name}")
+
+    except Exception as e:
+        print(f"Error adding ingredient: {e}")
