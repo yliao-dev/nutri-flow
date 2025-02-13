@@ -9,13 +9,15 @@ class AddIngredientWindow(ctk.CTkToplevel):
         super().__init__(master)
         self.title("Add Ingredient")
         self.center_window(ADD_INGREDIENT_WIDTH, ADD_INGREDIENT_HEIGHT)
-        self.resizable(False, False)
+        self.resizable(True, True)
 
         self.on_confirm_callback = on_confirm_callback
         self.selected_image_path = None
 
         # UI Elements
         self.create_widgets()
+        self.validate_name_input()
+
 
     def center_window(self, width, height):
             """Center the application window on the screen."""
@@ -57,6 +59,7 @@ class AddIngredientWindow(ctk.CTkToplevel):
 
         self.name_input = ctk.CTkEntry(name_frame)  # Store separately
         self.name_input.pack(side="right", expand=True, padx=5, fill="x")
+        self.name_input.bind("<KeyRelease>", lambda event: self.validate_name_input())  # Live Validation
 
         for field in fields:
             frame = ctk.CTkFrame(nutrition_frame)
@@ -83,7 +86,15 @@ class AddIngredientWindow(ctk.CTkToplevel):
             button_frame, text="Cancel", command=self.destroy, fg_color="red", hover_color="dark red"
         )
         self.cancel_button.grid(row=0, column=1, sticky="ew", padx=5, pady=5)
-        
+    
+    
+    def validate_name_input(self):
+        """Enable Confirm button only if the name field is not empty."""
+        if self.name_input.get().strip():
+            self.confirm_button.configure(state="normal")  # Enable button
+        else:
+            self.confirm_button.configure(state="disabled")  # Disable button
+            
     def select_image(self):
         """Open file dialog to select an image."""
         file_path = filedialog.askopenfilename(
@@ -109,11 +120,6 @@ class AddIngredientWindow(ctk.CTkToplevel):
             
     def confirm(self):
         """Collect input data and pass it back to the main screen."""
-        # app_root = os.path.dirname(os.path.abspath(__file__))  
-        # if self.selected_image_path:
-        #     relative_path = os.path.relpath(self.selected_image_path, start=app_root)
-        # else:
-        #     relative_path = "No image selected"
         ingredient_data = {
             "name": self.name_input.get(),
             "image": self.selected_image_path,
