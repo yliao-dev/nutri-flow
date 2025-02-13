@@ -46,6 +46,7 @@ class AddIngredientWindow(ctk.CTkToplevel):
         fields = ["Name", "Carbohydrates (g)", "Protein (g)", "Fat (g)", "Calories (kcal)"]
         nutrition_frame = ctk.CTkFrame(self)
         nutrition_frame.pack(pady=10, padx=20, expand=True, fill="both")  # Takes full space
+        vcmd = (self.register(self.validate_unit_input), "%P")  # %P is the new text value
 
         for field in fields:
             frame = ctk.CTkFrame(nutrition_frame)
@@ -54,7 +55,7 @@ class AddIngredientWindow(ctk.CTkToplevel):
             label = ctk.CTkLabel(frame, text=field, anchor="w")
             label.pack(side="left", padx=5)
 
-            entry = ctk.CTkEntry(frame)
+            entry = ctk.CTkEntry(frame, validate="key", validatecommand=vcmd)
             entry.pack(side="right", expand=True, padx=5, fill="x")  # Entry fields stretch
             self.nutrition_inputs[field] = entry
 
@@ -98,10 +99,27 @@ class AddIngredientWindow(ctk.CTkToplevel):
             
     def confirm(self):
         """Collect input data and pass it back to the main screen."""
+        nutrition =  {field: self.nutrition_inputs[field].get() for field in self.nutrition_inputs}
+        print(nutrition)
+        app_root = os.path.dirname(os.path.abspath(__file__))  
+        print(self.selected_image_path)
+        relative_path = ""
+        # Convert absolute path to relative path
+        if self.selected_image_path:
+            relative_path = os.path.relpath(self.selected_image_path, start=app_root)
+        else:
+            relative_path = "No image selected"
+        print(relative_path)
         # ingredient_data = {
         #     "image": self.selected_image_path,
         #     "nutrition": {field: self.nutrition_inputs[field].get() for field in self.nutrition_inputs}
         # }
         # self.on_confirm_callback(ingredient_data)
-        print("todo")
         self.destroy()
+    
+    def validate_unit_input(self, value):
+        """Validate the input for the serving size entry."""
+        # Allow only digits and one decimal point
+        if value == "" or value.isdigit() or (value.count('.') == 1 and value.replace('.', '').isdigit()):
+            return True
+        return False
