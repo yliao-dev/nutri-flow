@@ -56,18 +56,24 @@ class DataScreen(ctk.CTkFrame):
         self.data_load_frame.grid_columnconfigure(0, weight=1)  
         self.data_load_frame.grid_columnconfigure(1, weight=1)
         self.data_load_frame.grid_columnconfigure(2, weight=1)
-        # Create Import Data button
-        self.import_button = ctk.CTkButton(self.data_load_frame, text="Import Data\n(Restart Application)", command=self.import_data)
-        self.import_button.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
-        
-        # Create Export Data button
-        self.export_button = ctk.CTkButton(self.data_load_frame, text="Export Data", command=self.export_data)
-        self.export_button.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
+        self.data_load_frame.grid_columnconfigure(3, weight=1)
+
         
         # Create New Data button
-        self.past_data_button = ctk.CTkButton(self.data_load_frame, text="Create New Log\n(Restart Application)", command=self.create_new_data)
-        self.past_data_button.grid(row=0, column=2, padx=10, pady=10, sticky="nsew")
+        self.new_data_button = ctk.CTkButton(self.data_load_frame, text="Create New Log\n(Restart Application)", command=self.create_new_data)
+        self.new_data_button.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
         
+        # Create Export Data button
+        self.export_button = ctk.CTkButton(self.data_load_frame, text="Save Data", command=self.export_data)
+        self.export_button.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
+        
+        # Create Export Data button
+        self.export_button = ctk.CTkButton(self.data_load_frame, text="Save Data As", command=self.export_data)
+        self.export_button.grid(row=0, column=2, padx=10, pady=10, sticky="nsew")
+        
+        # Create Import Data button
+        self.import_button = ctk.CTkButton(self.data_load_frame, text="Import Data\n(Restart Application)", command=self.import_data)
+        self.import_button.grid(row=0, column=3, padx=10, pady=10, sticky="nsew")
         
     def import_data(self):
         """Allow the user to select and read a CSV file using pandas."""
