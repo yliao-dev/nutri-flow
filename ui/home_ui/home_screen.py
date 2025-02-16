@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from ui.home_ui.progress_frame import ProgressFrame
-from ui.home_ui.ingredients_frame import IngredientsFrame  # Import IngredientsFrame
+from ui.home_ui.ingredients_frame import IngredientsFrame
 from ui.home_ui.bottom_frame import BottomFrame
 from PIL import Image
 from config import DARK_MODE_IMG, LOADING_TIME
@@ -11,7 +11,6 @@ class HomeScreen(ctk.CTkFrame):
     def __init__(self, master, nutrition_view_model):
         super().__init__(master)
         self.resize_debounce = None
-        
         self.nutrition_view_model = nutrition_view_model
         self.ingredients_data = []
         self.sorted_ingredients = []
@@ -21,49 +20,41 @@ class HomeScreen(ctk.CTkFrame):
             "fat": self.nutrition_view_model.user_nutrition_model.goal_fat,
             "calories": self.nutrition_view_model.user_nutrition_model.goal_calories,
         }
-
-        self.progress_frames = {}  # Dictionary to store the progress frames
-        self.ingredient_cards = []  # List to store IngredientCard instances
-        # self.splash_screen = SplashScreen(master)
+        self.progress_frames = {}  # Store progress frames by goal name
+        self.ingredient_cards = []  # Store IngredientCard instances
         self.initialize_ui()
 
     def initialize_ui(self):
-        # self.splash_screen.grid(row=0, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")        
+        # Top header labels
         self.label = ctk.CTkLabel(self, text="Nutrition Progress", font=("Arial", 20, "bold"))
-        self.label.grid(row=0, column=1, columnspan=1, pady=5, sticky="nsew") 
-        self.weight_label = ctk.CTkLabel(
-                    self,
-                    font=("Arial", 16, "bold"),
-                    text=f"Weight: {self.nutrition_view_model.user_nutrition_model.weight}kg",
-                    fg_color="transparent", 
-                )
-        self.weight_label.grid(row=0, column=2, padx=10, pady=10, sticky="nsew")
-        self.date_label = ctk.CTkLabel(
-                    self,
-                    font=("Arial", 16, "bold"),
-                    text=f"Date: {self.nutrition_view_model.user_nutrition_model.date}",
-                    fg_color="transparent", 
-                )
-        self.date_label.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+        self.label.grid(row=0, column=1, pady=5, sticky="nsew")
         
-        # Appearance Mode Selector (using a single image)
-        self.mode_img = ctk.CTkImage(light_image=Image.open(DARK_MODE_IMG), size=(40, 40))
-        self.mode_label = ctk.CTkLabel(
+        self.weight_label = ctk.CTkLabel(
             self,
-            text="", 
-            image=self.mode_img, 
+            font=("Arial", 16, "bold"),
+            text=f"Weight: {self.nutrition_view_model.user_nutrition_model.weight}kg",
             fg_color="transparent", 
         )
+        self.weight_label.grid(row=0, column=2, padx=10, pady=10, sticky="nsew")
+        
+        self.date_label = ctk.CTkLabel(
+            self,
+            font=("Arial", 16, "bold"),
+            text=f"Date: {self.nutrition_view_model.user_nutrition_model.date}",
+            fg_color="transparent", 
+        )
+        self.date_label.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+        
+        # Appearance mode toggle (single image)
+        self.mode_img = ctk.CTkImage(light_image=Image.open(DARK_MODE_IMG), size=(40, 40))
+        self.mode_label = ctk.CTkLabel(self, text="", image=self.mode_img, fg_color="transparent")
         self.mode_label.bind("<Button-1>", lambda event: self.toggle_appearance_mode())
-        # Prevent any hover effect
         self.mode_label.bind("<Enter>", lambda event: self.mode_label.configure(fg_color="transparent"))
         self.mode_label.bind("<Leave>", lambda event: self.mode_label.configure(fg_color="transparent"))
         self.mode_label.grid(row=0, column=2, padx=10, pady=10, sticky="e")
     
         self.configure_grid()
-        self.load_ingredients_data()  # Immediately load the data
-        
-        # self.after(LOADING_TIME, self.hide_splash_screen)
+        self.load_ingredients_data()  # Load data and build UI components
 
     def configure_grid(self):
         for column in range(3):
@@ -73,24 +64,16 @@ class HomeScreen(ctk.CTkFrame):
         self.grid_rowconfigure(3, weight=1)
 
     def load_ingredients_data(self):
-        # Load ingredients data and sort it immediately
         self.ingredients_data = load_from_ingredients_json()
         self.sorted_ingredients = sort_ingredients(self.ingredients_data, criteria="frequency_of_use")
-
-        # Proceed to create UI components now that the data is loaded
         self.create_progress_frames()
-        self.create_ingredients_frame()  # Replace the old frame with IngredientsFrame
+        self.create_ingredients_frame()
         self.create_bottom_frame()
-
-    # def hide_splash_screen(self):
-    #     self.splash_screen.hide()
-    #     self.create_progress_frames
 
     def create_progress_frames(self):
         goal_names = ["protein", "carbohydrate", "fat"]
         consumed_values = self.nutrition_view_model.get_nutrition_data()
         goal_values = self.user_goals
-
         for index, goal_name in enumerate(goal_names):
             self.progress_frames[goal_name] = self.create_single_progress_frame(goal_name, index, consumed_values, goal_values)
 
@@ -106,7 +89,6 @@ class HomeScreen(ctk.CTkFrame):
         return progress_frame
 
     def create_ingredients_frame(self):
-        # Use IngredientsFrame instead of the old frame
         self.ingredients_frame = IngredientsFrame(
             master=self,
             ingredients_data=self.sorted_ingredients,
@@ -125,26 +107,19 @@ class HomeScreen(ctk.CTkFrame):
             update_intake_callback=self.update_intake,
             sort_cards_callback=self.sort_cards,
             search_cards_callback=self.search_cards,
-            ingredient_cards=self.ingredients_frame.ingredient_cards  # Pass ingredient data to BottomFrame
+            ingredient_cards=self.ingredients_frame.ingredient_cards
         )
         self.bottom_frame.grid(row=3, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
 
     def update_intake(self, nutrition_data):
-        # Update each progress frame with the new data
         for _, progress_frame in self.progress_frames.items():
             progress_frame.update(nutrition_data)
             
     def toggle_appearance_mode(self):
-        """Toggle between light and dark mode when clicked."""
         current_mode = ctk.get_appearance_mode()
-
-        if current_mode == "Dark":
-            ctk.set_appearance_mode("Light")  # Switch to light mode
-        else:
-            ctk.set_appearance_mode("Dark")  # Switch to dark mode
+        ctk.set_appearance_mode("Light" if current_mode == "Dark" else "Dark")
             
     def sort_cards(self, selected_option):
-        # Map selected options to the corresponding sorting criteria
         self.ingredients_data = load_from_ingredients_json()
         descending = True
         if selected_option == "Frequency":
@@ -160,7 +135,7 @@ class HomeScreen(ctk.CTkFrame):
             criteria = "carbohydrate"
         self.ingredients_data = sort_ingredients(self.ingredients_data, criteria, descending)
         self.ingredients_frame.ingredients_data = self.ingredients_data
-        self.ingredients_frame.populate_ingredient_cards()  # Re-populate the ingredient cards after sorting
+        self.ingredients_frame.populate_ingredient_cards()
     
     def search_cards(self, filtered_ingredients):
         self.ingredients_data = filtered_ingredients
