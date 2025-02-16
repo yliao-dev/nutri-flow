@@ -163,13 +163,6 @@ class HomeScreen(ctk.CTkFrame):
         self.ingredients_frame.populate_ingredient_cards()  # Re-populate the ingredient cards after sorting
     
     def search_cards(self, filtered_ingredients):
-        # filtered_ids = {ingredient["id"] for ingredient in filtered_ingredients}
-        # # Loop through existing ingredient cards and toggle visibility
-        # for card in self.ingredients_frame.ingredient_cards:
-        #     if card.ingredient_data["id"] in filtered_ids:
-        #         card.grid()  # Show the card
-        #     else:
-        #         card.grid_remove()
         self.ingredients_data = filtered_ingredients
         self.ingredients_frame.ingredients_data = self.ingredients_data
         self.ingredients_frame.populate_ingredient_cards()
