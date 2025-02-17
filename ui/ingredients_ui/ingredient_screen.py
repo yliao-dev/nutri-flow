@@ -22,7 +22,7 @@ class IngredientScreen(ctk.CTkFrame):
         self.grid_rowconfigure(0, weight=0)  # Title row
         self.grid_rowconfigure(1, weight=3)  # Ingredient detail row
         self.grid_rowconfigure(2, weight=1)  # Ingredients frame row
-        self.grid_rowconfigure(3, weight=0)  # Add Ingredient frame row
+        self.grid_rowconfigure(3, weight=1)  # Add Ingredient frame row
         self.grid_columnconfigure(0, weight=1)
 
         # Title
@@ -95,8 +95,8 @@ class IngredientScreen(ctk.CTkFrame):
         self.add_ingredient_frame.grid(row=3, column=0, padx=10, pady=5, sticky="nsew")
         self.add_ingredient_frame.grid_rowconfigure(0, weight=1)
 
-        button_width = 80  # Set your preferred size
-        button_height = 60  # Adjust height as needed
+        button_width = 120  # Set your preferred size
+        button_height = 120  # Adjust height as needed
 
         # Load and resize image to exactly fit the button size
         img = Image.open(ADD_INGREDIENT_IMG)
