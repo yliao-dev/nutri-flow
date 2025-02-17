@@ -95,7 +95,7 @@ class DataScreen(ctk.CTkFrame):
     
     def create_new_data(self):
         new_nutrition_data_to_file(self.nutrition_view_model)
-        restart_app()
+         
     
     def generate_report(self):
         timestamp = datetime.now().strftime("%Y-%m-%d")
