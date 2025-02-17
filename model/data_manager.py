@@ -47,6 +47,7 @@ def create_new_log_file(data, file_name):
     
 def save_log_file(data, file_name):
     """Saves the given data to the specified file without prompting the user."""
+    print(file_name)
     try:
         df = pd.DataFrame(data)
         df.to_csv(file_name, index=False, header=False)
@@ -158,7 +159,8 @@ def import_nutrition_data_from_file(nutrition_view_model):
         # Extracting date and weight
         user_nutrition_model.date = df.iloc[1, 0]
         user_nutrition_model.weight = df.iloc[1, 1]
-        user_nutrition_model.log_path = os.path.basename(file_path)
+        # print(file_path)
+        user_nutrition_model.log_path =file_path
 
         # Extracting goals data
         user_nutrition_model.goal_protein = df.iloc[4, 0]
