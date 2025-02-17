@@ -12,6 +12,7 @@ def restart_app():
         os.execv(sys.executable, [sys.executable, "app.py"])
 
 def get_unique_filename(file_name):
+    print(file_name)
     file_path = os.path.join(LOG_PATH, file_name)
     base_name, ext = os.path.splitext(file_name)
     version = 1
@@ -45,15 +46,14 @@ def create_new_log_file(data, file_name):
         print(f"Failed to create new nutrition log: {e}")
         return None
     
-def save_log_file(data, file_name):
+def save_log_file(data, file_path):
     """Saves the given data to the specified file without prompting the user."""
-    print(file_name)
     try:
         df = pd.DataFrame(data)
-        df.to_csv(file_name, index=False, header=False)
+        df.to_csv(file_path, index=False, header=False)
 
-        print(f"Nutrition log saved to: {file_name}")
-        return file_name  # Return the file path for reference
+        print(f"Nutrition log saved to: {file_path}")
+        return file_path  # Return the file path for reference
     except Exception as e:
         print(f"Failed to save nutrition log: {e}")
         return None
@@ -224,7 +224,7 @@ def export_nutrition_data_to_file(nutrition_view_model, option):
         csv_data.append([ingredient, consumed_amounts])
     if option == "save":
         return save_log_file(csv_data, nutrition_view_model.get_log_path())
-    return create_new_log_file(csv_data, nutrition_view_model.get_log_path())
+    return create_new_log_file(csv_data, os.path.basename(nutrition_view_model.get_log_path()))
 
 def new_nutrition_data_to_file(nutrition_view_model):
         timestamp = datetime.now().strftime("%Y-%m-%d")
