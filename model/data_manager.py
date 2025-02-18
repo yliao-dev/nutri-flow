@@ -39,9 +39,8 @@ def create_new_log_file(data, file_name):
     try:
         df = pd.DataFrame(data)
         df.to_csv(file_path, index=False, header=False)
-        created_file_name = os.path.basename(file_path)  # Extract just the file name
-        print(f"New nutrition log created: {created_file_name}")
-        return created_file_name  # Return only the file name
+        print(f"New nutrition log created: {file_path}")
+        return file_path  # Return only the file name
     except Exception as e:
         print(f"Failed to create new nutrition log: {e}")
         return None
@@ -250,10 +249,10 @@ def new_nutrition_data_to_file(nutrition_view_model):
             [],
             ["Consumed Ingredients", "Consumed Amount (g)"],
         ]
-        created_file_name = create_new_log_file(csv_data, file_name)
-        if not created_file_name:
+        created_file_path = create_new_log_file(csv_data, file_name)
+        if not created_file_path:
             return
-        fresh_user_config(nutrition_view_model, created_file_name)
+        fresh_user_config(nutrition_view_model, created_file_path)
 
 
 def fresh_user_config(nutrition_view_model, new_file_name):
