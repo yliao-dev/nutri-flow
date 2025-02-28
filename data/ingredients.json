@@ -41,8 +41,8 @@
             "fat":10
         },
         "image":".\/data\/image\/egg.png",
-        "frequency_of_use":43,
-        "last_used_date":"2025-02-17T20:38:29.356004"
+        "frequency_of_use":48,
+        "last_used_date":"2025-02-27T11:06:26.580968"
     },
     "milk":{
         "id":4,
@@ -56,8 +56,8 @@
             "fat":1
         },
         "image":".\/data\/image\/milk.png",
-        "frequency_of_use":30,
-        "last_used_date":"2025-02-18T16:51:01.452013"
+        "frequency_of_use":31,
+        "last_used_date":"2025-02-26T22:34:26.458688"
     },
     "oatmeal":{
         "id":5,
@@ -71,14 +71,14 @@
             "fat":6.9
         },
         "image":".\/data\/image\/oatmeal.png",
-        "frequency_of_use":40,
-        "last_used_date":"2025-02-18T16:50:57.354358"
+        "frequency_of_use":41,
+        "last_used_date":"2025-02-26T22:34:22.946946"
     },
     "beef":{
         "id":6,
         "name":"Beef",
         "reference_serving_size":100,
-        "custom_serving_size":120.0,
+        "custom_serving_size":150.0,
         "nutrition":{
             "carbohydrate":0,
             "protein":26,
@@ -86,14 +86,14 @@
             "fat":20
         },
         "image":".\/data\/image\/beef.png",
-        "frequency_of_use":13,
-        "last_used_date":"2025-02-15T11:28:31.669342"
+        "frequency_of_use":14,
+        "last_used_date":"2025-02-27T20:47:33.401864"
     },
     "chicken_breast":{
         "id":7,
         "name":"Chicken Breast",
         "reference_serving_size":100,
-        "custom_serving_size":270.0,
+        "custom_serving_size":210.0,
         "nutrition":{
             "carbohydrate":0,
             "protein":23,
@@ -101,8 +101,8 @@
             "fat":2.7
         },
         "image":".\/data\/image\/chicken_breast.png",
-        "frequency_of_use":38,
-        "last_used_date":"2025-02-17T20:18:36.587528"
+        "frequency_of_use":40,
+        "last_used_date":"2025-02-27T20:47:16.518219"
     },
     "chicken_leg":{
         "id":8,
@@ -131,8 +131,8 @@
             "fat":0.2
         },
         "image":".\/data\/image\/apple.png",
-        "frequency_of_use":2,
-        "last_used_date":"2025-01-31T11:12:30.244733"
+        "frequency_of_use":3,
+        "last_used_date":"2025-02-26T22:34:07.326388"
     },
     "bread":{
         "id":10,
@@ -146,8 +146,8 @@
             "fat":3.2
         },
         "image":".\/data\/image\/bread.png",
-        "frequency_of_use":17,
-        "last_used_date":"2025-02-18T14:39:33.305001"
+        "frequency_of_use":19,
+        "last_used_date":"2025-02-27T11:06:31.808075"
     },
     "broccoli":{
         "id":11,
@@ -191,8 +191,8 @@
             "fat":1.1
         },
         "image":".\/data\/image\/long_grain_rice.png",
-        "frequency_of_use":47,
-        "last_used_date":"2025-02-17T20:38:29.356145"
+        "frequency_of_use":50,
+        "last_used_date":"2025-02-27T20:47:19.972262"
     },
     "orange":{
         "id":15,
@@ -326,8 +326,8 @@
             "fat":0.3
         },
         "image":".\/data\/image\/banana.png",
-        "frequency_of_use":3,
-        "last_used_date":"2025-02-06T16:52:12.241400"
+        "frequency_of_use":4,
+        "last_used_date":"2025-02-27T11:06:35.727789"
     },
     "white_onion":{
         "id":24,
@@ -371,8 +371,8 @@
             "fat":0.2
         },
         "image":".\/data\/image\/tomato.png",
-        "frequency_of_use":8,
-        "last_used_date":"2025-02-16T19:05:24.416498"
+        "frequency_of_use":9,
+        "last_used_date":"2025-02-27T20:47:43.566466"
     },
     "pelmeni":{
         "id":27,
@@ -446,8 +446,8 @@
             "fat":9.6
         },
         "image":".\/data\/image\/berlin_kebab.png",
-        "frequency_of_use":2,
-        "last_used_date":"2025-01-31T11:12:34.950007"
+        "frequency_of_use":3,
+        "last_used_date":"2025-02-26T22:34:12.341133"
     },
     "tortilla":{
         "id":32,
@@ -491,8 +491,8 @@
             "fat":15
         },
         "image":".\/data\/image\/cup_noodles.png",
-        "frequency_of_use":1,
-        "last_used_date":"2025-02-12T22:38:40.121944"
+        "frequency_of_use":2,
+        "last_used_date":"2025-02-26T22:34:36.843767"
     },
     "turkey":{
         "id":35,
