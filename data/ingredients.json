@@ -56,8 +56,8 @@
             "fat":1
         },
         "image":".\/data\/image\/milk.png",
-        "frequency_of_use":35,
-        "last_used_date":"2025-03-06T11:31:52.580845"
+        "frequency_of_use":37,
+        "last_used_date":"2025-03-10T20:33:38.184958"
     },
     "oatmeal":{
         "id":5,
@@ -71,14 +71,14 @@
             "fat":6.9
         },
         "image":".\/data\/image\/oatmeal.png",
-        "frequency_of_use":49,
-        "last_used_date":"2025-03-09T15:21:50.739736"
+        "frequency_of_use":51,
+        "last_used_date":"2025-03-10T18:52:15.663036"
     },
     "beef":{
         "id":6,
         "name":"Beef",
         "reference_serving_size":100,
-        "custom_serving_size":120.0,
+        "custom_serving_size":150.0,
         "nutrition":{
             "carbohydrate":0,
             "protein":26,
@@ -86,8 +86,8 @@
             "fat":20
         },
         "image":".\/data\/image\/beef.png",
-        "frequency_of_use":18,
-        "last_used_date":"2025-03-05T20:26:09.593836"
+        "frequency_of_use":19,
+        "last_used_date":"2025-03-10T18:52:01.744142"
     },
     "chicken_breast":{
         "id":7,
@@ -101,8 +101,8 @@
             "fat":2.7
         },
         "image":".\/data\/image\/chicken_breast.png",
-        "frequency_of_use":51,
-        "last_used_date":"2025-03-09T15:22:10.046697"
+        "frequency_of_use":52,
+        "last_used_date":"2025-03-10T18:51:40.508499"
     },
     "chicken_leg":{
         "id":8,
@@ -191,8 +191,8 @@
             "fat":1.1
         },
         "image":".\/data\/image\/long_grain_rice.png",
-        "frequency_of_use":64,
-        "last_used_date":"2025-03-09T15:22:01.997512"
+        "frequency_of_use":66,
+        "last_used_date":"2025-03-10T18:52:07.578472"
     },
     "orange":{
         "id":15,
@@ -251,8 +251,8 @@
             "fat":1.6
         },
         "image":".\/data\/image\/whey_protein.png",
-        "frequency_of_use":10,
-        "last_used_date":"2025-02-15T23:04:42.581415"
+        "frequency_of_use":11,
+        "last_used_date":"2025-03-10T20:33:45.265024"
     },
     "beetroot":{
         "id":19,
@@ -393,7 +393,7 @@
         "id":28,
         "name":"Potato",
         "reference_serving_size":100,
-        "custom_serving_size":50.0,
+        "custom_serving_size":150.0,
         "nutrition":{
             "carbohydrate":17.0,
             "protein":2.0,
@@ -401,8 +401,8 @@
             "fat":0.1
         },
         "image":".\/data\/image\/potato.png",
-        "frequency_of_use":6,
-        "last_used_date":"2025-03-01T13:16:54.955390"
+        "frequency_of_use":7,
+        "last_used_date":"2025-03-10T18:51:52.109909"
     },
     "sweet_potato":{
         "id":29,
@@ -476,8 +476,8 @@
             "fat":28
         },
         "image":".\/data\/image\/duck.png",
-        "frequency_of_use":3,
-        "last_used_date":"2025-03-08T20:53:01.931726"
+        "frequency_of_use":4,
+        "last_used_date":"2025-03-09T23:09:03.476580"
     },
     "cup_noodles":{
         "id":34,
@@ -491,8 +491,8 @@
             "fat":15
         },
         "image":".\/data\/image\/cup_noodles.png",
-        "frequency_of_use":3,
-        "last_used_date":"2025-03-05T20:25:49.665315"
+        "frequency_of_use":4,
+        "last_used_date":"2025-03-10T20:33:38.186002"
     },
     "turkey":{
         "id":35,
